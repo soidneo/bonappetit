@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewProductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewProductoLabel_id}"/>
+                    <h:outputText value="#{productoController.selected.id}" title="#{bundle.ViewProductoTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_nombre}"/>
+                    <h:outputText value="#{productoController.selected.nombre}" title="#{bundle.ViewProductoTitle_nombre}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_costoProceso}"/>
+                    <h:outputText value="#{productoController.selected.costoProceso}" title="#{bundle.ViewProductoTitle_costoProceso}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_sabor}"/>
+                    <h:outputText value="#{productoController.selected.sabor}" title="#{bundle.ViewProductoTitle_sabor}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_tamanio}"/>
+                    <h:outputText value="#{productoController.selected.tamanio}" title="#{bundle.ViewProductoTitle_tamanio}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_adicional}"/>
+                    <h:outputText value="#{productoController.selected.adicional}" title="#{bundle.ViewProductoTitle_adicional}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_calorias}"/>
+                    <h:outputText value="#{productoController.selected.calorias}" title="#{bundle.ViewProductoTitle_calorias}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_costoTotal}"/>
+                    <h:outputText value="#{productoController.selected.costoTotal}" title="#{bundle.ViewProductoTitle_costoTotal}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_recetaFk}"/>
+                    <h:outputText value="#{productoController.selected.recetaFk}" title="#{bundle.ViewProductoTitle_recetaFk}"/>
+                    <h:outputText value="#{bundle.ViewProductoLabel_idProvedor}"/>
+                    <h:outputText value="#{productoController.selected.idProvedor}" title="#{bundle.ViewProductoTitle_idProvedor}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{productoController.destroyAndView}" value="#{bundle.ViewProductoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewProductoEditLink}"/>
+                <br />
+                <h:commandLink action="#{productoController.prepareCreate}" value="#{bundle.ViewProductoCreateLink}" />
+                <br />
+                <h:commandLink action="#{productoController.prepareList}" value="#{bundle.ViewProductoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewProductoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

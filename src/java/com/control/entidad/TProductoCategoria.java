@@ -26,14 +26,14 @@ import javax.persistence.Table;
 @Table(name = "t_producto_categoria", catalog = "control", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TProductoCategoria.findAll", query = "SELECT t FROM TProductoCategoria t"),
-    @NamedQuery(name = "TProductoCategoria.findBySerial", query = "SELECT t FROM TProductoCategoria t WHERE t.serial = :serial")})
+    @NamedQuery(name = "TProductoCategoria.findById", query = "SELECT t FROM TProductoCategoria t WHERE t.id = :id")})
 public class TProductoCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "serial", nullable = false)
-    private Integer serial;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @JoinColumn(name = "id_producto", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto idProducto;
@@ -44,16 +44,16 @@ public class TProductoCategoria implements Serializable {
     public TProductoCategoria() {
     }
 
-    public TProductoCategoria(Integer serial) {
-        this.serial = serial;
+    public TProductoCategoria(Integer id) {
+        this.id = id;
     }
 
-    public Integer getSerial() {
-        return serial;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSerial(Integer serial) {
-        this.serial = serial;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Producto getIdProducto() {
@@ -75,7 +75,7 @@ public class TProductoCategoria implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (serial != null ? serial.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -86,7 +86,7 @@ public class TProductoCategoria implements Serializable {
             return false;
         }
         TProductoCategoria other = (TProductoCategoria) object;
-        if ((this.serial == null && other.serial != null) || (this.serial != null && !this.serial.equals(other.serial))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public class TProductoCategoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.TProductoCategoria[ serial=" + serial + " ]";
+        return "com.control.entidad.TProductoCategoria[ id=" + id + " ]";
     }
     
 }

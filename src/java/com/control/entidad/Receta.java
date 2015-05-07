@@ -7,9 +7,12 @@ package com.control.entidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,24 +35,36 @@ import javax.validation.constraints.Size;
 public class Receta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_receta", nullable = false)
     private Integer idReceta;
-    @Size(max = 2147483647)
-    @Column(name = "nombre", length = 2147483647)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @Size(max = 2147483647)
-    @Column(name = "descripcion", length = 2147483647)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "descripcion", nullable = false, length = 2147483647)
     private String descripcion;
-    @OneToMany(mappedBy = "idReceta", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta", fetch = FetchType.LAZY)
     private List<RecetaDet> recetaDetList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recetaFk", fetch = FetchType.LAZY)
+    private List<Producto> productoList;
 
     public Receta() {
     }
 
     public Receta(Integer idReceta) {
         this.idReceta = idReceta;
+    }
+
+    public Receta(Integer idReceta, String nombre, String descripcion) {
+        this.idReceta = idReceta;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public Integer getIdReceta() {
@@ -84,6 +99,14 @@ public class Receta implements Serializable {
         this.recetaDetList = recetaDetList;
     }
 
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -106,7 +129,7 @@ public class Receta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Receta[ idReceta=" + idReceta + " ]";
+        return this.nombre;
     }
     
 }

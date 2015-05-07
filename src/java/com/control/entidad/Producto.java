@@ -38,8 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByTamanio", query = "SELECT p FROM Producto p WHERE p.tamanio = :tamanio"),
     @NamedQuery(name = "Producto.findByAdicional", query = "SELECT p FROM Producto p WHERE p.adicional = :adicional"),
     @NamedQuery(name = "Producto.findByCalorias", query = "SELECT p FROM Producto p WHERE p.calorias = :calorias"),
-    @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal"),
-    @NamedQuery(name = "Producto.findByIdProveedor", query = "SELECT p FROM Producto p WHERE p.idProveedor = :idProveedor")})
+    @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal")})
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,13 +77,12 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "costo_total", nullable = false)
     private double costoTotal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_proveedor", nullable = false)
-    private int idProveedor;
-    @JoinColumn(name = "id_receta", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Provedor idReceta;
+    @JoinColumn(name = "receta_fk", referencedColumnName = "id_receta", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Receta recetaFk;
+    @JoinColumn(name = "id_provedor", referencedColumnName = "id_provedor", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Provedor idProvedor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto", fetch = FetchType.LAZY)
     private List<TProductoCategoria> tProductoCategoriaList;
 
@@ -95,7 +93,7 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Producto(Integer id, String nombre, double costoProceso, String sabor, double tamanio, boolean adicional, String calorias, double costoTotal, int idProveedor) {
+    public Producto(Integer id, String nombre, double costoProceso, String sabor, double tamanio, boolean adicional, String calorias, double costoTotal) {
         this.id = id;
         this.nombre = nombre;
         this.costoProceso = costoProceso;
@@ -104,7 +102,6 @@ public class Producto implements Serializable {
         this.adicional = adicional;
         this.calorias = calorias;
         this.costoTotal = costoTotal;
-        this.idProveedor = idProveedor;
     }
 
     public Integer getId() {
@@ -171,20 +168,20 @@ public class Producto implements Serializable {
         this.costoTotal = costoTotal;
     }
 
-    public int getIdProveedor() {
-        return idProveedor;
+    public Receta getRecetaFk() {
+        return recetaFk;
     }
 
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setRecetaFk(Receta recetaFk) {
+        this.recetaFk = recetaFk;
     }
 
-    public Provedor getIdReceta() {
-        return idReceta;
+    public Provedor getIdProvedor() {
+        return idProvedor;
     }
 
-    public void setIdReceta(Provedor idReceta) {
-        this.idReceta = idReceta;
+    public void setIdProvedor(Provedor idProvedor) {
+        this.idProvedor = idProvedor;
     }
 
     public List<TProductoCategoria> getTProductoCategoriaList() {
@@ -217,7 +214,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Producto[ id=" + id + " ]";
+        return this.nombre;
     }
     
 }

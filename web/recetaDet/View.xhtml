@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewRecetaDetTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewRecetaDetLabel_idRecetaDet}"/>
+                    <h:outputText value="#{recetaDetController.selected.idRecetaDet}" title="#{bundle.ViewRecetaDetTitle_idRecetaDet}"/>
+                    <h:outputText value="#{bundle.ViewRecetaDetLabel_cantidad}"/>
+                    <h:outputText value="#{recetaDetController.selected.cantidad}" title="#{bundle.ViewRecetaDetTitle_cantidad}"/>
+                    <h:outputText value="#{bundle.ViewRecetaDetLabel_receta}"/>
+                    <h:outputText value="#{recetaDetController.selected.receta}" title="#{bundle.ViewRecetaDetTitle_receta}"/>
+                    <h:outputText value="#{bundle.ViewRecetaDetLabel_ingrediente}"/>
+                    <h:outputText value="#{recetaDetController.selected.ingrediente}" title="#{bundle.ViewRecetaDetTitle_ingrediente}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{recetaDetController.destroyAndView}" value="#{bundle.ViewRecetaDetDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewRecetaDetEditLink}"/>
+                <br />
+                <h:commandLink action="#{recetaDetController.prepareCreate}" value="#{bundle.ViewRecetaDetCreateLink}" />
+                <br />
+                <h:commandLink action="#{recetaDetController.prepareList}" value="#{bundle.ViewRecetaDetShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewRecetaDetIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

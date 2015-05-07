@@ -5,7 +5,9 @@
 package com.control.entidad;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,9 +53,11 @@ public class Ingrediente implements Serializable {
     @JoinColumn(name = "id_unidad", referencedColumnName = "id_unidad", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Unidad idUnidad;
-    @JoinColumn(name = "id_provedor", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "provedor", referencedColumnName = "id_provedor", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Provedor idProvedor;
+    private Provedor provedor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingrediente", fetch = FetchType.LAZY)
+    private List<RecetaDet> recetaDetList;
 
     public Ingrediente() {
     }
@@ -99,12 +104,20 @@ public class Ingrediente implements Serializable {
         this.idUnidad = idUnidad;
     }
 
-    public Provedor getIdProvedor() {
-        return idProvedor;
+    public Provedor getProvedor() {
+        return provedor;
     }
 
-    public void setIdProvedor(Provedor idProvedor) {
-        this.idProvedor = idProvedor;
+    public void setProvedor(Provedor provedor) {
+        this.provedor = provedor;
+    }
+
+    public List<RecetaDet> getRecetaDetList() {
+        return recetaDetList;
+    }
+
+    public void setRecetaDetList(List<RecetaDet> recetaDetList) {
+        this.recetaDetList = recetaDetList;
     }
 
     @Override
@@ -129,7 +142,7 @@ public class Ingrediente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Ingrediente[ idIngrediente=" + idIngrediente + " ]";
+        return this.nombre;
     }
     
 }

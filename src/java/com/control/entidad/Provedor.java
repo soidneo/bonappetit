@@ -29,43 +29,43 @@ import javax.validation.constraints.Size;
 @Table(name = "provedor", catalog = "control", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Provedor.findAll", query = "SELECT p FROM Provedor p"),
-    @NamedQuery(name = "Provedor.findById", query = "SELECT p FROM Provedor p WHERE p.id = :id"),
+    @NamedQuery(name = "Provedor.findByIdProvedor", query = "SELECT p FROM Provedor p WHERE p.idProvedor = :idProvedor"),
     @NamedQuery(name = "Provedor.findByNombre", query = "SELECT p FROM Provedor p WHERE p.nombre = :nombre")})
 public class Provedor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @Column(name = "id_provedor", nullable = false)
+    private Integer idProvedor;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProvedor", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provedor", fetch = FetchType.LAZY)
     private List<Ingrediente> ingredienteList;
-    @OneToMany(mappedBy = "idReceta", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProvedor", fetch = FetchType.LAZY)
     private List<Producto> productoList;
 
     public Provedor() {
     }
 
-    public Provedor(Integer id) {
-        this.id = id;
+    public Provedor(Integer idProvedor) {
+        this.idProvedor = idProvedor;
     }
 
-    public Provedor(Integer id, String nombre) {
-        this.id = id;
+    public Provedor(Integer idProvedor, String nombre) {
+        this.idProvedor = idProvedor;
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdProvedor() {
+        return idProvedor;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdProvedor(Integer idProvedor) {
+        this.idProvedor = idProvedor;
     }
 
     public String getNombre() {
@@ -95,7 +95,7 @@ public class Provedor implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idProvedor != null ? idProvedor.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +106,7 @@ public class Provedor implements Serializable {
             return false;
         }
         Provedor other = (Provedor) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idProvedor == null && other.idProvedor != null) || (this.idProvedor != null && !this.idProvedor.equals(other.idProvedor))) {
             return false;
         }
         return true;
@@ -114,7 +114,8 @@ public class Provedor implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Provedor[ id=" + id + " ]";
+        //return "com.control.entidad.Provedor[ idProvedor=" + idProvedor + " ]";
+        return this.nombre;
     }
     
 }

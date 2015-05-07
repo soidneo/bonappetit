@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -26,23 +27,25 @@ import javax.persistence.Table;
 @Table(name = "receta_det", catalog = "control", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "RecetaDet.findAll", query = "SELECT r FROM RecetaDet r"),
-    @NamedQuery(name = "RecetaDet.findByIdIngrediente", query = "SELECT r FROM RecetaDet r WHERE r.idIngrediente = :idIngrediente"),
-    @NamedQuery(name = "RecetaDet.findByCantidad", query = "SELECT r FROM RecetaDet r WHERE r.cantidad = :cantidad"),
-    @NamedQuery(name = "RecetaDet.findByIdRecetaDet", query = "SELECT r FROM RecetaDet r WHERE r.idRecetaDet = :idRecetaDet")})
+    @NamedQuery(name = "RecetaDet.findByIdRecetaDet", query = "SELECT r FROM RecetaDet r WHERE r.idRecetaDet = :idRecetaDet"),
+    @NamedQuery(name = "RecetaDet.findByCantidad", query = "SELECT r FROM RecetaDet r WHERE r.cantidad = :cantidad")})
 public class RecetaDet implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Column(name = "id_ingrediente")
-    private Integer idIngrediente;
-    @Column(name = "cantidad")
-    private Integer cantidad;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_receta_det", nullable = false)
     private Integer idRecetaDet;
-    @JoinColumn(name = "id_receta", referencedColumnName = "id_receta")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Receta idReceta;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "cantidad", nullable = false)
+    private double cantidad;
+    @JoinColumn(name = "receta", referencedColumnName = "id_receta", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Receta receta;
+    @JoinColumn(name = "ingrediente", referencedColumnName = "id_ingrediente", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Ingrediente ingrediente;
 
     public RecetaDet() {
     }
@@ -51,19 +54,8 @@ public class RecetaDet implements Serializable {
         this.idRecetaDet = idRecetaDet;
     }
 
-    public Integer getIdIngrediente() {
-        return idIngrediente;
-    }
-
-    public void setIdIngrediente(Integer idIngrediente) {
-        this.idIngrediente = idIngrediente;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
+    public RecetaDet(Integer idRecetaDet, double cantidad) {
+        this.idRecetaDet = idRecetaDet;
         this.cantidad = cantidad;
     }
 
@@ -75,12 +67,28 @@ public class RecetaDet implements Serializable {
         this.idRecetaDet = idRecetaDet;
     }
 
-    public Receta getIdReceta() {
-        return idReceta;
+    public double getCantidad() {
+        return cantidad;
     }
 
-    public void setIdReceta(Receta idReceta) {
-        this.idReceta = idReceta;
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Receta getReceta() {
+        return receta;
+    }
+
+    public void setReceta(Receta receta) {
+        this.receta = receta;
+    }
+
+    public Ingrediente getIngrediente() {
+        return ingrediente;
+    }
+
+    public void setIngrediente(Ingrediente ingrediente) {
+        this.ingrediente = ingrediente;
     }
 
     @Override

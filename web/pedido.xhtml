@@ -33,11 +33,11 @@
                         
                         <pm:field>
                             <p:outputLabel for="selectOneMenu2" value="Producto" />              
-                            <p:selectOneMenu id="selectOneMenu2" value="#{Controlador.pedido.serial}">
+                            <p:selectOneMenu id="selectOneMenu2" value="#{Controlador.pedido.id}">
                 
                                 <f:selectItem itemLabel="Seleccione" itemValue="" />
                                 <f:selectItems var="prod" value="#{Controlador.listaProductos}"
-                                               itemLabel="#{prod.idProducto.nombre}" itemValue="#{prod.serial}"/>
+                                               itemLabel="#{prod.idProducto.nombre}" itemValue="#{prod.id}"/>
                                 
                             </p:selectOneMenu>
                             

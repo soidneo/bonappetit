@@ -104,7 +104,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Categoria[ id=" + id + " ]";
+        return this.nombre;
     }
     
 }
