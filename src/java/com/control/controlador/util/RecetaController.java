@@ -4,10 +4,12 @@ import com.control.entidad.Receta;
 import com.control.controlador.util.util.JsfUtil;
 import com.control.controlador.util.util.PaginationHelper;
 import com.control.dao.RecetaFacade;
+import com.control.entidad.Ingrediente;
 import com.control.entidad.RecetaDet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -28,9 +30,29 @@ public class RecetaController implements Serializable {
     private DataModel items = null;
     @EJB
     private com.control.dao.RecetaFacade ejbFacade;
+    @EJB
+    private com.control.dao.IngredienteFacade ingredienteDao;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private RecetaDet detalle;
+    private List<Ingrediente> listaIngredientes;
 
+    public RecetaDet getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(RecetaDet detalle) {
+        this.detalle = detalle;
+    }
+
+    public List<Ingrediente> getListaIngredientes() {
+        return listaIngredientes;
+    }
+
+    public void setListaIngredientes(List<Ingrediente> listaIngredientes) {
+        this.listaIngredientes = listaIngredientes;
+    }
+    
     public RecetaController() {
     }
 
@@ -77,6 +99,7 @@ public class RecetaController implements Serializable {
     public String prepareCreate() {
         current = new Receta();
         current.setRecetaDetList(new ArrayList<RecetaDet>());
+        listaIngredientes=ingredienteDao.findAll();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -228,6 +251,12 @@ public class RecetaController implements Serializable {
     }
     
     public void nuevoDetalle(){
-        this.current.getRecetaDetList().add(new RecetaDet());
+        this.detalle=new RecetaDet();
+        this.detalle.setIngrediente(new Ingrediente());
+    }
+    
+    public void agregarDetalle(){
+        detalle.setIngrediente(ingredienteDao.find(detalle.getIngrediente().getIdIngrediente()));
+        this.current.getRecetaDetList().add(detalle);
     }
 }
