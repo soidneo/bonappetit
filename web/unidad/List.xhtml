@@ -13,9 +13,9 @@
     <h:body>
         <pm:page id="first">
             <pm:header title="Unidades" swatch="b"></pm:header>
-            <h:form styleClass="jsfcrud_list_form" id="form">
-                <pm:field>                    
-                    <p:dataTable value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
+            <h:form styleClass="jsfcrud_list_form" id="form" data-mini="true">
+                <pm:field >                    
+                    <p:dataTable  value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUnidadTitle_idUnidad}"/>
@@ -32,7 +32,8 @@
                             <f:facet name="header">
                                 <h:outputText value="Editar"/>
                             </f:facet>
-                            <p:commandButton actionListener="#{unidadController.prepareEdit()}" icon="ui-icon-signal"
+                           
+                            <p:commandButton actionListener="#{unidadController.prepareEdit()}" icon="ui-icon-grid"                                             
                                              title="#{bundle.ListUnidadEditLink}"
                                              ajax="true" update="first:formI:modal"
                                              onsuccess="PF('rolModal').show();"/>
@@ -41,7 +42,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Eliminar"/>
                             </f:facet>
-                            <p:commandButton actionListener="#{unidadController.destroy}" title="Eliminar" icon="ui-icon-pencil"/>
+                            <p:commandButton actionListener="#{unidadController.destroy()}" title="Eliminar" icon="ui-icon-delete"/>
                         </p:column>
                     </p:dataTable>
                     <br />
@@ -50,7 +51,7 @@
                 </pm:field>
             </h:form>
             <p:dialog header="Unidades" widgetVar="rolModal" appendTo="@(body)"
-                      modal="true" style="width: 100%;height: 100%">
+                      modal="true" >
                 <h:form id="formI">
 
                     <p:panelGrid  id="modal">

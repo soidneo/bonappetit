@@ -7,6 +7,7 @@ package com.control.entidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ import javax.validation.constraints.Size;
  * @author Asus
  */
 @Entity
+@Cacheable(false)
 @Table(name = "unidad", catalog = "control", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Unidad.findAll", query = "SELECT u FROM Unidad u"),

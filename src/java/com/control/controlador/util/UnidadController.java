@@ -123,7 +123,7 @@ public class UnidadController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return prepareList();
     }
 
     public String destroyAndView() {
@@ -135,7 +135,7 @@ public class UnidadController implements Serializable {
         } else {
             // all items were removed - go back to list
             recreateModel();
-            return "List";
+            return prepareList();
         }
     }
 
