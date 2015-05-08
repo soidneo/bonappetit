@@ -15,6 +15,7 @@
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
             <h:form id="form">
+                <p:growl/>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.CreateRecetaLabel_idReceta}" for="idReceta" />
                     <h:inputText id="idReceta" value="#{recetaController.selected.idReceta}" title="#{bundle.CreateRecetaTitle_idReceta}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_idReceta}"/>
@@ -32,8 +33,10 @@
                 <br />
                 <h:link outcome="/index" value="#{bundle.CreateRecetaIndexLink}"/>
                 
-                <p:commandButton value="Agregar Ingrediente" onclick="PF('rolModal').show();"
+                <p:commandButton value="Agregar Ingrediente" onsuccess="PF('rolModal').show();"
                                  actionListener="#{recetaController.nuevoDetalle}"
+                                 ajax="true"
+                                 update="form:modal"
                                  
                    />
                 
@@ -48,23 +51,25 @@
                     
                 </p:dataTable>
                 
-                 <p:dialog header="Unidades" widgetVar="rolModal" appendTo="@(body)"
+                 <p:dialog header="Unidades" widgetVar="rolModal" 
                            modal="true" >
-                     <h:panelGrid columns="2">
+                   
+                     <h:panelGrid columns="2" id="modal">
                          <p:outputLabel for="selectOneMenu2" value="Ingrediente" />
-                         <p:selectOneMenu id="selectOneMenu2" value="#{recetaController.detalle.ingrediente.idIngrediente}" required="true">
+                         <p:selectOneMenu id="selectOneMenu2" value="#{recetaController.detalle.ingrediente.idIngrediente}">
                               <f:selectItem itemLabel="Seleccione" itemValue="" />
                               <f:selectItems var="ing" value="#{recetaController.listaIngredientes}"
                                              itemLabel="#{ing.nombre}" itemValue="#{ing.idIngrediente}"/>
                          </p:selectOneMenu>
-                         <p:outputLabel for="cantidad" value="Ingrediente" />
+                         <p:outputLabel for="cantidad" value="cantidad" />
                          <p:inputText id="cantidad" value="#{recetaController.detalle.cantidad}"/>
                          
                          <h:panelGroup/>
-                         <p:commandButton ajax="true" update="form" 
+                         <p:commandButton ajax="true" update=":form"  value="Agregar" 
+                                          process="@form"  oncomplete="PF('rolModal').hide();"
                                           actionListener="#{recetaController.agregarDetalle}"/>
                      </h:panelGrid>
-                 </p:dialog>
+               </p:dialog>
                 
             </h:form>
         </ui:define>

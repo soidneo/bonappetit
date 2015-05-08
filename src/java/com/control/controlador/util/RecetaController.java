@@ -256,13 +256,16 @@ public class RecetaController implements Serializable {
         this.detalle.setIngrediente(new Ingrediente());
     }
     
-    public void agregarDetalle(){
+    public void agregarDetalle(){ 
         detalle.setIngrediente(ingredienteDao.find(detalle.getIngrediente().getIdIngrediente()));
         this.current.getRecetaDetList().add(detalle);
+        detalle.setReceta(current);
+       
     }
     
     @PostConstruct
     public void iniciar(){
+        this.current=new Receta();
         this.detalle=new RecetaDet();
         this.detalle.setIngrediente(new Ingrediente());
     }
