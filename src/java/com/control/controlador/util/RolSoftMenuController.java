@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.Provedor;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.ProvedorFacade;
+import com.control.entidad.RolSoftMenu;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.RolSoftMenuFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "provedorController")
+@ManagedBean(name = "rolSoftMenuController")
 @SessionScoped
-public class ProvedorController implements Serializable {
+public class RolSoftMenuController implements Serializable {
 
-    private Provedor current;
+    private RolSoftMenu current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.ProvedorFacade ejbFacade;
+    private com.control.dao.RolSoftMenuFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public ProvedorController() {
+    public RolSoftMenuController() {
     }
 
-    public Provedor getSelected() {
+    public RolSoftMenu getSelected() {
         if (current == null) {
-            current = new Provedor();
+            current = new RolSoftMenu();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private ProvedorFacade getFacade() {
+    private RolSoftMenuFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class ProvedorController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Provedor) getItems().getRowData();
+        current = (RolSoftMenu) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Provedor();
+        current = new RolSoftMenu();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class ProvedorController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProvedorCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolSoftMenuCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class ProvedorController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Provedor) getItems().getRowData();
+        current = (RolSoftMenu) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class ProvedorController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProvedorUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolSoftMenuUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class ProvedorController implements Serializable {
     }
 
     public String destroy() {
-        current = (Provedor) getItems().getRowData();
+        current = (RolSoftMenu) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class ProvedorController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProvedorDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolSoftMenuDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class ProvedorController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Provedor.class)
-    public static class ProvedorControllerConverter implements Converter {
+    @FacesConverter(forClass = RolSoftMenu.class)
+    public static class RolSoftMenuControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ProvedorController controller = (ProvedorController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "provedorController");
+            RolSoftMenuController controller = (RolSoftMenuController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "rolSoftMenuController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class ProvedorController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Provedor) {
-                Provedor o = (Provedor) object;
-                return getStringKey(o.getIdProvedor());
+            if (object instanceof RolSoftMenu) {
+                RolSoftMenu o = (RolSoftMenu) object;
+                return getStringKey(o.getIdRolSoftMenu());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Provedor.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + RolSoftMenu.class.getName());
             }
         }
     }

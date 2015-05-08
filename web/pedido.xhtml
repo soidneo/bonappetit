@@ -65,7 +65,7 @@
                         
                         <pm:field>
                             <p:dataTable value="#{Controlador.pedidoMaestro.detallesPedido}"
-                                         var="detalle" tableStyleClass="ui-table-columntoggle" id="tabla">
+                                         var="detalle" tableStyleClass="ui-table-columntoggle" id="tabla" stickyHeader="true">
                                 
                                 <p:column headerText="Producto" >
                                     <h:outputText value="#{detalle.producto.idProducto.nombre}" />

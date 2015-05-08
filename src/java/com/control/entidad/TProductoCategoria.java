@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -30,7 +31,8 @@ import javax.persistence.Table;
 public class TProductoCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="PRODUCTO_CATEGORIA_ID_GENERATOR", sequenceName="t_producto_categoria_id_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODUCTO_CATEGORIA_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;

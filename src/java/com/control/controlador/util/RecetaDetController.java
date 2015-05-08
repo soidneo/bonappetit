@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.TProductoCategoria;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.TProductoCategoriaFacade;
+import com.control.entidad.RecetaDet;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.RecetaDetFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "tProductoCategoriaController")
+@ManagedBean(name = "recetaDetController")
 @SessionScoped
-public class TProductoCategoriaController implements Serializable {
+public class RecetaDetController implements Serializable {
 
-    private TProductoCategoria current;
+    private RecetaDet current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.TProductoCategoriaFacade ejbFacade;
+    private com.control.dao.RecetaDetFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public TProductoCategoriaController() {
+    public RecetaDetController() {
     }
 
-    public TProductoCategoria getSelected() {
+    public RecetaDet getSelected() {
         if (current == null) {
-            current = new TProductoCategoria();
+            current = new RecetaDet();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private TProductoCategoriaFacade getFacade() {
+    private RecetaDetFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class TProductoCategoriaController implements Serializable {
     }
 
     public String prepareView() {
-        current = (TProductoCategoria) getItems().getRowData();
+        current = (RecetaDet) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new TProductoCategoria();
+        current = new RecetaDet();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class TProductoCategoriaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TProductoCategoriaCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaDetCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class TProductoCategoriaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (TProductoCategoria) getItems().getRowData();
+        current = (RecetaDet) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class TProductoCategoriaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TProductoCategoriaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaDetUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class TProductoCategoriaController implements Serializable {
     }
 
     public String destroy() {
-        current = (TProductoCategoria) getItems().getRowData();
+        current = (RecetaDet) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class TProductoCategoriaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TProductoCategoriaDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaDetDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class TProductoCategoriaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = TProductoCategoria.class)
-    public static class TProductoCategoriaControllerConverter implements Converter {
+    @FacesConverter(forClass = RecetaDet.class)
+    public static class RecetaDetControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            TProductoCategoriaController controller = (TProductoCategoriaController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "tProductoCategoriaController");
+            RecetaDetController controller = (RecetaDetController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "recetaDetController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class TProductoCategoriaController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof TProductoCategoria) {
-                TProductoCategoria o = (TProductoCategoria) object;
-                return getStringKey(o.getId());
+            if (object instanceof RecetaDet) {
+                RecetaDet o = (RecetaDet) object;
+                return getStringKey(o.getIdRecetaDet());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + TProductoCategoria.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + RecetaDet.class.getName());
             }
         }
     }

@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.Unidad;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.UnidadFacade;
+import com.control.entidad.Mesa;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.MesaFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "unidadController")
+@ManagedBean(name = "mesaController")
 @SessionScoped
-public class UnidadController implements Serializable {
+public class MesaController implements Serializable {
 
-    private Unidad current;
+    private Mesa current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.UnidadFacade ejbFacade;
+    private com.control.dao.MesaFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public UnidadController() {
+    public MesaController() {
     }
 
-    public Unidad getSelected() {
+    public Mesa getSelected() {
         if (current == null) {
-            current = new Unidad();
+            current = new Mesa();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private UnidadFacade getFacade() {
+    private MesaFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class UnidadController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Unidad) getItems().getRowData();
+        current = (Mesa) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Unidad();
+        current = new Mesa();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class UnidadController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UnidadCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class UnidadController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Unidad) getItems().getRowData();
+        current = (Mesa) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class UnidadController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UnidadUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class UnidadController implements Serializable {
     }
 
     public String destroy() {
-        current = (Unidad) getItems().getRowData();
+        current = (Mesa) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class UnidadController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UnidadDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class UnidadController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Unidad.class)
-    public static class UnidadControllerConverter implements Converter {
+    @FacesConverter(forClass = Mesa.class)
+    public static class MesaControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            UnidadController controller = (UnidadController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "unidadController");
+            MesaController controller = (MesaController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "mesaController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class UnidadController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Unidad) {
-                Unidad o = (Unidad) object;
-                return getStringKey(o.getIdUnidad());
+            if (object instanceof Mesa) {
+                Mesa o = (Mesa) object;
+                return getStringKey(o.getIdMesa());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Unidad.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Mesa.class.getName());
             }
         }
     }

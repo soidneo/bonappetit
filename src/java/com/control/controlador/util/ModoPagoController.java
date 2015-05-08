@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.Categoria;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.CategoriaFacade;
+import com.control.entidad.ModoPago;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.ModoPagoFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "categoriaController")
+@ManagedBean(name = "modoPagoController")
 @SessionScoped
-public class CategoriaController implements Serializable {
+public class ModoPagoController implements Serializable {
 
-    private Categoria current;
+    private ModoPago current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.CategoriaFacade ejbFacade;
+    private com.control.dao.ModoPagoFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public CategoriaController() {
+    public ModoPagoController() {
     }
 
-    public Categoria getSelected() {
+    public ModoPago getSelected() {
         if (current == null) {
-            current = new Categoria();
+            current = new ModoPago();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private CategoriaFacade getFacade() {
+    private ModoPagoFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class CategoriaController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Categoria) getItems().getRowData();
+        current = (ModoPago) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Categoria();
+        current = new ModoPago();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class CategoriaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoriaCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ModoPagoCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class CategoriaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Categoria) getItems().getRowData();
+        current = (ModoPago) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class CategoriaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoriaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ModoPagoUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class CategoriaController implements Serializable {
     }
 
     public String destroy() {
-        current = (Categoria) getItems().getRowData();
+        current = (ModoPago) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class CategoriaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoriaDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ModoPagoDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class CategoriaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Categoria.class)
-    public static class CategoriaControllerConverter implements Converter {
+    @FacesConverter(forClass = ModoPago.class)
+    public static class ModoPagoControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            CategoriaController controller = (CategoriaController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "categoriaController");
+            ModoPagoController controller = (ModoPagoController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "modoPagoController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class CategoriaController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Categoria) {
-                Categoria o = (Categoria) object;
-                return getStringKey(o.getId());
+            if (object instanceof ModoPago) {
+                ModoPago o = (ModoPago) object;
+                return getStringKey(o.getIdModoPago());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Categoria.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + ModoPago.class.getName());
             }
         }
     }

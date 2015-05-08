@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateVentaDetalleTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_idVentaDetalle}" for="idVentaDetalle" />
+                    <h:inputText id="idVentaDetalle" value="#{ventaDetalleController.selected.idVentaDetalle}" title="#{bundle.CreateVentaDetalleTitle_idVentaDetalle}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_idVentaDetalle}"/>
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_iva}" for="iva" />
+                    <h:inputText id="iva" value="#{ventaDetalleController.selected.iva}" title="#{bundle.CreateVentaDetalleTitle_iva}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_iva}"/>
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_cantidad}" for="cantidad" />
+                    <h:inputText id="cantidad" value="#{ventaDetalleController.selected.cantidad}" title="#{bundle.CreateVentaDetalleTitle_cantidad}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_cantidad}"/>
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_descuento}" for="descuento" />
+                    <h:inputText id="descuento" value="#{ventaDetalleController.selected.descuento}" title="#{bundle.CreateVentaDetalleTitle_descuento}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_descuento}"/>
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_venta}" for="venta" />
+                    <h:selectOneMenu id="venta" value="#{ventaDetalleController.selected.venta}" title="#{bundle.CreateVentaDetalleTitle_venta}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_venta}">
+                        <f:selectItems value="#{ventasController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateVentaDetalleLabel_producto}" for="producto" />
+                    <h:selectOneMenu id="producto" value="#{ventaDetalleController.selected.producto}" title="#{bundle.CreateVentaDetalleTitle_producto}" required="true" requiredMessage="#{bundle.CreateVentaDetalleRequiredMessage_producto}">
+                        <f:selectItems value="#{productoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{ventaDetalleController.create}" value="#{bundle.CreateVentaDetalleSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{ventaDetalleController.prepareList}" value="#{bundle.CreateVentaDetalleShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateVentaDetalleIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

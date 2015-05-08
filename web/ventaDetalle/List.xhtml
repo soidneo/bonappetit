@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListVentaDetalleTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListVentaDetalleEmpty}" rendered="#{ventaDetalleController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{ventaDetalleController.items.rowCount > 0}">
+                    <h:outputText value="#{ventaDetalleController.pagination.pageFirstItem + 1}..#{ventaDetalleController.pagination.pageLastItem + 1}/#{ventaDetalleController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{ventaDetalleController.previous}" value="#{bundle.Previous} #{ventaDetalleController.pagination.pageSize}" rendered="#{ventaDetalleController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{ventaDetalleController.next}" value="#{bundle.Next} #{ventaDetalleController.pagination.pageSize}" rendered="#{ventaDetalleController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{ventaDetalleController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_idVentaDetalle}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idVentaDetalle}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_iva}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.iva}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_cantidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cantidad}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_descuento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descuento}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_venta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.venta}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVentaDetalleTitle_producto}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.producto}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{ventaDetalleController.prepareView}" value="#{bundle.ListVentaDetalleViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{ventaDetalleController.prepareEdit}" value="#{bundle.ListVentaDetalleEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{ventaDetalleController.destroy}" value="#{bundle.ListVentaDetalleDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{ventaDetalleController.prepareCreate}" value="#{bundle.ListVentaDetalleCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListVentaDetalleIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

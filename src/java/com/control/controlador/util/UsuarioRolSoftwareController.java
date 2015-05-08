@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.Producto;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.ProductoFacade;
+import com.control.entidad.UsuarioRolSoftware;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.UsuarioRolSoftwareFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "productoController")
+@ManagedBean(name = "usuarioRolSoftwareController")
 @SessionScoped
-public class ProductoController implements Serializable {
+public class UsuarioRolSoftwareController implements Serializable {
 
-    private Producto current;
+    private UsuarioRolSoftware current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.ProductoFacade ejbFacade;
+    private com.control.dao.UsuarioRolSoftwareFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public ProductoController() {
+    public UsuarioRolSoftwareController() {
     }
 
-    public Producto getSelected() {
+    public UsuarioRolSoftware getSelected() {
         if (current == null) {
-            current = new Producto();
+            current = new UsuarioRolSoftware();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private ProductoFacade getFacade() {
+    private UsuarioRolSoftwareFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class ProductoController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Producto) getItems().getRowData();
+        current = (UsuarioRolSoftware) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Producto();
+        current = new UsuarioRolSoftware();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class ProductoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductoCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioRolSoftwareCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class ProductoController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Producto) getItems().getRowData();
+        current = (UsuarioRolSoftware) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class ProductoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductoUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioRolSoftwareUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class ProductoController implements Serializable {
     }
 
     public String destroy() {
-        current = (Producto) getItems().getRowData();
+        current = (UsuarioRolSoftware) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class ProductoController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductoDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioRolSoftwareDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class ProductoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Producto.class)
-    public static class ProductoControllerConverter implements Converter {
+    @FacesConverter(forClass = UsuarioRolSoftware.class)
+    public static class UsuarioRolSoftwareControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ProductoController controller = (ProductoController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "productoController");
+            UsuarioRolSoftwareController controller = (UsuarioRolSoftwareController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "usuarioRolSoftwareController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class ProductoController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Producto) {
-                Producto o = (Producto) object;
-                return getStringKey(o.getId());
+            if (object instanceof UsuarioRolSoftware) {
+                UsuarioRolSoftware o = (UsuarioRolSoftware) object;
+                return getStringKey(o.getIdUsuarioRolSoftware());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Producto.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + UsuarioRolSoftware.class.getName());
             }
         }
     }

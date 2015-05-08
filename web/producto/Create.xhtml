@@ -29,8 +29,7 @@
                     <h:inputText id="adicional" value="#{productoController.selected.adicional}" title="#{bundle.CreateProductoTitle_adicional}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_adicional}"/>
                     <h:outputLabel value="#{bundle.CreateProductoLabel_calorias}" for="calorias" />
                     <h:inputText id="calorias" value="#{productoController.selected.calorias}" title="#{bundle.CreateProductoTitle_calorias}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_calorias}"/>
-                    <h:outputLabel value="#{bundle.CreateProductoLabel_costoTotal}" for="costoTotal" />
-                    <h:inputText id="costoTotal" value="#{productoController.selected.costoTotal}" title="#{bundle.CreateProductoTitle_costoTotal}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_costoTotal}"/>
+                  
                     <h:outputLabel value="#{bundle.CreateProductoLabel_recetaFk}" for="recetaFk" />
                     <h:selectOneMenu id="recetaFk" value="#{productoController.selected.recetaFk}" title="#{bundle.CreateProductoTitle_recetaFk}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_recetaFk}">
                         <f:selectItems value="#{recetaController.itemsAvailableSelectOne}"/>

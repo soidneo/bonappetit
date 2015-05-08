@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,7 +43,8 @@ import javax.validation.constraints.Size;
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="PRODUCTO_ID_GENERATOR", sequenceName="producto_id_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODUCTO_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -77,6 +79,8 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "costo_total", nullable = false)
     private double costoTotal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto", fetch = FetchType.LAZY)
+    private List<VentaDetalle> ventaDetalleList;
     @JoinColumn(name = "receta_fk", referencedColumnName = "id_receta", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Receta recetaFk;
@@ -168,6 +172,14 @@ public class Producto implements Serializable {
         this.costoTotal = costoTotal;
     }
 
+    public List<VentaDetalle> getVentaDetalleList() {
+        return ventaDetalleList;
+    }
+
+    public void setVentaDetalleList(List<VentaDetalle> ventaDetalleList) {
+        this.ventaDetalleList = ventaDetalleList;
+    }
+
     public Receta getRecetaFk() {
         return recetaFk;
     }
@@ -214,7 +226,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return this.nombre;
+        return "com.control.entidad.Producto[ id=" + id + " ]";
     }
     
 }

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -32,7 +33,8 @@ import javax.validation.constraints.NotNull;
 public class RecetaDet implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="RECETA_DET_ID_GENERATOR", sequenceName="receta_det_id_receta_det_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RECETA_DET_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id_receta_det", nullable = false)
     private Integer idRecetaDet;

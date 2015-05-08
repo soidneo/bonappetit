@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,7 +36,8 @@ import javax.validation.constraints.Size;
 public class Receta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="RECETA_ID_GENERATOR", sequenceName="receta_id_receta_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RECETA_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id_receta", nullable = false)
     private Integer idReceta;
@@ -129,7 +131,7 @@ public class Receta implements Serializable {
 
     @Override
     public String toString() {
-        return this.nombre;
+        return "com.control.entidad.Receta[ idReceta=" + idReceta + " ]";
     }
     
 }

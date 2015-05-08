@@ -1,9 +1,9 @@
-package com.control.controlador;
+package com.control.controlador.util;
 
-import com.control.entidad.Receta;
-import com.control.controlador.util.JsfUtil;
-import com.control.controlador.util.PaginationHelper;
-import com.control.dao.RecetaFacade;
+import com.control.entidad.Usuario;
+import com.control.controlador.util.util.JsfUtil;
+import com.control.controlador.util.util.PaginationHelper;
+import com.control.dao.UsuarioFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "recetaController")
+@ManagedBean(name = "usuarioController")
 @SessionScoped
-public class RecetaController implements Serializable {
+public class UsuarioController implements Serializable {
 
-    private Receta current;
+    private Usuario current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.RecetaFacade ejbFacade;
+    private com.control.dao.UsuarioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public RecetaController() {
+    public UsuarioController() {
     }
 
-    public Receta getSelected() {
+    public Usuario getSelected() {
         if (current == null) {
-            current = new Receta();
+            current = new Usuario();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private RecetaFacade getFacade() {
+    private UsuarioFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class RecetaController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Receta) getItems().getRowData();
+        current = (Usuario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Receta();
+        current = new Usuario();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class RecetaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class RecetaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Receta) getItems().getRowData();
+        current = (Usuario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class RecetaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class RecetaController implements Serializable {
     }
 
     public String destroy() {
-        current = (Receta) getItems().getRowData();
+        current = (Usuario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class RecetaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecetaDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,25 +187,25 @@ public class RecetaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Receta.class)
-    public static class RecetaControllerConverter implements Converter {
+    @FacesConverter(forClass = Usuario.class)
+    public static class UsuarioControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            RecetaController controller = (RecetaController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "recetaController");
+            UsuarioController controller = (UsuarioController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "usuarioController");
             return controller.ejbFacade.find(getKey(value));
         }
 
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
+        java.lang.String getKey(String value) {
+            java.lang.String key;
+            key = value;
             return key;
         }
 
-        String getStringKey(java.lang.Integer value) {
+        String getStringKey(java.lang.String value) {
             StringBuffer sb = new StringBuffer();
             sb.append(value);
             return sb.toString();
@@ -215,11 +215,11 @@ public class RecetaController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Receta) {
-                Receta o = (Receta) object;
-                return getStringKey(o.getIdReceta());
+            if (object instanceof Usuario) {
+                Usuario o = (Usuario) object;
+                return getStringKey(o.getUsuario());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Receta.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Usuario.class.getName());
             }
         }
     }
