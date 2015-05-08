@@ -5,7 +5,7 @@
       xmlns:pm="http://primefaces.org/mobile"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
-    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <f:view renderKitId="PRIMEFACES_MOBILE"/>
     <h:head>
         <title>Unidad</title>
 
@@ -15,7 +15,7 @@
             <pm:header title="Unidades" swatch="b"></pm:header>
             <h:form styleClass="jsfcrud_list_form" id="form" data-mini="true">
                 <pm:field >                    
-                    <p:dataTable  value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
+                    <p:dataTable  id="tabla" value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUnidadTitle_idUnidad}"/>
@@ -42,7 +42,8 @@
                             <f:facet name="header">
                                 <h:outputText value="Eliminar"/>
                             </f:facet>
-                            <p:commandButton actionListener="#{unidadController.destroy()}" title="Eliminar" icon="ui-icon-delete"/>
+                            <p:commandButton actionListener="#{unidadController.destroy()}" title="Eliminar" icon="ui-icon-delete"
+                                             ajax="true" update="tabla"/>
                         </p:column>
                     </p:dataTable>
                     <br />
