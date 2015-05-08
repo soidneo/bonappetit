@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -258,5 +259,11 @@ public class RecetaController implements Serializable {
     public void agregarDetalle(){
         detalle.setIngrediente(ingredienteDao.find(detalle.getIngrediente().getIdIngrediente()));
         this.current.getRecetaDetList().add(detalle);
+    }
+    
+    @PostConstruct
+    public void iniciar(){
+        this.detalle=new RecetaDet();
+        this.detalle.setIngrediente(new Ingrediente());
     }
 }
