@@ -41,6 +41,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByCalorias", query = "SELECT p FROM Producto p WHERE p.calorias = :calorias"),
     @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal")})
 public class Producto implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "costo_venta", nullable = false)
+    private double costoVenta;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="PRODUCTO_ID_GENERATOR", sequenceName="producto_id_seq",allocationSize=1)
@@ -227,6 +231,14 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Producto[ id=" + id + " ]";
+    }
+
+    public double getCostoVenta() {
+        return costoVenta;
+    }
+
+    public void setCostoVenta(double costoVenta) {
+        this.costoVenta = costoVenta;
     }
     
 }
