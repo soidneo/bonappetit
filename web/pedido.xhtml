@@ -16,9 +16,9 @@
 
 
             <h:form id="form">   
-                
+
                 <p:growl id="growl" showDetail="true" />
-                
+
                 <pm:field>
                     <pm:field>
                         <p:outputLabel for="selectOneMenu" value="Categoria" />              
@@ -62,7 +62,8 @@
                     </pm:field>
 
                     <pm:field>
-                        <p:dataTable value="#{pedidoControlador.pedidoMaestro.detallesPedido}"
+                        <p:dataTable rendered="#{pedidoControlador.pedidoMaestro.detallesPedido.size()>0}"
+                                     value="#{pedidoControlador.pedidoMaestro.detallesPedido}"
                                      var="detalle" tableStyleClass="ui-table-columntoggle" id="tabla" stickyHeader="true">
 
                             <p:column headerText="Producto" >
@@ -80,37 +81,55 @@
                             <p:column headerText="Total">
                                 <h:outputText value="#{detalle.cantidad*detalle.producto.idProducto.costoVenta}"/>
                             </p:column>
+                            
+                            <p:column headerText="Editar">
+                                <p:commandButton icon="ui-icon-delete" ajax="true" update="first:form"
+                                                 title="Eliminar"
+                                                 process="@this"
+                                                 actionListener="#{pedidoControlador.cancelarPedido(detalle)}"/>
+                            </p:column>
 
                         </p:dataTable>
                     </pm:field>
 
                     <p:commandButton  value="Confirmar Pedido"
+                                      rendered="#{pedidoControlador.pedidoMaestro.detallesPedido.size()>0}"
                                       onsuccess="PF('modal').show();" ajax="true" />
-
-                    <p:dialog header="Confirmar Pedido" widgetVar="modal" appendTo="@(body)"
-                              modal="true" >
-
-                        <pm:field>
-                            <p:outputLabel for="selectOneMenu3" value="Mesa" />              
-                            <p:selectOneMenu id="selectOneMenu3" value="#{pedidoControlador.pedidoMaestro.mesa.idMesa}">
-
-                                <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                <f:selectItems var="mesa" value="#{pedidoControlador.listaMesas}"
-                                               itemLabel="#{mesa.nombre}" itemValue="#{mesa.idMesa}"/>
-
-                            </p:selectOneMenu>
-
-                        </pm:field> 
-
-
-                        <p:commandButton value="Aceptar"
-                                         actionListener="#{pedidoControlador.agregarPedidoMaestro}"/>
-                        <p:commandButton value="Cancelar" onclick="PF('modal').hide();"
-                                         />
-                    </p:dialog>
 
                 </pm:field> 
             </h:form>
+            <p:dialog header="Confirmar Pedido" widgetVar="modal" appendTo="@(body)"
+                      modal="true" >
+                <h:form id="formI">
+                    <pm:field>
+                        
+                        <p:outputLabel for="selectOneMenu3" value="Mesa" />              
+                        <p:selectOneMenu id="selectOneMenu3" value="#{pedidoControlador.pedidoMaestro.mesa.idMesa}"
+                                         required="true" requiredMessage="Seleccione mesa">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems var="mesa" value="#{pedidoControlador.listaMesas}"
+                                           itemLabel="#{mesa.nombre}" itemValue="#{mesa.idMesa}"/>
+                        </p:selectOneMenu>
+
+                    </pm:field> 
+                    
+                    <pm:field>
+                         <p:outputLabel for="clientes" value="Cliente" />  
+                         <p:autoComplete id="clientes"  value="#{pedidoControlador.pedidoMaestro.cliente.usuario}" completeMethod="#{pedidoControlador.completeClientes}"
+                                         var="clinte" itemLabel="#{clinte.usuario}" itemValue="#{clinte.usuario}"
+                                         required="true" requiredMessage="Seleccione cliente"/>
+                    </pm:field>
+
+
+                    <p:commandButton value="Aceptar"
+                                     actionListener="#{pedidoControlador.agregarPedidoMaestro}"
+                                     update="formI,first:form" 
+                                     oncomplete="PF('modal').hide();">
+                    </p:commandButton>
+                    <p:commandButton value="Cancelar" onclick="PF('modal').hide();"
+                                     />
+                </h:form>
+            </p:dialog>
 
 
         </pm:page>

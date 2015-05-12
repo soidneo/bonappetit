@@ -8,11 +8,13 @@ package com.control.controlador.util;
 import com.control.dao.CategoriaFacade;
 import com.control.dao.MesaFacade;
 import com.control.dao.TProductoCategoriaFacade;
+import com.control.dao.UsuarioFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
 import com.control.entidad.Mesa;
 import com.control.entidad.TProductoCategoria;
+import com.control.entidad.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -39,6 +41,9 @@ public class PedidoControlador {
     private TProductoCategoriaFacade ejbProductoFacadel;
     @EJB
     private MesaFacade ejbMesaFacade;
+    @EJB
+    private UsuarioFacade usuarioEjb;
+    
     private List<Categoria> items = null;
     private Categoria selected;
     private List<TProductoCategoria> listaProductos;
@@ -109,13 +114,29 @@ public class PedidoControlador {
     }
 
     public void agregarPedido() {
+        boolean existe=false;
         this.pedido = ejbProductoFacadel.find(this.pedido.getId());
         this.detalle.setProducto(pedido);
         this.detalle.setTotal(this.pedido.getIdProducto().getCostoVenta()*this.detalle.getCantidad());
-        this.pedidoMaestro.getDetallesPedido().add(detalle);
+        for(int i=0;i<pedidoMaestro.getDetallesPedido().size();i++){
+            if(pedidoMaestro.getDetallesPedido().get(i).getProducto().getId()==detalle.getProducto().getId()){
+                pedidoMaestro.getDetallesPedido().get(i).setCantidad(pedidoMaestro.getDetallesPedido().get(i).getCantidad()+detalle.getCantidad());
+                pedidoMaestro.getDetallesPedido().get(i).setTotal(pedidoMaestro.getDetallesPedido().get(i).getCantidad()*
+                        pedidoMaestro.getDetallesPedido().get(i).getProducto().getIdProducto().getCostoVenta());
+                        existe=true;
+                        break;
+            }
+        }
+        if(!existe){
+            this.pedidoMaestro.getDetallesPedido().add(detalle);
+        }
         this.detalle = new PedidoDetalleDto();
         this.selected = new Categoria();
         this.pedido = new TProductoCategoria();
+    }
+    
+    public void cancelarPedido(PedidoDetalleDto detalle){
+        this.pedidoMaestro.getDetallesPedido().remove(detalle);
     }
 
     @PostConstruct
@@ -127,6 +148,7 @@ public class PedidoControlador {
         this.pedidoMaestro = new PedidoMaestro();
         this.pedidoMaestro.setDetallesPedido(new ArrayList<PedidoDetalleDto>());
         this.pedidoMaestro.setMesa(new Mesa());
+        this.pedidoMaestro.setCliente(new Usuario());
         this.pedido = new TProductoCategoria();
         this.detalle = new PedidoDetalleDto();
     }
@@ -158,6 +180,13 @@ public class PedidoControlador {
     public List<Categoria> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+    public List<Usuario> completeClientes(String query){
+        List<Usuario> usuarios=usuarioEjb.findAll();
+        System.out.println(usuarios.size());
+        return usuarios;
+    }
+    
 
     /**
      * Creates a new instance of PedidoControlador
