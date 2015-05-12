@@ -17,8 +17,6 @@
             <h:form id="form">
                 <p:growl/>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateRecetaLabel_idReceta}" for="idReceta" />
-                    <h:inputText id="idReceta" value="#{recetaController.selected.idReceta}" title="#{bundle.CreateRecetaTitle_idReceta}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_idReceta}"/>
                     <h:outputLabel value="#{bundle.CreateRecetaLabel_nombre}" for="nombre" />
                     <h:inputText id="nombre" value="#{recetaController.selected.nombre}" title="#{bundle.CreateRecetaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_nombre}"/>
                     <h:outputLabel value="#{bundle.CreateRecetaLabel_descripcion}" for="descripcion" />

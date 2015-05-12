@@ -116,7 +116,7 @@ public class Provedor implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Provedor[ idProvedor=" + idProvedor + " ]";
+        return this.nombre;
     }
     
 }

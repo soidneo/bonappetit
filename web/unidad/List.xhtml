@@ -12,10 +12,12 @@
     </h:head>
     <h:body>
         <pm:page id="first">
-            <pm:header title="Unidades" swatch="b"></pm:header>
+            <pm:header title="Unidades" swatch="b">
+                <p:button outcome="/menu" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+            </pm:header>
             <h:form styleClass="jsfcrud_list_form" id="form" data-mini="true">
                 <pm:field >                    
-                    <p:dataTable  id="tabla" value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
+                    <p:dataTable paginator="true" rows="5" id="tabla" value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUnidadTitle_idUnidad}"/>
@@ -56,8 +58,6 @@
                 <h:form id="formI">
 
                     <p:panelGrid  id="modal">
-                        <h:outputLabel value="#{bundle.CreateUnidadLabel_idUnidad}" for="idUnidad" />
-                        <h:inputText id="idUnidad" value="#{unidadController.selected.idUnidad}" title="#{bundle.CreateUnidadTitle_idUnidad}" required="true" requiredMessage="#{bundle.CreateUnidadRequiredMessage_idUnidad}"/>
                         <h:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
                         <h:inputText id="nombre" value="#{unidadController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="#{bundle.CreateUnidadRequiredMessage_nombre}"/>
                     

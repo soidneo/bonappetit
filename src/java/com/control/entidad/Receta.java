@@ -131,7 +131,7 @@ public class Receta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Receta[ idReceta=" + idReceta + " ]";
+        return this.nombre;
     }
     
 }

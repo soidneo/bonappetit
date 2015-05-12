@@ -108,7 +108,7 @@ public class Unidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.control.entidad.Unidad[ idUnidad=" + idUnidad + " ]";
+        return this.nombre;
     }
     
 }

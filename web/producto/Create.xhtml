@@ -15,8 +15,6 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateProductoLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{productoController.selected.id}" title="#{bundle.CreateProductoTitle_id}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_id}"/>
                     <h:outputLabel value="#{bundle.CreateProductoLabel_nombre}" for="nombre" />
                     <h:inputText id="nombre" value="#{productoController.selected.nombre}" title="#{bundle.CreateProductoTitle_nombre}" required="true" requiredMessage="#{bundle.CreateProductoRequiredMessage_nombre}"/>
                     <h:outputLabel value="#{bundle.CreateProductoLabel_costoProceso}" for="costoProceso" />

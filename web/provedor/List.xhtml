@@ -1,56 +1,73 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
+    <f:view renderKitId="PRIMEFACES_MOBILE"/>
+    <h:head>
+        <title>Provedores</title>
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListProvedorTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListProvedorEmpty}" rendered="#{provedorController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{provedorController.items.rowCount > 0}">
-                    <h:outputText value="#{provedorController.pagination.pageFirstItem + 1}..#{provedorController.pagination.pageLastItem + 1}/#{provedorController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{provedorController.previous}" value="#{bundle.Previous} #{provedorController.pagination.pageSize}" rendered="#{provedorController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{provedorController.next}" value="#{bundle.Next} #{provedorController.pagination.pageSize}" rendered="#{provedorController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{provedorController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListProvedorTitle_idProvedor}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.idProvedor}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListProvedorTitle_nombre}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nombre}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{provedorController.prepareView}" value="#{bundle.ListProvedorViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{provedorController.prepareEdit}" value="#{bundle.ListProvedorEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{provedorController.destroy}" value="#{bundle.ListProvedorDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
+    </h:head>
+    <h:body>
+        <pm:page id="first">
+            <pm:header title="Provedores" swatch="b">
+                <p:button outcome="/menu" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+            </pm:header>
+            <h:form styleClass="jsfcrud_list_form" id="form" >
+                <p:dataTable paginator="true" rows="5" id="tabla" value="#{provedorController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProvedorTitle_idProvedor}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idProvedor}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProvedorTitle_nombre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nombre}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+
+                        <p:commandButton actionListener="#{provedorController.prepareEdit()}" icon="ui-icon-grid"                                             
+                                         title="#{bundle.ListProvedorEditLink}"
+                                         ajax="true" update="first:formI:modal"
+                                         onsuccess="PF('rolModal').show();"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Eliminar"/>
+                        </f:facet>
+                        <p:commandButton actionListener="#{provedorController.destroy()}" title="Eliminar" icon="ui-icon-delete"
+                                         ajax="true" update="tabla"/>
+                    </p:column>
+                </p:dataTable>
                 <br />
-                <h:commandLink action="#{provedorController.prepareCreate}" value="#{bundle.ListProvedorCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListProvedorIndexLink}"/>
+                <p:commandButton actionListener="#{provedorController.prepareCreate}" value="Crear Provedor"
+                                 onsuccess="PF('rolModal').show();" ajax="true" update="first:formI:modal"/>
             </h:form>
-        </ui:define>
-    </ui:composition>
+            <p:dialog header="Unidades" widgetVar="rolModal" appendTo="@(body)"
+                      modal="true" >
+                <h:form id="formI">
+
+                    <p:panelGrid  id="modal">
+                        <h:outputLabel value="#{bundle.CreateProvedorLabel_nombre}" for="nombre" />
+                        <h:inputText id="nombre" value="#{provedorController.selected.nombre}" title="#{bundle.CreateProvedorTitle_nombre}" required="true" requiredMessage="#{bundle.CreateProvedorRequiredMessage_nombre}"/>
+                        <p:commandButton action="#{provedorController.create}" value="#{bundle.CreateProvedorSaveLink}" rendered="#{unidadController.insertar}"
+                                         ajax="true" process="@form" update="first:form" oncomplete="PF('rolModal').hide();" style="width: 100%;"/>
+                        <p:commandButton action="#{provedorController.update}" value="#{bundle.CreateProvedorSaveLink}" rendered="#{!unidadController.insertar}"
+                                         ajax="true" process="@form" update="first:form" oncomplete="PF('rolModal').hide();" style="width: 100%;"/>
+                        <p:commandButton value="Cancelar" onclick="PF('rolModal').hide();" style="width: 100%;"/>
+
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog> 
+        </pm:page>
+    </h:body>
 
 </html>
