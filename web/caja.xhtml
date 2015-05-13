@@ -23,14 +23,18 @@
         </script>    
 
         <h:form id="frm">                                
-            <p:dataTable id="dtPersonas" value="#{Controlador.listaPedidos}" var="p" 
+            <p:dataTable id="dtPersonas" value="#{cajaPedidosControlador.listaPedidos}" var="p" 
                          rows="10"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 
-                <p:column headerText="Nombre" filterBy="#{p.mesa}" filterMatchMode="contains">
-                    <p:outputLabel value="#{p.mesa}" />
+                <p:column headerText="Mesa" filterBy="#{p.mesa.nombre}" filterMatchMode="contains">
+                    <p:outputLabel value="#{p.mesa.nombre}" />
+                </p:column>
+                
+                <p:column headerText="Cliente" filterBy="#{p.cliente.usuario}" filterMatchMode="contains">
+                    <p:outputLabel value="#{p.cliente.usuario}" />
                 </p:column>
 
 
