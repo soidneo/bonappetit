@@ -13,13 +13,12 @@
         <pm:page id="first">
             <pm:header title="Ingresar Pedido" swatch="b"></pm:header>
 
-
             <h:form id="form">   
 
                 <p:growl id="growl" showDetail="true" />
 
                 <pm:field>
-                    <pm:field>
+                    <p:panelGrid columns="1">
                         <p:outputLabel for="selectOneMenu" value="Categoria" />              
                         <p:selectOneMenu id="selectOneMenu" value="#{pedidoControlador.selected.id}"
                                          required="true"  requiredMessage="Seleccione una categoria">
@@ -31,9 +30,9 @@
                                            itemLabel="#{cat.nombre}" itemValue="#{cat.id}"/>
 
                         </p:selectOneMenu>
-                    </pm:field> 
+              
 
-                    <pm:field>
+             
                         <p:outputLabel for="selectOneMenu2" value="Producto" />              
                         <p:selectOneMenu id="selectOneMenu2" value="#{pedidoControlador.pedido.id}"
                                          required="true" requiredMessage="Seleccione un producto">
@@ -44,9 +43,9 @@
 
                         </p:selectOneMenu>
 
-                    </pm:field> 
+           
 
-                    <pm:field>
+          
 
                         <p:outputLabel for="cantidad" value="Cantidad" />
                         <p:inputText id="cantidad" value="#{pedidoControlador.detalle.cantidad}" required="true" 
@@ -54,12 +53,11 @@
                             <f:validator validatorId="cantidadValidator"/>
                         </p:inputText>
 
-                    </pm:field>
+                        </p:panelGrid>
 
                     <pm:field>
                         <p:commandButton ajax="true" update="form"
                                          value="agregar"  actionListener="#{pedidoControlador.agregarPedido}">
-
                         </p:commandButton>
                     </pm:field>
 
