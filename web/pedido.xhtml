@@ -8,7 +8,6 @@
     <f:view renderKitId="PRIMEFACES_MOBILE" />
     <h:head>
         <title>Pedido</title>
-
     </h:head>
     <h:body>
         <pm:page id="first">
@@ -50,7 +49,10 @@
                     <pm:field>
 
                         <p:outputLabel for="cantidad" value="Cantidad" />
-                        <p:inputText id="cantidad" value="#{pedidoControlador.detalle.cantidad}"/>
+                        <p:inputText id="cantidad" value="#{pedidoControlador.detalle.cantidad}" required="true" 
+                                     requiredMessage="Cantidad requerida">
+                            <f:validator validatorId="cantidadValidator"/>
+                        </p:inputText>
 
                     </pm:field>
 
