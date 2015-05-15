@@ -51,6 +51,7 @@ public class PedidoControlador {
     private TProductoCategoria pedido;
     private PedidoDetalleDto detalle;
     private List<Mesa> listaMesas;
+    private List<PedidoMaestro> listaPedidoMaestro;
 
 
     public PedidoDetalleDto getDetalle() {
@@ -107,12 +108,20 @@ public class PedidoControlador {
     public void setListaMesas(List<Mesa> listaMesas) {
         this.listaMesas = listaMesas;
     }
+
+    public List<PedidoMaestro> getListaPedidoMaestro() {
+        return listaPedidoMaestro;
+    }
+
+    public void setListaPedidoMaestro(List<PedidoMaestro> listaPedidoMaestro) {
+        this.listaPedidoMaestro = listaPedidoMaestro;
+    }
     
     public void asignarCategoria() {
         selected = ejbFacade.find(this.selected.getId());
         this.listaProductos = selected.getTProductoCategoriaList();
     }
-
+    
     public void agregarPedido() {
         boolean existe=false;
         this.pedido = ejbProductoFacadel.find(this.pedido.getId());
@@ -183,9 +192,10 @@ public class PedidoControlador {
     
     public List<Usuario> completeClientes(String query){
         List<Usuario> usuarios=usuarioEjb.findAll();
-        System.out.println(usuarios.size());
         return usuarios;
     }
+    
+   
     
 
     /**

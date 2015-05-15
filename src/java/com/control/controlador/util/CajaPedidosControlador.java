@@ -38,8 +38,7 @@ public class CajaPedidosControlador {
     }
     
     public void agregarPedido(PedidoMaestro pedido){
-        this.listaPedidos.add(pedido);
-        
+        this.listaPedidos.add(pedido);       
     }
     
 
