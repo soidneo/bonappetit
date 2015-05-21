@@ -35,6 +35,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Unidad.findByIdUnidad", query = "SELECT u FROM Unidad u WHERE u.idUnidad = :idUnidad"),
     @NamedQuery(name = "Unidad.findByNombre", query = "SELECT u FROM Unidad u WHERE u.nombre = :nombre")})
 public class Unidad implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad", fetch = FetchType.LAZY)
+    private List<Producto> productoList;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="UNIDAD_ID_GENERATOR", sequenceName="unidad_id_unidad_seq",allocationSize=1)
@@ -109,6 +111,14 @@ public class Unidad implements Serializable {
     @Override
     public String toString() {
         return this.nombre;
+    }
+
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
     }
     
 }

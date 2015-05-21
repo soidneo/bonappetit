@@ -41,6 +41,13 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByCalorias", query = "SELECT p FROM Producto p WHERE p.calorias = :calorias"),
     @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal")})
 public class Producto implements Serializable {
+    @OneToMany(mappedBy = "productoKardex", fetch = FetchType.LAZY)
+    private List<Kardex> kardexList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoReceta", fetch = FetchType.LAZY)
+    private List<RecetaDet> recetaDetList;
+    @JoinColumn(name = "unidad", referencedColumnName = "id_unidad", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Unidad unidad;
     @OneToMany(mappedBy = "productoInventario", fetch = FetchType.LAZY)
     private List<Inventario> inventarioList;
     @Basic(optional = false)
@@ -249,6 +256,30 @@ public class Producto implements Serializable {
 
     public void setInventarioList(List<Inventario> inventarioList) {
         this.inventarioList = inventarioList;
+    }
+
+    public List<Kardex> getKardexList() {
+        return kardexList;
+    }
+
+    public void setKardexList(List<Kardex> kardexList) {
+        this.kardexList = kardexList;
+    }
+
+    public List<RecetaDet> getRecetaDetList() {
+        return recetaDetList;
+    }
+
+    public void setRecetaDetList(List<RecetaDet> recetaDetList) {
+        this.recetaDetList = recetaDetList;
+    }
+
+    public Unidad getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(Unidad unidad) {
+        this.unidad = unidad;
     }
     
 }

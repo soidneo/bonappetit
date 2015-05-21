@@ -31,6 +31,9 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "RecetaDet.findByIdRecetaDet", query = "SELECT r FROM RecetaDet r WHERE r.idRecetaDet = :idRecetaDet"),
     @NamedQuery(name = "RecetaDet.findByCantidad", query = "SELECT r FROM RecetaDet r WHERE r.cantidad = :cantidad")})
 public class RecetaDet implements Serializable {
+    @JoinColumn(name = "producto_receta", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Producto productoReceta;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="RECETA_DET_ID_GENERATOR", sequenceName="receta_det_id_receta_det_seq",allocationSize=1)
@@ -116,6 +119,14 @@ public class RecetaDet implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.RecetaDet[ idRecetaDet=" + idRecetaDet + " ]";
+    }
+
+    public Producto getProductoReceta() {
+        return productoReceta;
+    }
+
+    public void setProductoReceta(Producto productoReceta) {
+        this.productoReceta = productoReceta;
     }
     
 }

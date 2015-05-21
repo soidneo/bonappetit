@@ -12,7 +12,10 @@ import com.control.dao.UsuarioFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
+import com.control.entidad.Inventario;
 import com.control.entidad.Mesa;
+import com.control.entidad.Producto;
+import com.control.entidad.RecetaDet;
 import com.control.entidad.TProductoCategoria;
 import com.control.entidad.Usuario;
 import java.util.ArrayList;
@@ -120,6 +123,17 @@ public class PedidoControlador {
     public void asignarCategoria() {
         selected = ejbFacade.find(this.selected.getId());
         this.listaProductos = selected.getTProductoCategoriaList();
+    }
+    
+    public boolean calcularInventario(Producto p){
+        if(p.getRecetaFk()==null){
+            
+        }
+        for(RecetaDet receta:p.getRecetaFk().getRecetaDetList()){
+            
+        }
+        
+        return true;
     }
     
     public void agregarPedido() {

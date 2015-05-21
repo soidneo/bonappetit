@@ -84,7 +84,7 @@ public class ProductoController implements Serializable {
         Receta receta=current.getRecetaFk();
         double precio=0;
         for(RecetaDet detalleReceta:receta.getRecetaDetList()){
-            precio=precio+(detalleReceta.getIngrediente().getCosto()*detalleReceta.getCantidad());
+        //    precio=precio+(detalleReceta.getIngrediente().getCosto()*detalleReceta.getCantidad());
         }
         current.setCostoTotal(precio+current.getCostoProceso());
         
