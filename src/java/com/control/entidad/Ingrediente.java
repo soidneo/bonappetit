@@ -36,6 +36,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Ingrediente.findByNombre", query = "SELECT i FROM Ingrediente i WHERE i.nombre = :nombre"),
     @NamedQuery(name = "Ingrediente.findByCosto", query = "SELECT i FROM Ingrediente i WHERE i.costo = :costo")})
 public class Ingrediente implements Serializable {
+    @OneToMany(mappedBy = "ingredienteInventario", fetch = FetchType.LAZY)
+    private List<Inventario> inventarioList;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="INGREDIENTE_ID_GENERATOR", sequenceName="ingrediente_id_ingrediente_seq",allocationSize=1)
@@ -145,6 +147,14 @@ public class Ingrediente implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Ingrediente[ idIngrediente=" + idIngrediente + " ]";
+    }
+
+    public List<Inventario> getInventarioList() {
+        return inventarioList;
+    }
+
+    public void setInventarioList(List<Inventario> inventarioList) {
+        this.inventarioList = inventarioList;
     }
     
 }

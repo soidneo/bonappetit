@@ -41,6 +41,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByCalorias", query = "SELECT p FROM Producto p WHERE p.calorias = :calorias"),
     @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal")})
 public class Producto implements Serializable {
+    @OneToMany(mappedBy = "productoInventario", fetch = FetchType.LAZY)
+    private List<Inventario> inventarioList;
     @Basic(optional = false)
     @NotNull
     @Column(name = "costo_venta", nullable = false)
@@ -239,6 +241,14 @@ public class Producto implements Serializable {
 
     public void setCostoVenta(double costoVenta) {
         this.costoVenta = costoVenta;
+    }
+
+    public List<Inventario> getInventarioList() {
+        return inventarioList;
+    }
+
+    public void setInventarioList(List<Inventario> inventarioList) {
+        this.inventarioList = inventarioList;
     }
     
 }
