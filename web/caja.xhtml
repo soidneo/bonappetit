@@ -9,8 +9,7 @@
     <h:body>
 
         <p:growl id="msj" widgetVar="wmsj" showDetail="true" />
-
-        
+     
         <p:socket onMessage="handleMessage" channel="/notify" >
             <p:ajax event="message" update=":frm:dtPersonas" />
         </p:socket>
@@ -22,7 +21,7 @@
             }
         </script>    
 
-        <h:form id="frm">                                
+        <h:form id="frm">          
             <p:dataTable id="dtPersonas" value="#{cajaPedidosControlador.listaPedidos}" var="p" 
                          rows="10"
                          paginator="true"
@@ -31,13 +30,10 @@
 
                 <p:column headerText="Mesa" filterBy="#{p.mesa.nombre}" filterMatchMode="contains">
                     <p:outputLabel value="#{p.mesa.nombre}" />
-                </p:column>
-                
+                </p:column>                
                 <p:column headerText="Cliente" filterBy="#{p.cliente.usuario}" filterMatchMode="contains">
                     <p:outputLabel value="#{p.cliente.usuario}" />
                 </p:column>
-
-
             </p:dataTable>
 
         </h:form>
