@@ -20,6 +20,7 @@ import com.control.entidad.TProductoCategoria;
 import com.control.entidad.Usuario;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -126,11 +127,15 @@ public class PedidoControlador {
     }
     
     public boolean calcularInventario(Producto p){
-        if(p.getRecetaFk()==null){
-            
+        if(p.getRecetaFk()==null){    
+            if(this.detalle.getCantidad()>this.detalle.getProducto().getIdProducto().getInventarioList().get(0).getCantidad()){
+                return false;
+            }
         }
         for(RecetaDet receta:p.getRecetaFk().getRecetaDetList()){
-            
+            if(this.detalle.getCantidad()>receta.getCantidad()){
+                return false;
+            }
         }
         
         return true;
@@ -139,7 +144,11 @@ public class PedidoControlador {
     public void agregarPedido() {
         boolean existe=false;
         this.pedido = ejbProductoFacadel.find(this.pedido.getId());
-        this.detalle.setProducto(pedido);
+        if(calcularInventario(this.pedido.getIdProducto())){
+            com.control.controlador.util.util.JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("noinventarioVal"));
+            return;
+        }
+  
         this.detalle.setTotal(this.pedido.getIdProducto().getCostoVenta()*this.detalle.getCantidad());
         for(int i=0;i<pedidoMaestro.getDetallesPedido().size();i++){
             if(pedidoMaestro.getDetallesPedido().get(i).getProducto().getId()==detalle.getProducto().getId()){
