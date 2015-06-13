@@ -12,7 +12,7 @@ import com.control.dao.UsuarioFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
-import com.control.entidad.Inventario;
+
 import com.control.entidad.Mesa;
 import com.control.entidad.Producto;
 import com.control.entidad.RecetaDet;
@@ -128,14 +128,7 @@ public class PedidoControlador {
     
     public boolean calcularInventario(Producto p){
         if(p.getRecetaFk()==null){    
-            if(this.detalle.getCantidad()>this.detalle.getProducto().getIdProducto().getInventarioList().get(0).getCantidad()){
-                return false;
-            }
-        }
-        for(RecetaDet receta:p.getRecetaFk().getRecetaDetList()){
-            if(this.detalle.getCantidad()>receta.getCantidad()){
-                return false;
-            }
+
         }
         
         return true;

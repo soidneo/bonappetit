@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,7 +25,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author mateo
+ * @author Asus
  */
 @Entity
 @Table(name = "kardex", catalog = "control", schema = "public")
@@ -43,7 +44,8 @@ import javax.validation.constraints.NotNull;
 public class Kardex implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="KARD_ID_GENERATOR", sequenceName="kardex_id_kardex_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="KARD_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id_kardex", nullable = false)
     private Integer idKardex;
@@ -55,22 +57,17 @@ public class Kardex implements Serializable {
     @NotNull
     @Column(name = "es_producto", nullable = false)
     private boolean esProducto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio_salida", nullable = false)
-    private double precioSalida;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio_entrada", nullable = false)
-    private double precioEntrada;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "precio_salida", precision = 17, scale = 17)
+    private Double precioSalida;
+    @Column(name = "precio_entrada", precision = 17, scale = 17)
+    private Double precioEntrada;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad_entrada", nullable = false)
     private double cantidadEntrada;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cantidad_salida", nullable = false)
-    private double cantidadSalida;
+    @Column(name = "cantidad_salida", precision = 17, scale = 17)
+    private Double cantidadSalida;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_vencimiento", nullable = false)
@@ -98,14 +95,11 @@ public class Kardex implements Serializable {
         this.idKardex = idKardex;
     }
 
-    public Kardex(Integer idKardex, double stock, boolean esProducto, double precioSalida, double precioEntrada, double cantidadEntrada, double cantidadSalida, Date fechaVencimiento, double cantidadDisponible, double iva) {
+    public Kardex(Integer idKardex, double stock, boolean esProducto, double cantidadEntrada, Date fechaVencimiento, double cantidadDisponible, double iva) {
         this.idKardex = idKardex;
         this.stock = stock;
         this.esProducto = esProducto;
-        this.precioSalida = precioSalida;
-        this.precioEntrada = precioEntrada;
         this.cantidadEntrada = cantidadEntrada;
-        this.cantidadSalida = cantidadSalida;
         this.fechaVencimiento = fechaVencimiento;
         this.cantidadDisponible = cantidadDisponible;
         this.iva = iva;
@@ -135,19 +129,19 @@ public class Kardex implements Serializable {
         this.esProducto = esProducto;
     }
 
-    public double getPrecioSalida() {
+    public Double getPrecioSalida() {
         return precioSalida;
     }
 
-    public void setPrecioSalida(double precioSalida) {
+    public void setPrecioSalida(Double precioSalida) {
         this.precioSalida = precioSalida;
     }
 
-    public double getPrecioEntrada() {
+    public Double getPrecioEntrada() {
         return precioEntrada;
     }
 
-    public void setPrecioEntrada(double precioEntrada) {
+    public void setPrecioEntrada(Double precioEntrada) {
         this.precioEntrada = precioEntrada;
     }
 
@@ -159,11 +153,11 @@ public class Kardex implements Serializable {
         this.cantidadEntrada = cantidadEntrada;
     }
 
-    public double getCantidadSalida() {
+    public Double getCantidadSalida() {
         return cantidadSalida;
     }
 
-    public void setCantidadSalida(double cantidadSalida) {
+    public void setCantidadSalida(Double cantidadSalida) {
         this.cantidadSalida = cantidadSalida;
     }
 

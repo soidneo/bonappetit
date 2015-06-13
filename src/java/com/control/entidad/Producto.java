@@ -39,25 +39,13 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByTamanio", query = "SELECT p FROM Producto p WHERE p.tamanio = :tamanio"),
     @NamedQuery(name = "Producto.findByAdicional", query = "SELECT p FROM Producto p WHERE p.adicional = :adicional"),
     @NamedQuery(name = "Producto.findByCalorias", query = "SELECT p FROM Producto p WHERE p.calorias = :calorias"),
-    @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal")})
+    @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal"),
+    @NamedQuery(name = "Producto.findByCostoVenta", query = "SELECT p FROM Producto p WHERE p.costoVenta = :costoVenta")})
 public class Producto implements Serializable {
-    @OneToMany(mappedBy = "productoKardex", fetch = FetchType.LAZY)
-    private List<Kardex> kardexList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoReceta", fetch = FetchType.LAZY)
-    private List<RecetaDet> recetaDetList;
-    @JoinColumn(name = "unidad", referencedColumnName = "id_unidad", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Unidad unidad;
-    @OneToMany(mappedBy = "productoInventario", fetch = FetchType.LAZY)
-    private List<Inventario> inventarioList;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "costo_venta", nullable = false)
-    private double costoVenta;
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="PRODUCTO_ID_GENERATOR", sequenceName="producto_id_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODUCTO_ID_GENERATOR")
+    @SequenceGenerator(name="PROD_ID_GENERATOR", sequenceName="producto_id_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROD_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -92,14 +80,22 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "costo_total", nullable = false)
     private double costoTotal;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "costo_venta", nullable = false)
+    private double costoVenta;
+    @OneToMany(mappedBy = "productoKardex", fetch = FetchType.LAZY)
+    private List<Kardex> kardexList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoReceta", fetch = FetchType.LAZY)
+    private List<RecetaDet> recetaDetList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto", fetch = FetchType.LAZY)
     private List<VentaDetalle> ventaDetalleList;
-    @JoinColumn(name = "receta_fk", referencedColumnName = "id_receta", nullable = false)
+    @JoinColumn(name = "unidad", referencedColumnName = "id_unidad", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Unidad unidad;
+    @JoinColumn(name = "receta_fk", referencedColumnName = "id_receta")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Receta recetaFk;
-    @JoinColumn(name = "id_provedor", referencedColumnName = "id_provedor", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Provedor idProvedor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto", fetch = FetchType.LAZY)
     private List<TProductoCategoria> tProductoCategoriaList;
 
@@ -110,7 +106,7 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Producto(Integer id, String nombre, double costoProceso, String sabor, double tamanio, boolean adicional, String calorias, double costoTotal) {
+    public Producto(Integer id, String nombre, double costoProceso, String sabor, double tamanio, boolean adicional, String calorias, double costoTotal, double costoVenta) {
         this.id = id;
         this.nombre = nombre;
         this.costoProceso = costoProceso;
@@ -119,6 +115,7 @@ public class Producto implements Serializable {
         this.adicional = adicional;
         this.calorias = calorias;
         this.costoTotal = costoTotal;
+        this.costoVenta = costoVenta;
     }
 
     public Integer getId() {
@@ -185,6 +182,30 @@ public class Producto implements Serializable {
         this.costoTotal = costoTotal;
     }
 
+    public double getCostoVenta() {
+        return costoVenta;
+    }
+
+    public void setCostoVenta(double costoVenta) {
+        this.costoVenta = costoVenta;
+    }
+
+    public List<Kardex> getKardexList() {
+        return kardexList;
+    }
+
+    public void setKardexList(List<Kardex> kardexList) {
+        this.kardexList = kardexList;
+    }
+
+    public List<RecetaDet> getRecetaDetList() {
+        return recetaDetList;
+    }
+
+    public void setRecetaDetList(List<RecetaDet> recetaDetList) {
+        this.recetaDetList = recetaDetList;
+    }
+
     public List<VentaDetalle> getVentaDetalleList() {
         return ventaDetalleList;
     }
@@ -193,20 +214,20 @@ public class Producto implements Serializable {
         this.ventaDetalleList = ventaDetalleList;
     }
 
+    public Unidad getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(Unidad unidad) {
+        this.unidad = unidad;
+    }
+
     public Receta getRecetaFk() {
         return recetaFk;
     }
 
     public void setRecetaFk(Receta recetaFk) {
         this.recetaFk = recetaFk;
-    }
-
-    public Provedor getIdProvedor() {
-        return idProvedor;
-    }
-
-    public void setIdProvedor(Provedor idProvedor) {
-        this.idProvedor = idProvedor;
     }
 
     public List<TProductoCategoria> getTProductoCategoriaList() {
@@ -240,46 +261,6 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Producto[ id=" + id + " ]";
-    }
-
-    public double getCostoVenta() {
-        return costoVenta;
-    }
-
-    public void setCostoVenta(double costoVenta) {
-        this.costoVenta = costoVenta;
-    }
-
-    public List<Inventario> getInventarioList() {
-        return inventarioList;
-    }
-
-    public void setInventarioList(List<Inventario> inventarioList) {
-        this.inventarioList = inventarioList;
-    }
-
-    public List<Kardex> getKardexList() {
-        return kardexList;
-    }
-
-    public void setKardexList(List<Kardex> kardexList) {
-        this.kardexList = kardexList;
-    }
-
-    public List<RecetaDet> getRecetaDetList() {
-        return recetaDetList;
-    }
-
-    public void setRecetaDetList(List<RecetaDet> recetaDetList) {
-        this.recetaDetList = recetaDetList;
-    }
-
-    public Unidad getUnidad() {
-        return unidad;
-    }
-
-    public void setUnidad(Unidad unidad) {
-        this.unidad = unidad;
     }
     
 }

@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -31,13 +30,9 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "RecetaDet.findByIdRecetaDet", query = "SELECT r FROM RecetaDet r WHERE r.idRecetaDet = :idRecetaDet"),
     @NamedQuery(name = "RecetaDet.findByCantidad", query = "SELECT r FROM RecetaDet r WHERE r.cantidad = :cantidad")})
 public class RecetaDet implements Serializable {
-    @JoinColumn(name = "producto_receta", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Producto productoReceta;
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="RECETA_DET_ID_GENERATOR", sequenceName="receta_det_id_receta_det_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RECETA_DET_ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_receta_det", nullable = false)
     private Integer idRecetaDet;
@@ -48,9 +43,9 @@ public class RecetaDet implements Serializable {
     @JoinColumn(name = "receta", referencedColumnName = "id_receta", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Receta receta;
-    @JoinColumn(name = "ingrediente", referencedColumnName = "id_ingrediente", nullable = false)
+    @JoinColumn(name = "producto_receta", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Ingrediente ingrediente;
+    private Producto productoReceta;
 
     public RecetaDet() {
     }
@@ -88,12 +83,12 @@ public class RecetaDet implements Serializable {
         this.receta = receta;
     }
 
-    public Ingrediente getIngrediente() {
-        return ingrediente;
+    public Producto getProductoReceta() {
+        return productoReceta;
     }
 
-    public void setIngrediente(Ingrediente ingrediente) {
-        this.ingrediente = ingrediente;
+    public void setProductoReceta(Producto productoReceta) {
+        this.productoReceta = productoReceta;
     }
 
     @Override
@@ -119,14 +114,6 @@ public class RecetaDet implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.RecetaDet[ idRecetaDet=" + idRecetaDet + " ]";
-    }
-
-    public Producto getProductoReceta() {
-        return productoReceta;
-    }
-
-    public void setProductoReceta(Producto productoReceta) {
-        this.productoReceta = productoReceta;
     }
     
 }

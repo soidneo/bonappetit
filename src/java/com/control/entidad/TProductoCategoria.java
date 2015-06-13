@@ -31,8 +31,8 @@ import javax.persistence.Table;
 public class TProductoCategoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="PRODUCTO_CATEGORIA_ID_GENERATOR", sequenceName="t_producto_categoria_id_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODUCTO_CATEGORIA_ID_GENERATOR")
+    @SequenceGenerator(name="PRODCA_ID_GENERATOR", sequenceName="t_producto_categoria_id_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PRODCA_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;

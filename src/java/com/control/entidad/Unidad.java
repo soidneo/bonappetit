@@ -7,7 +7,6 @@ package com.control.entidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,19 +26,15 @@ import javax.validation.constraints.Size;
  * @author Asus
  */
 @Entity
-@Cacheable(false)
 @Table(name = "unidad", catalog = "control", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Unidad.findAll", query = "SELECT u FROM Unidad u"),
     @NamedQuery(name = "Unidad.findByIdUnidad", query = "SELECT u FROM Unidad u WHERE u.idUnidad = :idUnidad"),
     @NamedQuery(name = "Unidad.findByNombre", query = "SELECT u FROM Unidad u WHERE u.nombre = :nombre")})
 public class Unidad implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad", fetch = FetchType.LAZY)
-    private List<Producto> productoList;
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="UNIDAD_ID_GENERATOR", sequenceName="unidad_id_unidad_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UNIDAD_ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_unidad", nullable = false)
     private Integer idUnidad;
@@ -49,8 +43,8 @@ public class Unidad implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidad", fetch = FetchType.LAZY)
-    private List<Ingrediente> ingredienteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad", fetch = FetchType.LAZY)
+    private List<Producto> productoList;
 
     public Unidad() {
     }
@@ -80,12 +74,12 @@ public class Unidad implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Ingrediente> getIngredienteList() {
-        return ingredienteList;
+    public List<Producto> getProductoList() {
+        return productoList;
     }
 
-    public void setIngredienteList(List<Ingrediente> ingredienteList) {
-        this.ingredienteList = ingredienteList;
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
     }
 
     @Override
@@ -110,15 +104,7 @@ public class Unidad implements Serializable {
 
     @Override
     public String toString() {
-        return this.nombre;
-    }
-
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
-
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
+        return "com.control.entidad.Unidad[ idUnidad=" + idUnidad + " ]";
     }
     
 }

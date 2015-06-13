@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -31,8 +30,7 @@ import javax.persistence.Table;
 public class RolSoftMenu implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ROL_SOFT_MENU_ID_GENERATOR", sequenceName="rol_soft_menu_id_rol_soft_menu_seq_1",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ROL_SOFT_MENU_ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_rol_soft_menu", nullable = false)
     private Integer idRolSoftMenu;

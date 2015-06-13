@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,14 +32,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Provedor.findByIdProvedor", query = "SELECT p FROM Provedor p WHERE p.idProvedor = :idProvedor"),
     @NamedQuery(name = "Provedor.findByNombre", query = "SELECT p FROM Provedor p WHERE p.nombre = :nombre")})
 public class Provedor implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provedor", fetch = FetchType.LAZY)
-    private List<Kardex> kardexList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provedor", fetch = FetchType.LAZY)
-    private List<Inventario> inventarioList;
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="PROVEDOR_ID_GENERATOR", sequenceName="provedor_id_provedor_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROVEDOR_ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_provedor", nullable = false)
     private Integer idProvedor;
@@ -50,9 +44,7 @@ public class Provedor implements Serializable {
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "provedor", fetch = FetchType.LAZY)
-    private List<Ingrediente> ingredienteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProvedor", fetch = FetchType.LAZY)
-    private List<Producto> productoList;
+    private List<Kardex> kardexList;
 
     public Provedor() {
     }
@@ -82,20 +74,12 @@ public class Provedor implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Ingrediente> getIngredienteList() {
-        return ingredienteList;
+    public List<Kardex> getKardexList() {
+        return kardexList;
     }
 
-    public void setIngredienteList(List<Ingrediente> ingredienteList) {
-        this.ingredienteList = ingredienteList;
-    }
-
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
-
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
+    public void setKardexList(List<Kardex> kardexList) {
+        this.kardexList = kardexList;
     }
 
     @Override
@@ -120,23 +104,7 @@ public class Provedor implements Serializable {
 
     @Override
     public String toString() {
-        return this.nombre;
-    }
-
-    public List<Inventario> getInventarioList() {
-        return inventarioList;
-    }
-
-    public void setInventarioList(List<Inventario> inventarioList) {
-        this.inventarioList = inventarioList;
-    }
-
-    public List<Kardex> getKardexList() {
-        return kardexList;
-    }
-
-    public void setKardexList(List<Kardex> kardexList) {
-        this.kardexList = kardexList;
+        return "com.control.entidad.Provedor[ idProvedor=" + idProvedor + " ]";
     }
     
 }
