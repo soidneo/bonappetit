@@ -11,12 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Facelets Template</title>
     </h:head>
-    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    
 
     <h:body>
-        <pm:page id="first">
+
             <ui:insert name="top">
-                <pm:header  fixed="true">
+               
                     <h:form>
                         <p:tabMenu>
                             <p:menuitem value="Home" icon="ui-icon-home"  iconPos="top"/>
@@ -24,12 +24,13 @@
                             <p:menuitem value="Search" icon="ui-icon-search"  iconPos="top"/>
                         </p:tabMenu>
                     </h:form>
-                </pm:header>
-            </ui:insert>
-            <pm:content>
+            
+           
+       
                 <ui:insert name="content">Content</ui:insert>
-            </pm:content>           
-        </pm:page>
+                  
+  
+            </ui:insert>
     </h:body>
 
 </html>

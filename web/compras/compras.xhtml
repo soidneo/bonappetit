@@ -11,79 +11,118 @@
         <ui:composition template="./../PlantillaMovil.xhtml">
 
             <ui:define name="content">
-                <h:form id="form">
-                    <p:growl/>
-                    <p:panel header="Compras">
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="Categoria:" for="categoria"/>
-                            <p:selectOneMenu value="#{inventarioProductoControlador.categoria.id}" id="categoria" 
-                                             required="true"
-                                             requiredMessage="Categoria requerida">
-                                <f:selectItem itemLabel="Seleccione..."/>
-                                <f:selectItems value="#{inventarioProductoControlador.listaCategorias}" var="cat"
-                                               itemLabel="#{cat.nombre}" itemValue="#{cat.id}"/>
-                            </p:selectOneMenu>
-                            
-                            <p:outputLabel value="Provedor:" for="provedor"/>
-                            <p:selectOneMenu value="#{inventarioProductoControlador.provedor.idProvedor}" id="provedor" 
-                                             required="true"
-                                             requiredMessage="Provedor requerido">
-                                <f:selectItem itemLabel="Seleccione..."/>
-                                <f:selectItems value="#{inventarioProductoControlador.listaProvedor}" var="prov"
-                                               itemLabel="#{prov.nombre}" itemValue="#{prov.idProvedor}"/>
-                            </p:selectOneMenu>
-                            
-                            <p:outputLabel value="Producto:" for="producto"/>
-                            <p:selectOneMenu  
-                                            id="producto"
-                                             required="true"
-                                             requiredMessage="producto requerido"
-                                             value="#{inventarioProductoControlador.producto.id}">
-                                <f:selectItem itemLabel="Seleccione..."/>
-                                <f:selectItems value="#{inventarioProductoControlador.listaProducto}" var="prod"
-                                               itemLabel="#{prod.nombre}" itemValue="#{prod.id}"/>
-                            </p:selectOneMenu>
-                            
-                          <p:outputLabel value="stock:" for="stock"/>
-                          <p:inputText  id="stock"
-                                        required="true"
-                                        requiredMessage="stock requerido"
-                                        value="#{inventarioProductoControlador.compra.stock}"/>
-                          
-            
-                              
-                          <p:outputLabel value="cantidad entrada" for="cantidad_in"/>
-                          <p:inputText  id="cantidad_in"
-                                        required="true"
-                                        requiredMessage="cantidad requerido"
-                                        value="#{inventarioProductoControlador.compra.cantidadEntrada}"/>
-                          
-                          <p:outputLabel value="cantidad disponible" for="cantidad_dis"/>
-                          <p:inputText  id="cantidad_dis" disabled="true"
-                                        value="#{inventarioProductoControlador.compra.cantidadDisponible}"/>
-                          
-                          <p:outputLabel value="fecha vencimiento" for="fecha"/>
-                          <p:calendar  id="fecha" required="true" requiredMessage="fecha requerida"
-                                       value="#{inventarioProductoControlador.compra.fechaVencimiento}"/>
-                          
-                          <p:outputLabel value="precio" for="precio"/>
-                          <p:inputText  id="precio"
-                                        required="true"
-                                        requiredMessage="precio requerido"
-                                        value="#{inventarioProductoControlador.compra.precioEntrada}"/>
-                          
-                          <p:outputLabel value="iva" for="iva"/>
-                          <p:inputText  id="iva" required="true" requiredMessage="iva requerida"
-                                       value="#{inventarioProductoControlador.compra.iva}"/>
-                          
-                          <h:panelGroup/>
-                          <p:commandButton actionListener="#{inventarioProductoControlador.guardarNuevo}"
-                                           value="guardar" update="form" ajax="true"/>
-                            
-                        </p:panelGrid>
-                        
-                    </p:panel>
-                </h:form>
+
+                <p:growl/>
+                <p:accordionPanel id="tab">
+                    <p:tab title="Productos" id="productosTab">
+                        <h:form id="form">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Nombre:" for="nombre"/>
+                                <p:inputText id="nombre"
+                                             value="#{inventarioProductoControlador.producto.nombre}"/>
+
+                                <p:outputLabel value="Sabor:" for="sabor"/>
+                                <p:inputText id="sabor" value="#{inventarioProductoControlador.producto.sabor}"/>
+
+                                <p:outputLabel value="Calorias:" for="calorias"/>
+                                <p:inputText id="calorias" value="#{inventarioProductoControlador.producto.calorias}"/>
+
+                                <p:outputLabel for="tamanio"
+                                               value="Tamanio"/>
+                                <p:inputText id="tamanio"
+                                             value="#{inventarioProductoControlador.producto.tamanio}"/>
+
+                                <p:outputLabel value="Precio:" for="precio"/>
+                                <p:inputText id="precio" value="#{inventarioProductoControlador.producto.costoVenta}"/>
+
+                                <p:outputLabel value="Unidad" for="unidad"/>
+                                <p:selectOneMenu id="unidad" value="#{inventarioProductoControlador.unidad.idUnidad}">
+                                    <f:selectItem itemLabel="Seleccione..."/>
+                                    <f:selectItems value="#{inventarioProductoControlador.listaUnidades}" var="un"
+                                                   itemLabel="#{un.nombre}" itemValue="#{un.idUnidad}"/>
+                                 </p:selectOneMenu>
+                                
+                                <h:panelGroup/>
+                                <p:commandButton value="Registrar" actionListener="#{inventarioProductoControlador.nuevoP}"
+                                                 ajax="true" update="tab:form1"/>
+
+
+                            </h:panelGrid>
+                        </h:form>
+                    </p:tab>
+                    <p:tab  title="Compras">
+                        <h:form id="form1">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Categoria:" for="categoria"/>
+                                <p:selectOneMenu value="#{inventarioProductoControlador.categoria.id}" id="categoria" 
+                                                 required="true"
+                                                 requiredMessage="Categoria requerida">
+                                    <f:selectItem itemLabel="Seleccione..."/>
+                                    <f:selectItems value="#{inventarioProductoControlador.listaCategorias}" var="cat"
+                                                   itemLabel="#{cat.nombre}" itemValue="#{cat.id}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Provedor:" for="provedor"/>
+                                <p:selectOneMenu value="#{inventarioProductoControlador.provedor.idProvedor}" id="provedor" 
+                                                 required="true"
+                                                 requiredMessage="Provedor requerido">
+                                    <f:selectItem itemLabel="Seleccione..."/>
+                                    <f:selectItems value="#{inventarioProductoControlador.listaProvedor}" var="prov"
+                                                   itemLabel="#{prov.nombre}" itemValue="#{prov.idProvedor}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Producto:" for="producto"/>
+                                <p:selectOneMenu  
+                                    id="producto"
+                                    required="true"
+                                    requiredMessage="producto requerido"
+                                    value="#{inventarioProductoControlador.producto.id}">
+                                    <f:selectItem itemLabel="Seleccione..."/>
+                                    <f:selectItems value="#{inventarioProductoControlador.listaProducto}" var="prod"
+                                                   itemLabel="#{prod.nombre}" itemValue="#{prod.id}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="stock:" for="stock"/>
+                                <p:inputText  id="stock"
+                                              required="true"
+                                              requiredMessage="stock requerido"
+                                              value="#{inventarioProductoControlador.compra.stock}"/>
+
+
+
+                                <p:outputLabel value="cantidad entrada" for="cantidad_in"/>
+                                <p:inputText  id="cantidad_in"
+                                              required="true"
+                                              requiredMessage="cantidad requerido"
+                                              value="#{inventarioProductoControlador.compra.cantidadEntrada}"/>
+
+                                <p:outputLabel value="cantidad disponible" for="cantidad_dis"/>
+                                <p:inputText  id="cantidad_dis" disabled="true"
+                                              value="#{inventarioProductoControlador.compra.cantidadDisponible}"/>
+
+                                <p:outputLabel value="fecha vencimiento" for="fecha"/>
+                                <p:calendar  id="fecha" required="true" requiredMessage="fecha requerida"
+                                             value="#{inventarioProductoControlador.compra.fechaVencimiento}"/>
+
+                                <p:outputLabel value="precio" for="precio"/>
+                                <p:inputText  id="precio"
+                                              required="true"
+                                              requiredMessage="precio requerido"
+                                              value="#{inventarioProductoControlador.compra.precioEntrada}"/>
+
+                                <p:outputLabel value="iva" for="iva"/>
+                                <p:inputText  id="iva" required="true" requiredMessage="iva requerida"
+                                              value="#{inventarioProductoControlador.compra.iva}"/>
+
+                                <h:panelGroup/>
+                                <p:commandButton actionListener="#{inventarioProductoControlador.guardarNuevo}"
+                                                 value="guardar" update="form1" ajax="true"/>
+
+                            </h:panelGrid>
+                        </h:form>
+                    </p:tab>
+                </p:accordionPanel>
+             
             </ui:define>
 
         </ui:composition>

@@ -149,9 +149,11 @@ public class InventarioProductoControlador {
         listaUnidades=unidadEjb.findAll(); 
     }
     
-    public void nuevo(){
-        this.nuevo=false;
-        this.producto=new Producto();
+    public void nuevoP(){
+        this.nuevo=true;
+        this.producto.setId(new Integer("0"));
+        this.listaProducto.add(producto);
+        
     }
     
    public List<Producto> completeProductos(String query){
