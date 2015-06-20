@@ -42,6 +42,10 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Kardex.findByCantidadDisponible", query = "SELECT k FROM Kardex k WHERE k.cantidadDisponible = :cantidadDisponible"),
     @NamedQuery(name = "Kardex.findByIva", query = "SELECT k FROM Kardex k WHERE k.iva = :iva")})
 public class Kardex implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "precio_entrada", nullable = false)
+    private double precioEntrada;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="KARD_ID_GENERATOR", sequenceName="kardex_id_kardex_seq",allocationSize=1)
@@ -60,8 +64,6 @@ public class Kardex implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "precio_salida", precision = 17, scale = 17)
     private Double precioSalida;
-    @Column(name = "precio_entrada", precision = 17, scale = 17)
-    private Double precioEntrada;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad_entrada", nullable = false)
@@ -224,6 +226,10 @@ public class Kardex implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Kardex[ idKardex=" + idKardex + " ]";
+    }
+
+    public void setPrecioEntrada(double precioEntrada) {
+        this.precioEntrada = precioEntrada;
     }
     
 }

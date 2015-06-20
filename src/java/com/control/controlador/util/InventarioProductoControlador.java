@@ -29,12 +29,13 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class InventarioProductoControlador {
+
     private Producto producto;
     private Kardex compra;
     private Provedor provedor;
     private List<Provedor> listaProvedor;
     private List<Producto> listaProducto;
-    @EJB 
+    @EJB
     private ProductoFacade productoEjb;
     @EJB
     private ProvedorFacade provedorEjb;
@@ -133,75 +134,73 @@ public class InventarioProductoControlador {
     public void setUnidad(Unidad unidad) {
         this.unidad = unidad;
     }
-    
+
     @PostConstruct
-    public void iniciar(){
-        this.producto=new Producto();   
-        this.compra=new Kardex();
+    public void iniciar() {
+        this.producto = new Producto();
+        this.compra = new Kardex();
         this.compra.setPrecioEntrada(Double.parseDouble("0"));
-        this.unidad=new Unidad();
-        this.categoria=new Categoria();
-        this.provedor=new Provedor();
-        
-        listaProvedor=provedorEjb.findAll();
-        listaProducto=productoEjb.consultarProductosIngrediente(false);
-        listaCategorias=categoriaEjb.findAll();
-        listaUnidades=unidadEjb.findAll(); 
+        this.unidad = new Unidad();
+        this.categoria = new Categoria();
+        this.provedor = new Provedor();
+
+        listaProvedor = provedorEjb.findAll();
+        listaProducto = productoEjb.consultarProductosIngrediente(false);
+        listaCategorias = categoriaEjb.findAll();
+        listaUnidades = unidadEjb.findAll();
     }
-    
-    public void nuevoP(){
-        this.nuevo=true;
-        this.producto.setId(new Integer("0"));
-        this.listaProducto.add(producto);
-        
+
+    public void nuevoP() {
+        this.unidad = unidadEjb.find(this.unidad.getIdUnidad());
+        this.producto.setUnidad(unidad);
+        productoEjb.create(producto);
+        listaProducto=this.productoEjb.findAll();
     }
-    
-   public List<Producto> completeProductos(String query){
-        List<Producto> productos=productoEjb.findAll();
-        List<Producto> ProductosQuery=new ArrayList<Producto>();
-        for(Producto p:productos){
-            if(p.getNombre().contains(query.trim())){
+
+    public List<Producto> completeProductos(String query) {
+        List<Producto> productos = productoEjb.findAll();
+        List<Producto> ProductosQuery = new ArrayList<Producto>();
+        for (Producto p : productos) {
+            if (p.getNombre().contains(query.trim())) {
                 ProductosQuery.add(p);
             }
         }
         return ProductosQuery;
     }
     
-    public void guardarNuevo(){
-        try{
-            if(!nuevo) {
-                producto=productoEjb.find(this.producto.getId());
-            }
-            TProductoCategoria pCat=new TProductoCategoria();
-            categoria=categoriaEjb.find(this.categoria.getId());
+    public void actualizarkardex(){
+        
+    }
             
+
+    public void guardarNuevo() {
+        try {
+            if (!nuevo) {
+                producto = productoEjb.find(this.producto.getId());
+            }
+            TProductoCategoria pCat = new TProductoCategoria();
+            categoria = categoriaEjb.find(this.categoria.getId());
+
             categoria.setTProductoCategoriaList(new ArrayList<TProductoCategoria>());
             pCat.setIdCategoria(categoria);
             pCat.setIdProducto(producto);
-      
-            this.provedor=provedorEjb.find(this.provedor.getIdProvedor());
+
+            this.provedor = provedorEjb.find(this.provedor.getIdProvedor());
 
             this.producto.setAdicional(false);
             this.producto.setKardexList(new ArrayList<Kardex>());
             this.producto.setTProductoCategoriaList(new ArrayList<TProductoCategoria>());
             this.producto.getTProductoCategoriaList().add(pCat);
-            
+
             compra.setProvedor(provedor);
             compra.setProductoKardex(producto);
             compra.setCantidadDisponible(productoEjb.getCantidadDisponible(producto));
-            compra.setCantidadDisponible(this.compra.getCantidadEntrada()+compra.getCantidadDisponible());
+            compra.setCantidadDisponible(this.compra.getCantidadEntrada() + compra.getCantidadDisponible());
             this.producto.getKardexList().add(compra);
-            if(nuevo){
-                this.unidad=unidadEjb.find(this.unidad.getIdUnidad());
-                this.producto.setUnidad(unidad);
-                productoEjb.create(producto);
-            }else{    
-                productoEjb.edit(producto);
-            }
+            productoEjb.edit(producto);
             com.control.controlador.util.util.JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("kardexRegistrado"));
-        }catch(Exception e){
+        } catch (Exception e) {
             com.control.controlador.util.util.JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-    
 }

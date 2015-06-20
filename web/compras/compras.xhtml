@@ -12,8 +12,58 @@
 
             <ui:define name="content">
 
-                <p:growl/>
                 <p:accordionPanel id="tab">
+
+                    <p:tab title="Recetas">
+                        <h:panelGroup id="messa" layout="block">
+                            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                        </h:panelGroup>
+                        <h:form id="formRecet">
+                            <p:growl/>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="#{bundle.CreateRecetaLabel_nombre}" for="nombre" />
+                                <h:inputText id="nombre" value="#{recetaController.selected.nombre}" title="#{bundle.CreateRecetaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_nombre}"/>
+                                <h:outputLabel value="#{bundle.CreateRecetaLabel_descripcion}" for="descripcion" />
+                                <h:inputText id="descripcion" value="#{recetaController.selected.descripcion}" title="#{bundle.CreateRecetaTitle_descripcion}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_descripcion}"/>
+                            </h:panelGrid>
+
+
+                            <p:commandButton value="Agregar Ingrediente" onsuccess="PF('rolModal').show();"
+                                             actionListener="#{recetaController.prepararReceta}"
+                                             ajax="true"
+                                             />
+
+                            <p:dataTable id="tabla" var="detalle" value="#{recetaController.selected.recetaDetList}">
+                                <p:column headerText="Ingrediente">
+                                    #{detalle.productoReceta.nombre}
+                                </p:column>
+                                <p:column headerText="Cantidad">
+                                    #{detalle.cantidad}
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:dialog header="Unidades" widgetVar="rolModal" 
+                                      modal="true" >
+                                <h:panelGrid columns="2" id="modal">
+                                    <p:outputLabel for="selectOneMenu2" value="Ingrediente" />
+                                    <p:selectOneMenu id="selectOneMenu2" value="#{recetaController.detalle.productoReceta.id}">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                        <f:selectItems var="ing" value="#{recetaController.listaIngredientes}"
+                                                       itemLabel="#{ing.nombre}" itemValue="#{ing.id}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="cantidad" value="cantidad" />
+                                    <p:inputText id="cantidad" value="#{recetaController.detalle.cantidad}"/>
+
+                                    <h:panelGroup/>
+                                    <p:commandButton ajax="true" update="formRecet"  value="Agregar" 
+                                                     process="@form"  oncomplete="PF('rolModal').hide();"
+                                                     actionListener="#{recetaController.agragarIngrediente}"/>
+                                </h:panelGrid>
+                            </p:dialog>
+
+                        </h:form>
+                    </p:tab>
+
                     <p:tab title="Productos" id="productosTab">
                         <h:form id="form">
                             <h:panelGrid columns="2">
@@ -40,18 +90,17 @@
                                     <f:selectItem itemLabel="Seleccione..."/>
                                     <f:selectItems value="#{inventarioProductoControlador.listaUnidades}" var="un"
                                                    itemLabel="#{un.nombre}" itemValue="#{un.idUnidad}"/>
-                                 </p:selectOneMenu>
-                                
+                                </p:selectOneMenu>
+
                                 <h:panelGroup/>
                                 <p:commandButton value="Registrar" actionListener="#{inventarioProductoControlador.nuevoP}"
                                                  ajax="true" update="tab:form1"/>
-
-
                             </h:panelGrid>
                         </h:form>
                     </p:tab>
                     <p:tab  title="Compras">
                         <h:form id="form1">
+                            <p:growl/>
                             <h:panelGrid columns="2">
                                 <p:outputLabel value="Categoria:" for="categoria"/>
                                 <p:selectOneMenu value="#{inventarioProductoControlador.categoria.id}" id="categoria" 
@@ -80,6 +129,7 @@
                                     <f:selectItem itemLabel="Seleccione..."/>
                                     <f:selectItems value="#{inventarioProductoControlador.listaProducto}" var="prod"
                                                    itemLabel="#{prod.nombre}" itemValue="#{prod.id}"/>
+
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="stock:" for="stock"/>
@@ -122,7 +172,7 @@
                         </h:form>
                     </p:tab>
                 </p:accordionPanel>
-             
+
             </ui:define>
 
         </ui:composition>
