@@ -153,7 +153,7 @@ public class UsuarioLoginControlador {
     public void confirmar() throws Exception {
         FacesContext context = FacesContext.getCurrentInstance();
         List<Usuario> usuarios = usuarioFacade.findUsuario(this.usuario);
-        if (usuarios.isEmpty()) {
+        if (usuarios.isEmpty()) { 
             context.addMessage(null, new FacesMessage("Error usuario:", this.usuario + " No existe"));
             return;
         }
@@ -162,7 +162,7 @@ public class UsuarioLoginControlador {
 
         if (user.getClave().equals(md5(this.clave))) {
             this.login = true;
-            context.getExternalContext().redirect("inicial/inicio.xhtml");
+            context.getExternalContext().redirect("caja.xhtml");
         } else {
             context.addMessage(null, new FacesMessage("Error", "Clave Incorrecta para el usuario:" + this.usuario));
         }

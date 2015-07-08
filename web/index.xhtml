@@ -1,88 +1,51 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Login</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
-    <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="/categoria/List" value="Show All Categoria Items"/>
-        <br />
-        <h:link outcome="/ingrediente/List" value="Show All Ingrediente Items"/>
-        <br />
-        <h:link outcome="/producto/List" value="Show All Producto Items"/>
-        <br />
-        <h:link outcome="/provedor/List" value="Show All Provedor Items"/>
-        <br />
-        <h:link outcome="/receta/List" value="Show All Receta Items"/>
-        <br />
-        <h:link outcome="/recetaDet/List" value="Show All RecetaDet Items"/>
-        <br />
-        <h:link outcome="/tProductoCategoria/List" value="Show All TProductoCategoria Items"/>
-        <br />
-        <h:link outcome="/unidad/List" value="Show All Unidad Items"/>
-        <br />
-        <h:link outcome="/categoria/List" value="Show All Categoria Items"/>
-        <br />
-        <h:link outcome="/ingrediente/List" value="Show All Ingrediente Items"/>
-        <br />
-        <h:link outcome="/menu/List" value="Show All Menu Items"/>
-        <br />
-        <h:link outcome="/mesa/List" value="Show All Mesa Items"/>
-        <br />
-        <h:link outcome="/modoPago/List" value="Show All ModoPago Items"/>
-        <br />
-        <h:link outcome="/producto/List" value="Show All Producto Items"/>
-        <br />
-        <h:link outcome="/provedor/List" value="Show All Provedor Items"/>
-        <br />
-        <h:link outcome="/receta/List" value="Show All Receta Items"/>
-        <br />
-        <h:link outcome="/recetaDet/List" value="Show All RecetaDet Items"/>
-        <br />
-        <h:link outcome="/rolSoftMenu/List" value="Show All RolSoftMenu Items"/>
-        <br />
-        <h:link outcome="/rolSoftware/List" value="Show All RolSoftware Items"/>
-        <br />
-        <h:link outcome="/tProductoCategoria/List" value="Show All TProductoCategoria Items"/>
-        <br />
-        <h:link outcome="/unidad/List" value="Show All Unidad Items"/>
-        <br />
-        <h:link outcome="/usuario/List" value="Show All Usuario Items"/>
-        <br />
-        <h:link outcome="/usuarioRolSoftware/List" value="Show All UsuarioRolSoftware Items"/>
-        <br />
-        <h:link outcome="/ventaDetalle/List" value="Show All VentaDetalle Items"/>
-        <br />
-        <h:link outcome="/ventas/List" value="Show All Ventas Items"/>
+    <h:body class="fondo">
+        <center>
+            <pm:content styleClass="jqm-content">
+                <div style="width: 20%;" id="login" class="blanco">      
+                    <h:form>
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <h:panelGrid columns="1">
+                            <img src="./resources/img/logo.png" style="width: 100%;height: 100%"/>
+                            <pm:field>
+                                <p:outputLabel for="Usuario"
+                                               value="Usuario"
+                                               style="width: 20%"
+                                               />
+                                <p:inputText id="Usuario"
+                                             label="Usuario"
+                                             value="#{usuarioLogin.usuario}"
+                                             style="width: 100%"
+                                             required="true"/>
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel value="Clave" for="clave"
+                                               style="width: 20%"/>  
+                                <p:password id="clave" 
+                                            style="width: 100%"
+                                            value="#{usuarioLogin.clave}"/>
+                            </pm:field>
+                        </h:panelGrid>
+                        <p:commandButton
+                            value="Login"
+                            actionListener="#{usuarioLogin.confirmar}"
+                            ajax="false"
+                            update="growl"/>   
+                        <h:panelGroup/>
+
+                    </h:form>
+                </div>
+            </pm:content>
+        </center>
     </h:body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </html>
-

@@ -82,7 +82,7 @@
                                 </p:column>
 
                                 <p:column headerText="Editar">
-                                    <p:commandButton icon="ui-icon-delete" ajax="true" update="first:form"
+                                    <p:commandButton icon="ui-icon-delete" ajax="true" update="form"
                                                      title="Eliminar"
                                                      process="@this"
                                                      actionListener="#{pedidoControlador.cancelarPedido(detalle)}"/>
@@ -122,7 +122,7 @@
 
                         <p:commandButton value="Aceptar"
                                          actionListener="#{pedidoControlador.agregarPedidoMaestro}"
-                                         update="formI,first:form" 
+                                         update="formI,form" 
                                          oncomplete="PF('modal').hide();">
                         </p:commandButton>
                         <p:commandButton value="Cancelar" onclick="PF('modal').hide();"

@@ -6,12 +6,14 @@ package com.control.controlador.util;
 
 
 import com.control.dao.CategoriaFacade;
+import com.control.dao.KardexFacade;
 import com.control.dao.MesaFacade;
 import com.control.dao.TProductoCategoriaFacade;
 import com.control.dao.UsuarioFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
+import com.control.entidad.Kardex;
 
 import com.control.entidad.Mesa;
 import com.control.entidad.Producto;
@@ -28,6 +30,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
@@ -47,6 +50,8 @@ public class PedidoControlador {
     private MesaFacade ejbMesaFacade;
     @EJB
     private UsuarioFacade usuarioEjb;
+    @EJB
+    private KardexFacade kardexFacade;
     
     private List<Categoria> items = null;
     private Categoria selected;
@@ -128,10 +133,55 @@ public class PedidoControlador {
     
     public boolean calcularInventario(Producto p){
         if(p.getRecetaFk()==null){    
-
+            int i=p.getKardexList().size()-1;
+            if(p.getKardexList().get(i).getCantidadDisponible()>0){
+                return false;
+            }
+        }else{
+            for(RecetaDet receta:p.getRecetaFk().getRecetaDetList()){
+                int i=receta.getProductoReceta().getKardexList().size()-1;
+                if(receta.getCantidad()<receta.getProductoReceta().getKardexList().get(i).getCantidadDisponible()){
+                    return true;
+                }
+            }
         }
         
         return true;
+    }
+    
+    
+    
+    public void actualizarInventario(Producto p){
+        if(p.getRecetaFk()==null){    
+            int i=p.getKardexList().size()-1;
+            Kardex kardex=p.getKardexList().get(i);
+            kardex.setCantidadDisponible(kardex.getCantidadDisponible()-this.detalle.getCantidad());
+            kardexFacade.edit(kardex);
+        }else{
+            for(RecetaDet receta:p.getRecetaDetList()){
+                int i=p.getKardexList().size()-1;
+                Kardex kardex=p.getKardexList().get(i);
+                kardex.setCantidadDisponible(kardex.getCantidadDisponible()-this.detalle.getCantidad());
+                kardexFacade.edit(kardex);
+            }
+        }
+    }
+    
+      public void actualizarInventario(PedidoDetalleDto pedidoDto){
+        Producto p=pedidoDto.getProducto().getIdProducto();
+        if(p.getRecetaFk()==null){    
+            int i=p.getKardexList().size()-1;
+            Kardex kardex=p.getKardexList().get(i);
+            kardex.setCantidadDisponible(kardex.getCantidadDisponible()+pedidoDto.getCantidad());
+            kardexFacade.edit(kardex);
+        }else{
+            for(RecetaDet receta:p.getRecetaDetList()){
+                int i=p.getKardexList().size()-1;
+                Kardex kardex=p.getKardexList().get(i);
+                kardex.setCantidadDisponible(kardex.getCantidadDisponible()+pedidoDto.getCantidad());
+                kardexFacade.edit(kardex);
+            }
+        }
     }
     
     public void agregarPedido() {
@@ -141,7 +191,7 @@ public class PedidoControlador {
             com.control.controlador.util.util.JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("noinventarioVal"));
             return;
         }
-  
+        this.detalle.setProducto(pedido);
         this.detalle.setTotal(this.pedido.getIdProducto().getCostoVenta()*this.detalle.getCantidad());
         for(int i=0;i<pedidoMaestro.getDetallesPedido().size();i++){
             if(pedidoMaestro.getDetallesPedido().get(i).getProducto().getId()==detalle.getProducto().getId()){
@@ -155,6 +205,7 @@ public class PedidoControlador {
         if(!existe){
             this.pedidoMaestro.getDetallesPedido().add(detalle);
         }
+        this.actualizarInventario(this.detalle.getProducto().getIdProducto());
         this.detalle = new PedidoDetalleDto();
         this.selected = new Categoria();
         this.pedido = new TProductoCategoria();
@@ -162,6 +213,7 @@ public class PedidoControlador {
     
     public void cancelarPedido(PedidoDetalleDto detalle){
         this.pedidoMaestro.getDetallesPedido().remove(detalle);
+        actualizarInventario(detalle);
     }
 
     @PostConstruct
@@ -183,7 +235,9 @@ public class PedidoControlador {
     }
 
     public void agregarPedidoMaestro() {
+        UsuarioLoginControlador usuarioLogin=(UsuarioLoginControlador)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogin");
         pedidoMaestro.setMesa(this.ejbMesaFacade.find(this.pedidoMaestro.getMesa().getIdMesa()));
+        pedidoMaestro.setMesero(usuarioLogin.getUsuarioSession());
         CajaPedidosControlador caja=(CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
         caja.agregarPedido(pedidoMaestro);
         notificarPUSH();
