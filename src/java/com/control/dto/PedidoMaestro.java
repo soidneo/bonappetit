@@ -18,6 +18,7 @@ public class PedidoMaestro {
     private double descuentoTotal;
     private double ivaTotal;
     private double total;
+    private String factura;
 
     public List<PedidoDetalleDto> getDetallesPedido() {
         return detallesPedido;
@@ -73,5 +74,13 @@ public class PedidoMaestro {
 
     public void setMesero(Usuario mesero) {
         this.mesero = mesero;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
     }
 }

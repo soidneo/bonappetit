@@ -27,6 +27,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -39,7 +40,7 @@ import org.primefaces.push.EventBusFactory;
  * @author mateo
  */
 @ManagedBean(name = "pedidoControlador")
-@ViewScoped
+@SessionScoped
 public class PedidoControlador {
     
     @EJB
@@ -61,6 +62,8 @@ public class PedidoControlador {
     private PedidoDetalleDto detalle;
     private List<Mesa> listaMesas;
     private List<PedidoMaestro> listaPedidoMaestro;
+    private boolean bandera;
+    private List<Usuario> usuarios;
 
 
     public PedidoDetalleDto getDetalle() {
@@ -125,6 +128,24 @@ public class PedidoControlador {
     public void setListaPedidoMaestro(List<PedidoMaestro> listaPedidoMaestro) {
         this.listaPedidoMaestro = listaPedidoMaestro;
     }
+
+    public boolean isBandera() {
+        return bandera;
+    }
+
+    public void setBandera(boolean bandera) {
+        this.bandera = bandera;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+    
+    
     
     public void asignarCategoria() {
         selected = ejbFacade.find(this.selected.getId());
@@ -183,6 +204,10 @@ public class PedidoControlador {
             }
         }
     }
+      
+    public void modal(){
+        this.bandera=true;
+    }
     
     public void agregarPedido() {
         boolean existe=false;
@@ -228,6 +253,8 @@ public class PedidoControlador {
         this.pedidoMaestro.setCliente(new Usuario());
         this.pedido = new TProductoCategoria();
         this.detalle = new PedidoDetalleDto();
+        usuarios=usuarioEjb.findAll();
+        this.bandera=true;
     }
 
     public List<Categoria> getItems() {
@@ -261,8 +288,14 @@ public class PedidoControlador {
     }
     
     public List<Usuario> completeClientes(String query){
-        List<Usuario> usuarios=usuarioEjb.findAll();
+        
         return usuarios;
+    }
+    
+    public String editarPedido(PedidoMaestro p){
+        this.pedidoMaestro=p;
+        this.bandera=true;
+        return "pedidoMesero.xhtml";
     }
     
    

@@ -9,11 +9,14 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +35,8 @@ import javax.validation.constraints.NotNull;
 public class VentaDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @SequenceGenerator(name="VENTA_DETALLE_ID_GENERATOR", sequenceName="venta_detalle_id_venta_detalle_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VENTA_DETALLE_ID_GENERATOR")
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_venta_detalle", nullable = false)

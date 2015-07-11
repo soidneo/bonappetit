@@ -114,8 +114,9 @@
 
                         <pm:field>
                             <p:outputLabel for="clientes" value="Cliente" />  
-                            <p:autoComplete id="clientes"  value="#{pedidoControlador.pedidoMaestro.cliente.usuario}" completeMethod="#{pedidoControlador.completeClientes}"
-                                            var="clinte" itemLabel="#{clinte.usuario}" itemValue="#{clinte.usuario}"
+                            <p:autoComplete id="clientes"  value="#{pedidoControlador.pedidoMaestro.cliente}" completeMethod="#{pedidoControlador.completeClientes}"
+                                            var="cliente" itemLabel="#{cliente.usuario}" itemValue="#{cliente}"
+                                        
                                             required="true" requiredMessage="Seleccione cliente"/>
                         </pm:field>
 

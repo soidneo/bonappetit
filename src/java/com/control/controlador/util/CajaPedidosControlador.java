@@ -4,9 +4,11 @@
  */
 package com.control.controlador.util;
 
+import com.control.dao.ModoPagoFacade;
 import com.control.dao.VentasFacade;
 import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
+import com.control.entidad.ModoPago;
 import com.control.entidad.VentaDetalle;
 import com.control.entidad.Ventas;
 import java.util.ArrayList;
@@ -26,8 +28,13 @@ import javax.faces.bean.ManagedBean;
 public class CajaPedidosControlador {
     
     private List<PedidoMaestro> listaPedidos;
+    private PedidoMaestro pedidoMes;
+    private List<ModoPago> modoPagos;
+    private ModoPago modoPago;
     @EJB
     private VentasFacade ventaEjb;
+    @EJB
+    private ModoPagoFacade modoPagoEjb;
 
     public List<PedidoMaestro> getListaPedidos() {
         if(listaPedidos==null){
@@ -39,6 +46,8 @@ public class CajaPedidosControlador {
     @PostConstruct
     public void iniciarServicio(){
         listaPedidos=new ArrayList<PedidoMaestro>();
+        modoPagos=modoPagoEjb.findAll();
+        modoPago=new ModoPago();
     }
 
     public void setListaPedidos(List<PedidoMaestro> listaPedidos) {
@@ -46,28 +55,68 @@ public class CajaPedidosControlador {
     }
     
     public void agregarPedido(PedidoMaestro pedido){
-        this.listaPedidos.add(pedido);       
+        if(!this.listaPedidos.contains(pedido)){
+            this.listaPedidos.add(pedido); 
+        }      
+    }
+
+    public PedidoMaestro getPedidoMes() {
+        return pedidoMes;
+    }
+
+    public void setPedidoMes(PedidoMaestro pedidoMes) {
+        this.pedidoMes = pedidoMes;
+    }
+
+    public void asignarPedido(PedidoMaestro pedido){
+      this.pedidoMes=pedido;
+      this.pedidoMes.setTotal(0);
+      for(PedidoDetalleDto pedidoDet:pedidoMes.getDetallesPedido()){
+          pedidoMes.setTotal(pedidoDet.getTotal()+pedidoMes.getTotal());
+      }
+    }
+
+    public List<ModoPago> getModoPagos() {
+        return modoPagos;
+    }
+
+    public void setModoPagos(List<ModoPago> modoPagos) {
+        this.modoPagos = modoPagos;
+    }
+
+    public ModoPago getModoPago() {
+        return modoPago;
+    }
+
+    public void setModoPago(ModoPago modoPago) {
+        this.modoPago = modoPago;
     }
     
-    public void confirmarPedido(PedidoMaestro pedido){
+    
+    
+    public void confirmarPedido(){       
         try{
             Ventas venta=new Ventas();
-            venta.setCliente(pedido.getCliente());
+            venta.setCliente(pedidoMes.getCliente());
             venta.setFecha(new Date());   
-            venta.setMesero(pedido.getMesero());
-            venta.setTotal(pedido.getTotal());
+            venta.setMesero(pedidoMes.getMesero());
+            venta.setTotal(pedidoMes.getTotal());
+            venta.setFactura(pedidoMes.getFactura());
+            venta.setModoPago(modoPagoEjb.find(modoPago.getIdModoPago()));
+            venta.setMesa(pedidoMes.getMesa());
             venta.setVentaDetalleList(new ArrayList<VentaDetalle>());
-            for(PedidoDetalleDto detalles:pedido.getDetallesPedido()){
+            venta.setSubtotal(venta.getTotal());
+            for(PedidoDetalleDto detalles:pedidoMes.getDetallesPedido()){
                 VentaDetalle  detalle=new VentaDetalle();
                 detalle.setVenta(venta);
                 detalle.setCantidad(detalles.getCantidad());
                 detalle.setProducto(detalles.getProducto().getIdProducto());
+                detalle.setIva(10);
+                detalle.setDescuento(10);
                 venta.getVentaDetalleList().add(detalle);
             }
             ventaEjb.create(venta);
-        }catch(Exception e){
-            
-        }
+        }catch(Exception e){}
     }
 
     /**
