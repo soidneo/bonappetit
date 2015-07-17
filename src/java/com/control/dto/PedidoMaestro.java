@@ -19,6 +19,7 @@ public class PedidoMaestro {
     private double ivaTotal;
     private double total;
     private String factura;
+    private double totalNeto;
 
     public List<PedidoDetalleDto> getDetallesPedido() {
         return detallesPedido;
@@ -83,4 +84,14 @@ public class PedidoMaestro {
     public void setFactura(String factura) {
         this.factura = factura;
     }
+
+    public double getTotalNeto() {
+        return totalNeto;
+    }
+
+    public void setTotalNeto(double totalNeto) {
+        this.totalNeto = totalNeto;
+    }
+    
+    
 }

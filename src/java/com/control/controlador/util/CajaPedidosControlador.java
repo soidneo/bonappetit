@@ -71,9 +71,15 @@ public class CajaPedidosControlador {
     public void asignarPedido(PedidoMaestro pedido){
       this.pedidoMes=pedido;
       this.pedidoMes.setTotal(0);
+      this.pedidoMes.setIvaTotal(0);
+      this.pedidoMes.setTotalNeto(0);
       for(PedidoDetalleDto pedidoDet:pedidoMes.getDetallesPedido()){
-          pedidoMes.setTotal(pedidoDet.getTotal()+pedidoMes.getTotal());
+          pedidoMes.setTotalNeto(pedidoDet.getTotal()+pedidoMes.getTotal());
+          pedidoMes.setIvaTotal( pedidoMes.getIvaTotal()+pedidoDet.getProducto().getIdProducto().getIva());
+          pedidoMes.setTotal(pedidoMes.getTotalNeto());
       }
+      pedidoMes.setTotal(
+              (this.pedidoMes.getTotal()*(this.pedidoMes.getIvaTotal()/100))+this.pedidoMes.getTotal());
     }
 
     public List<ModoPago> getModoPagos() {
@@ -117,6 +123,12 @@ public class CajaPedidosControlador {
             }
             ventaEjb.create(venta);
         }catch(Exception e){}
+    }
+    
+    public void calcularDescuento(){
+        double netoIva=this.pedidoMes.getTotalNeto()+(this.pedidoMes.getTotalNeto()*this.pedidoMes.getIvaTotal()/100);
+        this.pedidoMes.setTotal(netoIva-
+                ((netoIva)*this.pedidoMes.getDescuentoTotal()/100));
     }
 
     /**

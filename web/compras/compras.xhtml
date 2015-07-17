@@ -91,6 +91,9 @@
                                     <f:selectItems value="#{inventarioProductoControlador.listaUnidades}" var="un"
                                                    itemLabel="#{un.nombre}" itemValue="#{un.idUnidad}"/>
                                 </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Iva" for="iva"/>
+                                <p:inputText id="iva" value="#{inventarioProductoControlador.producto.iva}"/>
 
                                 <h:panelGroup/>
                                 <p:commandButton value="Registrar" actionListener="#{inventarioProductoControlador.nuevoP}"
