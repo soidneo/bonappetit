@@ -18,31 +18,36 @@
     </h:head>
 
     <h:body>      
-         
+
         <pm:page id="index">
 
             <div data-role="header" data-position="inline">
-                <h1>Menu Administrador</h1>
+                <h1>Menu Mesero</h1>
             </div>
 
             <div data-role="content" data-theme="b">
                 <h:form>
-               
 
-
-                <p>Seccion donde se agregan, editan y eliminan elementos generales.</p>
-
-                <p:panelGrid columns="2">
-                    <p:button outcome="unidad/List?transition=flip" value="Unidades" />
-                    <p:button outcome="pm:ingrediente?transition=flip" value="Ingredientes" />
-                    <p:button outcome="pm:receta?transition=flip" value="Recetas" />
-                    <p:button outcome="pm:producto?transition=flip" value="Productos" />
-                    <p:commandButton value="unida" update=":unidad" action="#{dtEditView.navigate}" ajax="true" />
-                    <pm:field>
-                        <p:link value="nose" outcome="pm:unidad"></p:link>
-                    </pm:field>
-                </p:panelGrid>
-</h:form>
+                    <p:panelGrid columns="3">
+                        <p:column>
+                            <h:outputText value="Recetas y Productos"/>    
+                            <p:button outcome="pm:unidad?transition=flip" value="Receteas" />
+                            <p:button outcome="pm:producto?transition=flip" value="Productos"/>
+                            <p:button outcome="pm:producto?transition=flip" value="Unidades"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Pedidos y Domiclios"/>
+                            <p:button outcome="addPedido.xhtml" value="Pedidos" />
+                            <p:button outcome="addUsers.xhtml" value="Clientes" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Opciones"/>
+                            <p:button outcome="unidad/List?transition=flip" value="Datos" />
+                            <p:button outcome="pm:ingrediente?transition=flip" value="Cerrar Sesion" />
+                            <p:commandButton action="#{reportController.setReporte}"  value="Reporte" />
+                        </p:column>
+                    </p:panelGrid>
+                </h:form>
             </div>
         </pm:page>
 
@@ -110,6 +115,40 @@
                         </p:panelGrid>
                     </h:form>
                 </p:dialog> 
+            </div>
+        </pm:page>
+        <pm:page id="Usuarioss">
+            <div data-role="content" data-theme="b">
+                <div data-role="header" data-position="inline">
+                    <h1>Seccion Usuarios</h1>
+                    <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+                </div>  
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_usuario}" for="usuario" />
+                    <h:inputText id="usuario" value="#{usuarioController.selected.usuario}" title="#{bundle.CreateUsuarioTitle_usuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuario}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_nombres}" for="nombres" />
+                    <h:inputText id="nombres" value="#{usuarioController.selected.nombres}" title="#{bundle.CreateUsuarioTitle_nombres}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nombres}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_apellidos}" for="apellidos" />
+                    <h:inputText id="apellidos" value="#{usuarioController.selected.apellidos}" title="#{bundle.CreateUsuarioTitle_apellidos}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_apellidos}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_correo}" for="correo" />
+                    <h:inputText id="correo" value="#{usuarioController.selected.correo}" title="#{bundle.CreateUsuarioTitle_correo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_correo}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_profesion}" for="profesion" />
+                    <h:inputText id="profesion" value="#{usuarioController.selected.profesion}" title="#{bundle.CreateUsuarioTitle_profesion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_profesion}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_fechaCreacion}" for="fechaCreacion" />
+                    <h:inputText id="fechaCreacion" value="#{usuarioController.selected.fechaCreacion}" title="#{bundle.CreateUsuarioTitle_fechaCreacion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_fechaCreacion}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_estado}" for="estado" />
+                    <h:inputText id="estado" value="#{usuarioController.selected.estado}" title="#{bundle.CreateUsuarioTitle_estado}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_estado}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_clave}" for="clave" />
+                    <h:inputText id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandButton action="#{usuarioController.create}" value="#{bundle.CreateUsuarioSaveLink}" />
+                <h:commandButton action="#{usuarioController.prepareList}" value="#{bundle.CreateUsuarioShowAllLink}" immediate="true"/>
+                
+            </h:form>
             </div>
         </pm:page>
 
