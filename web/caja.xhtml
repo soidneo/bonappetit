@@ -60,11 +60,15 @@
                                        itemLabel="#{modo.nombre}" itemValue="#{modo.idModoPago}"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="iva" value="iva"/>
-                    <p:inputText id="iva" value="#{cajaPedidosControlador.pedidoMes.ivaTotal}"/>
+                    <p:inputText id="iva" value="#{cajaPedidosControlador.pedidoMes.ivaTotal}" readonly="true"/>
                     <p:outputLabel for="descuento" value="Descuento"/>
-                    <p:inputText id="descuento" value="#{cajaPedidosControlador.pedidoMes.descuentoTotal}"/>
+                    <p:inputText id="descuento" value="#{cajaPedidosControlador.pedidoMes.descuentoTotal}">
+                        <p:ajax event="blur" update="total" listener="#{cajaPedidosControlador.calcularDescuento}"/>
+                    </p:inputText>
                     <p:outputLabel for="factura" value="Factura"/>
                     <p:inputText id="factura" value="#{cajaPedidosControlador.pedidoMes.factura}"/>
+                    <p:outputLabel for="totalN" value="Total Neto"/>
+                    <p:inputText id="totalN" value="#{cajaPedidosControlador.pedidoMes.totalNeto}"/>
                     <p:outputLabel for="total" value="Total"/>
                     <p:inputText id="total" value="#{cajaPedidosControlador.pedidoMes.total}"/>
                 </h:panelGrid>

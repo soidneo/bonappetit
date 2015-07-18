@@ -42,6 +42,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Producto.findByCostoTotal", query = "SELECT p FROM Producto p WHERE p.costoTotal = :costoTotal"),
     @NamedQuery(name = "Producto.findByCostoVenta", query = "SELECT p FROM Producto p WHERE p.costoVenta = :costoVenta")})
 public class Producto implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "iva", precision = 17, scale = 17)
+    private Double iva;
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="PROD_ID_GENERATOR", sequenceName="producto_id_seq",allocationSize=1)
@@ -261,6 +264,14 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Producto[ id=" + id + " ]";
+    }
+
+    public Double getIva() {
+        return iva;
+    }
+
+    public void setIva(Double iva) {
+        this.iva = iva;
     }
     
 }
