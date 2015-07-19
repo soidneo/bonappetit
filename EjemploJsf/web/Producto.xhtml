@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./Plantilla.xhtml">
+
+
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:growl id="mensaje" showDetail="true"/>
+                    <p:dataTable value="#{productoController.productos}" var="prod"
+                                 paginator="true" rows="5">
+                        <p:column headerText="nombre">
+                            #{prod.nombreProducto}
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="eliminar" 
+                                             actionListener="#{productoController.eliminar(prod)}"
+                                             ajax="true"
+                                             immediate="true"
+                                             update="form"/>
+                            <p:commandButton value="Editar" 
+                                             actionListener="#{productoController.asignarEditar(prod)}"
+                                             ajax="true"
+                                             process="@this"
+                                             update="form:gird"/>
+
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="2" id="gird">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="nombre" value="nombre:"/>
+                            <p:inputText id="nombre" value="#{productoController.producto.nombreProducto}"/>
+
+                            <p:outputLabel for="desc" value="desc:"/>
+                            <p:inputText id="desc" value="#{productoController.producto.descripcion}"/>
+
+                            <p:outputLabel for="precio" value="precio:"/>
+                            <p:inputText id="precio" value="#{productoController.producto.precioVenta}"/>
+
+                            <p:outputLabel for="cant" value="cantidad:"/>
+                            <p:inputText id="cant" value="#{productoController.producto.cantidadDisponible}"/>
+                        </h:panelGrid>
+                        <p:fileUpload fileUploadListener="#{productoController.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      update="form:mensaje" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+                    </h:panelGrid>
+                    <p:commandButton value="Guardar" actionListener="#{productoController.guardar}" ajax="true" update="form"/>
+                    <p:commandButton value="Editar" actionListener="#{productoController.editar}" ajax="true" update="form"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

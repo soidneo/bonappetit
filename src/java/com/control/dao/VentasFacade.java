@@ -36,11 +36,11 @@ public class VentasFacade extends AbstractFacade<Ventas> {
     public List<ReporteFactura> facturaConsulta(int codigo) {
         try {
             System.out.println("funcion");
-          /*  Query query = getEntityManager().createNativeQuery("select p.nombre,vd.iva,vd.cantidad,vd.descuento"
+            Query query = getEntityManager().createNativeQuery("select p.nombre,vd.iva,vd.cantidad,vd.descuento"
                     + " from venta_detalle vd,producto p where venta = ? and p.id = vd.producto");
-            query.setParameter(1, codigo);*/
+            query.setParameter(1, codigo);
             List<ReporteFactura> reporteFactura = new ArrayList<ReporteFactura>();
-           /* List<Object[]> consulta = query.getResultList();
+            List<Object[]> consulta = query.getResultList();
             System.out.println("paso0:" + consulta.size());
             for (Object[] registro : consulta) {
                 ReporteFactura r = new ReporteFactura();
@@ -49,7 +49,8 @@ public class VentasFacade extends AbstractFacade<Ventas> {
                 r.setCantidad(registro[2].toString());
                 r.setDescuento(registro[3].toString());
                 reporteFactura.add(r);
-            }*/
+                System.out.println(r.getProducto());
+            }
             return reporteFactura;
         } catch (Exception e) {
             System.out.println("error:" + e.toString());
@@ -59,11 +60,11 @@ public class VentasFacade extends AbstractFacade<Ventas> {
 
     public List<ReporteFacturaPar> facturaConsultaPar(int codigo) {
         try {
-            /*Query query = getEntityManager().createNativeQuery("select factura,fecha,cliente,mesero,subtotal,total,iva,modo_pago"
+            Query query = getEntityManager().createNativeQuery("select factura,fecha,cliente,mesero,subtotal,total,iva,modo_pago"
                     + " from ventas where id_venta = ?");
-            query.setParameter(1, codigo);*/
+            query.setParameter(1, codigo);
             List<ReporteFacturaPar>listaR=new  ArrayList<ReporteFacturaPar>();
-            /*List<Object[]> consulta1 = query.getResultList();
+            List<Object[]> consulta1 = query.getResultList();
             for (Object[]consulta:consulta1 ) {
                 ReporteFacturaPar reporteFacturaPar = new ReporteFacturaPar();
                 System.out.println("paso1:" + consulta.length);
@@ -75,8 +76,9 @@ public class VentasFacade extends AbstractFacade<Ventas> {
                 reporteFacturaPar.setTotal(consulta[0].toString());
                 reporteFacturaPar.setIva(consulta[0].toString());
                 listaR.add(reporteFacturaPar);
+                System.out.println(reporteFacturaPar.getFactura());
             }
-            Object[] consulta = consulta1.get(0);*/
+        
 
             return listaR;
         } catch (Exception e) {

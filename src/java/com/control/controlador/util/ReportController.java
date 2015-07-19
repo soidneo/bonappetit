@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import net.sf.jasperreports.engine.JREmptyDataSource;
+/*import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -18,7 +18,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
-import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.DefaultStreamedContent;*/
 import com.control.dao.VentasFacade;
 import com.control.dto.ReporteFactura;
 import com.control.dto.ReporteFacturaPar;
@@ -54,7 +54,7 @@ public class ReportController {
     /**
      *
      */
-    public void setReporte() throws JRException{
+    public void setReporte(){
         int codigo=5;
         System.out.println("cod"+codigo);
         ReporteFacturaPar parametros = new ReporteFacturaPar();
@@ -69,20 +69,20 @@ public class ReportController {
         parameters.put("subtotal", parametros.getSubtotal());
         parameters.put("total", parametros.getTotal());
         parameters.put("iva", parametros.getIva());
-        JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(detalles);
+      //  JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(detalles);
         File fichero = new File("reportes/factura.jxml");
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(fichero);
-        JasperPrint print = JasperFillManager.fillReport(jasperReport,parameters, lista);
-        byte[] bytes = JasperExportManager.exportReportToPdf(print);
+      //  JasperReport jasperReport = (JasperReport) JRLoader.loadObject(fichero);
+      //  JasperPrint print = JasperFillManager.fillReport(jasperReport,parameters, lista);
+      //  byte[] bytes = JasperExportManager.exportReportToPdf(print);
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletResponse response = (HttpServletResponse) context
                 .getExternalContext().getResponse();
 
         response.addHeader("Content-disposition",
                 "attachment;filename=reporte.pdf");
-        response.setContentLength(bytes.length);
+       // response.setContentLength(bytes.length);
         try {
-            response.getOutputStream().write(bytes);
+            //response.getOutputStream().write(bytes);
             response.setContentType("application/pdf");
             context.responseComplete();
         } catch (Exception e) {
