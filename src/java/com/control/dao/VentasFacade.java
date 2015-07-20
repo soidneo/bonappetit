@@ -47,7 +47,7 @@ public class VentasFacade extends AbstractFacade<Ventas> {
                 r.setProducto(registro[0].toString());
                 r.setIva(registro[1].toString());
                 r.setCantidad(registro[2].toString());
-                r.setDescuento(registro[3].toString());
+                r.setDcto(registro[3].toString());
                 reporteFactura.add(r);
                 System.out.println(r.getProducto());
             }

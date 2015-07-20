@@ -12,7 +12,7 @@ public class ReporteFactura {
     private String producto;
     private String cantidad;
     private String iva;
-    private String descuento;
+    private String dcto;
     private String total;
 
     public String getProducto() {
@@ -39,13 +39,17 @@ public class ReporteFactura {
         this.iva = iva;
     }
 
-    public String getDescuento() {
-        return descuento;
+    public String getDcto() {
+        return dcto;
     }
 
-    public void setDescuento(String descuento) {
-        this.descuento = descuento;
+    public void setDcto(String dcto) {
+        this.dcto = dcto;
     }
+
+   
+
+ 
 
     public String getTotal() {
         return total;

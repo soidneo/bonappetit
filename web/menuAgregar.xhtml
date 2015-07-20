@@ -44,7 +44,8 @@
                             <h:outputText value="Opciones"/>
                             <p:button outcome="unidad/List?transition=flip" value="Datos" />
                             <p:button outcome="pm:ingrediente?transition=flip" value="Cerrar Sesion" />
-                            <p:commandButton action="#{reportController.setReporte}"  value="Reporte" />
+                            <p:commandButton action="#{reportController.setReporte}"  value="Reporte"
+                                             ajax="false"/>
                         </p:column>
                     </p:panelGrid>
                 </h:form>
