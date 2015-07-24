@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,7 +35,8 @@ import javax.validation.constraints.Size;
 public class Unidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="UNIDAD_ID_GENERATOR", sequenceName="unidad_id_unidad_seq",allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UNIDAD_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id_unidad", nullable = false)
     private Integer idUnidad;

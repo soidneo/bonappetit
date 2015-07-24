@@ -1,9 +1,9 @@
 package com.control.controlador.util;
 
-import com.control.entidad.Mesa;
+import com.control.entidad.Unidad;
 import com.control.controlador.util.util.JsfUtil;
 import com.control.controlador.util.util.PaginationHelper;
-import com.control.dao.MesaFacade;
+import com.control.dao.UnidadFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,18 +18,27 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "mesaController")
+@ManagedBean(name = "unidadController")
 @SessionScoped
-public class MesaController implements Serializable {
+public class UnidadController implements Serializable {
 
-    private Mesa current;
+    private Unidad current;
     private DataModel items = null;
     @EJB
-    private com.control.dao.MesaFacade ejbFacade;
+    private com.control.dao.UnidadFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private boolean insertar;
+    private String mensajeCrub;
 
+    public String getMensajeCrub() {
+        return mensajeCrub;
+    }
+
+    public void setMensajeCrub(String mensajeCrub) {
+        this.mensajeCrub = mensajeCrub;
+    }
+    
     public boolean isInsertar() {
         return insertar;
     }
@@ -37,21 +46,19 @@ public class MesaController implements Serializable {
     public void setInsertar(boolean insertar) {
         this.insertar = insertar;
     }
-    
-    
 
-    public MesaController() {
+    public UnidadController() {
     }
 
-    public Mesa getSelected() {
+    public Unidad getSelected() {
         if (current == null) {
-            current = new Mesa();
+            current = new Unidad();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private MesaFacade getFacade() {
+    private UnidadFacade getFacade() {
         return ejbFacade;
     }
 
@@ -75,17 +82,17 @@ public class MesaController implements Serializable {
     public String prepareList() {
         recreateModel();
         return "List";
-    }
+    }   
 
     public String prepareView() {
-        current = (Mesa) getItems().getRowData();
+        current = (Unidad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
         insertar=true;
-        current = new Mesa();
+        current = new Unidad();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -93,7 +100,7 @@ public class MesaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UnidadCreated"));
             return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -103,7 +110,7 @@ public class MesaController implements Serializable {
 
     public String prepareEdit() {
         insertar=false;
-        current = (Mesa) getItems().getRowData();
+        current = (Unidad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -111,21 +118,19 @@ public class MesaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaUpdated"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
     public String destroy() {
-        current = (Mesa) getItems().getRowData();
+        current = (Unidad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return prepareList();
     }
 
     public String destroyAndView() {
@@ -137,14 +142,14 @@ public class MesaController implements Serializable {
         } else {
             // all items were removed - go back to list
             recreateModel();
-            return "List";
+            return prepareList();
         }
     }
 
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MesaDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UnidadDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -200,15 +205,15 @@ public class MesaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Mesa.class)
-    public static class MesaControllerConverter implements Converter {
+    @FacesConverter(forClass = Unidad.class)
+    public static class UnidadControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MesaController controller = (MesaController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mesaController");
+            UnidadController controller = (UnidadController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "unidadController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -228,11 +233,11 @@ public class MesaController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Mesa) {
-                Mesa o = (Mesa) object;
-                return getStringKey(o.getIdMesa());
+            if (object instanceof Unidad) {
+                Unidad o = (Unidad) object;
+                return getStringKey(o.getIdUnidad());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Mesa.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Unidad.class.getName());
             }
         }
     }

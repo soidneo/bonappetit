@@ -28,6 +28,15 @@ public class ModoPagoController implements Serializable {
     private com.control.dao.ModoPagoFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private boolean insertar;
+
+    public boolean isInsertar() {
+        return insertar;
+    }
+
+    public void setInsertar(boolean insertar) {
+        this.insertar = insertar;
+    }
 
     public ModoPagoController() {
     }
@@ -73,6 +82,7 @@ public class ModoPagoController implements Serializable {
     }
 
     public String prepareCreate() {
+        insertar = true;
         current = new ModoPago();
         selectedItemIndex = -1;
         return "Create";
@@ -82,7 +92,7 @@ public class ModoPagoController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ModoPagoCreated"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -90,6 +100,7 @@ public class ModoPagoController implements Serializable {
     }
 
     public String prepareEdit() {
+        insertar = false;
         current = (ModoPago) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";

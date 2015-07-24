@@ -36,7 +36,7 @@ public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="CAT_ID_GENERATOR", sequenceName="kardex_id_kardex_seq",allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="categoria_id_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CAT_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;

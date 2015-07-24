@@ -4,10 +4,18 @@ import com.control.entidad.Usuario;
 import com.control.controlador.util.util.JsfUtil;
 import com.control.controlador.util.util.PaginationHelper;
 import com.control.dao.UsuarioFacade;
+import com.control.dto.PedidoDetalleDto;
+import com.control.dto.PedidoMaestro;
+import com.control.entidad.Categoria;
+import com.control.entidad.Mesa;
+import com.control.entidad.TProductoCategoria;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -28,6 +36,26 @@ public class UsuarioController implements Serializable {
     private com.control.dao.UsuarioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private boolean insertar;
+    private String mensajeCrub;
+
+    public String getMensajeCrub() {
+        return mensajeCrub;
+    }
+
+    public void setMensajeCrub(String mensajeCrub) {
+        this.mensajeCrub = mensajeCrub;
+    }
+    
+    
+
+    public boolean isInsertar() {
+        return insertar;
+    }
+
+    public void setInsertar(boolean insertar) {
+        this.insertar = insertar;
+    }
 
     public UsuarioController() {
     }
@@ -73,6 +101,7 @@ public class UsuarioController implements Serializable {
     }
 
     public String prepareCreate() {
+        insertar = true;
         current = new Usuario();
         selectedItemIndex = -1;
         return "Create";
@@ -81,27 +110,29 @@ public class UsuarioController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioCreated"));
-            return prepareCreate();
+            this.mensajeCrub="Creado Correctamente";
+            return prepareList();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            this.mensajeCrub="Error"+e;
             return null;
         }
     }
 
     public String prepareEdit() {
+        insertar = false;
         current = (Usuario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        update();
+        return "List";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioUpdated"));
-            return "View";
+            this.mensajeCrub="Actualizado Correctamente";
+            return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            this.mensajeCrub="Error"+e;
             return null;
         }
     }
@@ -131,9 +162,9 @@ public class UsuarioController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioDeleted"));
+            this.mensajeCrub="Eliminado Correctamente";            
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            this.mensajeCrub="Error: "+e;
         }
     }
 
@@ -222,5 +253,10 @@ public class UsuarioController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Usuario.class.getName());
             }
         }
+    }
+
+    @PostConstruct
+    public void iniciar() {
+        this.current = new Usuario();
     }
 }

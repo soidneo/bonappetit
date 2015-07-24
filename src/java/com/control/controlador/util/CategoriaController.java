@@ -28,7 +28,17 @@ public class CategoriaController implements Serializable {
     private com.control.dao.CategoriaFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private boolean insertar;
 
+    public boolean isInsertar() {
+        return insertar;
+    }
+
+    public void setInsertar(boolean insertar) {
+        this.insertar = insertar;
+    }
+
+    
     public CategoriaController() {
     }
 
@@ -72,7 +82,8 @@ public class CategoriaController implements Serializable {
         return "View";
     }
 
-    public String prepareCreate() {
+    public String prepareCreate() {        
+        insertar=true;
         current = new Categoria();
         selectedItemIndex = -1;
         return "Create";
@@ -82,7 +93,7 @@ public class CategoriaController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoriaCreated"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -90,6 +101,7 @@ public class CategoriaController implements Serializable {
     }
 
     public String prepareEdit() {
+        insertar=false;
         current = (Categoria) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
