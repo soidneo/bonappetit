@@ -64,6 +64,7 @@ public class PedidoControlador {
     private List<PedidoMaestro> listaPedidoMaestro;
     private boolean bandera;
     private List<Usuario> usuarios;
+    private boolean editar;
 
 
     public PedidoDetalleDto getDetalle() {
@@ -238,7 +239,9 @@ public class PedidoControlador {
     
     public void cancelarPedido(PedidoDetalleDto detalle){
         this.pedidoMaestro.getDetallesPedido().remove(detalle);
-        actualizarInventario(detalle);
+        if(this.editar){
+            actualizarInventario(detalle);
+        }
     }
 
     @PostConstruct
@@ -255,6 +258,7 @@ public class PedidoControlador {
         this.detalle = new PedidoDetalleDto();
         usuarios=usuarioEjb.findAll();
         this.bandera=true;
+        this.editar=false;
     }
 
     public List<Categoria> getItems() {
@@ -298,6 +302,7 @@ public class PedidoControlador {
     public String editarPedido(PedidoMaestro p){
         this.pedidoMaestro=p;
         this.bandera=true;
+        this.editar=true;
         return "pedidoMesero.xhtml";
     }
     
