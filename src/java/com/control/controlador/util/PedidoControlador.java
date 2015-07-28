@@ -40,7 +40,7 @@ import org.primefaces.push.EventBusFactory;
  * @author mateo
  */
 @ManagedBean(name = "pedidoControlador")
-@ViewScoped
+@SessionScoped
 public class PedidoControlador {
     
     @EJB
