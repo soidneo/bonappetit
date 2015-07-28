@@ -230,7 +230,7 @@ public class PedidoControlador {
         if(!existe){
             this.pedidoMaestro.getDetallesPedido().add(detalle);
         }
-        this.actualizarInventario(this.detalle.getProducto().getIdProducto());
+        
         this.detalle = new PedidoDetalleDto();
         this.selected = new Categoria();
         this.pedido = new TProductoCategoria();
@@ -267,6 +267,9 @@ public class PedidoControlador {
         pedidoMaestro.setMesero(usuarioLogin.getUsuarioSession());
         CajaPedidosControlador caja=(CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
         caja.agregarPedido(pedidoMaestro);
+        for(PedidoDetalleDto detalleP:this.pedidoMaestro.getDetallesPedido()){
+            this.actualizarInventario(detalleP.getProducto().getIdProducto());
+        }
         notificarPUSH();
         iniciar(); 
     }
