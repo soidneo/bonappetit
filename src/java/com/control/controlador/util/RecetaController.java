@@ -49,6 +49,7 @@ public class RecetaController {
     }
     
     public void agragarIngrediente(){
+        detalle.setProductoReceta(productoEjbFacade.find(this.detalle.getProductoReceta().getId()));
         selected.getRecetaDetList().add(detalle);
         detalle.setReceta(selected);
     }
@@ -72,6 +73,7 @@ public class RecetaController {
         selected=new Receta();
         selected.setRecetaDetList(new ArrayList<RecetaDet>());
         selected.setProductoList(new ArrayList<Producto>());
+       
         listaIngredientes=this.productoEjbFacade.findAll();
         detalle=new RecetaDet();
         detalle.setProductoReceta(new Producto());
@@ -79,7 +81,7 @@ public class RecetaController {
     
     public void guardarReceta(){
         try{
-            
+            recetaEjbFacade.create(selected);
         }catch(Exception e){
             
         }

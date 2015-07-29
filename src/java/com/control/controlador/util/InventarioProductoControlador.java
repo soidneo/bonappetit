@@ -7,11 +7,13 @@ package com.control.controlador.util;
 import com.control.dao.CategoriaFacade;
 import com.control.dao.ProductoFacade;
 import com.control.dao.ProvedorFacade;
+import com.control.dao.RecetaFacade;
 import com.control.dao.UnidadFacade;
 import com.control.entidad.Categoria;
 import com.control.entidad.Kardex;
 import com.control.entidad.Producto;
 import com.control.entidad.Provedor;
+import com.control.entidad.Receta;
 import com.control.entidad.TProductoCategoria;
 import com.control.entidad.Unidad;
 import java.util.ArrayList;
@@ -43,11 +45,22 @@ public class InventarioProductoControlador {
     private CategoriaFacade categoriaEjb;
     @EJB
     private UnidadFacade unidadEjb;
+    @EJB
+    private RecetaFacade recetaFacade;
+    private List<Receta> listaReceta;
     private List<Unidad> listaUnidades;
     private Unidad unidad;
     private List<Categoria> listaCategorias;
     private Categoria categoria;
     private boolean nuevo;
+
+    public List<Receta> getListaReceta() {
+        return listaReceta;
+    }
+
+    public void setListaReceta(List<Receta> listaReceta) {
+        this.listaReceta = listaReceta;
+    }
 
     /**
      * Creates a new instance of InventarioProductoControlador
@@ -138,6 +151,7 @@ public class InventarioProductoControlador {
     @PostConstruct
     public void iniciar() {
         this.producto = new Producto();
+        this.producto.setRecetaFk(new Receta());
         this.compra = new Kardex();
         this.compra.setPrecioEntrada(Double.parseDouble("0"));
         this.unidad = new Unidad();
@@ -148,11 +162,18 @@ public class InventarioProductoControlador {
         listaProducto = productoEjb.consultarProductosIngrediente(false);
         listaCategorias = categoriaEjb.findAll();
         listaUnidades = unidadEjb.findAll();
+        listaReceta = recetaFacade.findAll();
     }
 
     public void nuevoP() {
         this.unidad = unidadEjb.find(this.unidad.getIdUnidad());
         this.producto.setUnidad(unidad);
+        System.out.println("rece:"+this.producto.getRecetaFk().getIdReceta());
+        if(this.producto.getRecetaFk().getIdReceta()!=null){
+            this.producto.setRecetaFk(recetaFacade.find(this.producto.getRecetaFk().getIdReceta()));
+        }else{
+            this.producto.setRecetaFk(null);
+        }
         productoEjb.create(producto);
         listaProducto=this.productoEjb.findAll();
     }

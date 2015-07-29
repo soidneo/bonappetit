@@ -153,7 +153,9 @@ public class PedidoControlador {
         } else {
             for (RecetaDet receta : p.getRecetaFk().getRecetaDetList()) {
                 int i = receta.getProductoReceta().getKardexList().size() - 1;
-                if (receta.getCantidad() < receta.getProductoReceta().getKardexList().get(i).getCantidadDisponible()) {
+
+                if (receta.getProductoReceta().getKardexList().get(i).getCantidadDisponible()<
+                        (receta.getCantidad()*this.detalle.getCantidad())) {
                     return true;
                 }
             }
@@ -169,10 +171,17 @@ public class PedidoControlador {
             kardex.setCantidadDisponible(kardex.getCantidadDisponible() - detalleP.getCantidad());
             kardexFacade.edit(kardex);
         } else {
-            for (RecetaDet receta : p.getRecetaDetList()) {
-                int i = p.getKardexList().size() - 1;
-                Kardex kardex = p.getKardexList().get(i);
-                kardex.setCantidadDisponible(kardex.getCantidadDisponible() - detalleP.getCantidad());
+            System.out.println("paso por aqui");
+            System.out.println("receta:"+p.getRecetaFk().getRecetaDetList().size());
+            for (RecetaDet receta : p.getRecetaFk().getRecetaDetList()) {
+                int i = receta.getProductoReceta().getKardexList().size() - 1;
+                Kardex kardex = receta.getProductoReceta().getKardexList().get(i);
+                System.out.println("disp antes:"+kardex.getCantidadDisponible());
+                System.out.println("receta:"+receta.getCantidad());
+                System.out.println("pidio:"+detalleP.getCantidad());
+                kardex.setCantidadDisponible(kardex.getCantidadDisponible() - 
+                        (detalleP.getCantidad()*receta.getCantidad()
+                        ));
                 kardexFacade.edit(kardex);
             }
         }

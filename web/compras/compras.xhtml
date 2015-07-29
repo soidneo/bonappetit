@@ -41,6 +41,10 @@
                                     #{detalle.cantidad}
                                 </p:column>
                             </p:dataTable>
+                            
+                            <p:commandButton value="Crear Receta"
+                                             actionListener="#{recetaController.guardarReceta}"/>
+                               
 
                             <p:dialog header="Unidades" widgetVar="rolModal" 
                                       modal="true" >
@@ -94,7 +98,12 @@
                                 
                                 <p:outputLabel value="Iva" for="iva"/>
                                 <p:inputText id="iva" value="#{inventarioProductoControlador.producto.iva}"/>
-
+                                <p:outputLabel value="receta" for="receta"/>
+                                <p:selectOneMenu required="false" id="receta" value="#{inventarioProductoControlador.producto.recetaFk.idReceta}">
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                    <f:selectItems value="#{inventarioProductoControlador.listaReceta}" var="receta"
+                                                   itemLabel="#{receta.nombre}" itemValue="#{receta.idReceta}"/>
+                                </p:selectOneMenu>
                                 <h:panelGroup/>
                                 <p:commandButton value="Registrar" actionListener="#{inventarioProductoControlador.nuevoP}"
                                                  ajax="true" update="tab:form1"/>
