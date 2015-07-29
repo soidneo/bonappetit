@@ -4,7 +4,6 @@
  */
 package com.control.controlador.util;
 
-
 import com.control.dao.CategoriaFacade;
 import com.control.dao.KardexFacade;
 import com.control.dao.MesaFacade;
@@ -14,7 +13,6 @@ import com.control.dto.PedidoDetalleDto;
 import com.control.dto.PedidoMaestro;
 import com.control.entidad.Categoria;
 import com.control.entidad.Kardex;
-
 import com.control.entidad.Mesa;
 import com.control.entidad.Producto;
 import com.control.entidad.RecetaDet;
@@ -28,10 +26,8 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
@@ -42,7 +38,7 @@ import org.primefaces.push.EventBusFactory;
 @ManagedBean(name = "pedidoControlador")
 @SessionScoped
 public class PedidoControlador {
-    
+
     @EJB
     private com.control.dao.CategoriaFacade ejbFacade;
     @EJB
@@ -53,7 +49,6 @@ public class PedidoControlador {
     private UsuarioFacade usuarioEjb;
     @EJB
     private KardexFacade kardexFacade;
-    
     private List<Categoria> items = null;
     private Categoria selected;
     private List<TProductoCategoria> listaProductos;
@@ -65,7 +60,6 @@ public class PedidoControlador {
     private boolean bandera;
     private List<Usuario> usuarios;
     private boolean editar;
-
 
     public PedidoDetalleDto getDetalle() {
         return detalle;
@@ -99,12 +93,9 @@ public class PedidoControlador {
         this.selected = selected;
     }
 
-  
     private CategoriaFacade getFacade() {
         return ejbFacade;
     }
-
-
 
     public List<TProductoCategoria> getListaProductos() {
         return listaProductos;
@@ -145,120 +136,118 @@ public class PedidoControlador {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-    
-    
-    
+
     public void asignarCategoria() {
         selected = ejbFacade.find(this.selected.getId());
         this.listaProductos = selected.getTProductoCategoriaList();
     }
-    
-    public boolean calcularInventario(Producto p){
-        if(p.getRecetaFk()==null){    
-            int i=p.getKardexList().size()-1;
-            if(p.getKardexList().get(i).getCantidadDisponible()>0){
-                return false;
+
+    public boolean calcularInventario(Producto p) {
+        if (p.getRecetaFk() == null || p.getRecetaDetList() == null) {
+            int i = p.getKardexList().size() - 1;
+            System.out.println("can distp:" + p.getKardexList().get(i).getCantidadDisponible());
+            System.out.println("can vent:" + this.detalle.getCantidad());
+            if (p.getKardexList().get(i).getCantidadDisponible() < this.detalle.getCantidad()) {
+                return true;
             }
-        }else{
-            for(RecetaDet receta:p.getRecetaFk().getRecetaDetList()){
-                int i=receta.getProductoReceta().getKardexList().size()-1;
-                if(receta.getCantidad()<receta.getProductoReceta().getKardexList().get(i).getCantidadDisponible()){
+        } else {
+            for (RecetaDet receta : p.getRecetaFk().getRecetaDetList()) {
+                int i = receta.getProductoReceta().getKardexList().size() - 1;
+                if (receta.getCantidad() < receta.getProductoReceta().getKardexList().get(i).getCantidadDisponible()) {
                     return true;
                 }
             }
         }
-        
-        return true;
+
+        return false;
     }
-    
-    
-    
-    public void actualizarInventario(Producto p){
-        if(p.getRecetaFk()==null){    
-            int i=p.getKardexList().size()-1;
-            Kardex kardex=p.getKardexList().get(i);
-            kardex.setCantidadDisponible(kardex.getCantidadDisponible()-this.detalle.getCantidad());
+
+    public void actualizarInventario(Producto p, PedidoDetalleDto detalleP) {
+        if (p.getRecetaFk() == null) {
+            int i = p.getKardexList().size() - 1;
+            Kardex kardex = p.getKardexList().get(i);
+            kardex.setCantidadDisponible(kardex.getCantidadDisponible() - detalleP.getCantidad());
             kardexFacade.edit(kardex);
-        }else{
-            for(RecetaDet receta:p.getRecetaDetList()){
-                int i=p.getKardexList().size()-1;
-                Kardex kardex=p.getKardexList().get(i);
-                kardex.setCantidadDisponible(kardex.getCantidadDisponible()-this.detalle.getCantidad());
+        } else {
+            for (RecetaDet receta : p.getRecetaDetList()) {
+                int i = p.getKardexList().size() - 1;
+                Kardex kardex = p.getKardexList().get(i);
+                kardex.setCantidadDisponible(kardex.getCantidadDisponible() - detalleP.getCantidad());
                 kardexFacade.edit(kardex);
             }
         }
     }
-    
-      public void actualizarInventario(PedidoDetalleDto pedidoDto){
-        Producto p=pedidoDto.getProducto().getIdProducto();
-        if(p.getRecetaFk()==null){    
-            int i=p.getKardexList().size()-1;
-            Kardex kardex=p.getKardexList().get(i);
-            kardex.setCantidadDisponible(kardex.getCantidadDisponible()+pedidoDto.getCantidad());
+
+    public void actualizarInventario(PedidoDetalleDto pedidoDto) {
+        Producto p = pedidoDto.getProducto().getIdProducto();
+        if (p.getRecetaFk() == null) {
+            int i = p.getKardexList().size() - 1;
+            Kardex kardex = p.getKardexList().get(i);
+            kardex.setCantidadDisponible(kardex.getCantidadDisponible() + pedidoDto.getCantidad());
             kardexFacade.edit(kardex);
-        }else{
-            for(RecetaDet receta:p.getRecetaDetList()){
-                int i=p.getKardexList().size()-1;
-                Kardex kardex=p.getKardexList().get(i);
-                kardex.setCantidadDisponible(kardex.getCantidadDisponible()+pedidoDto.getCantidad());
+        } else {
+            for (RecetaDet receta : p.getRecetaDetList()) {
+                int i = p.getKardexList().size() - 1;
+                Kardex kardex = p.getKardexList().get(i);
+                kardex.setCantidadDisponible(kardex.getCantidadDisponible() + pedidoDto.getCantidad());
                 kardexFacade.edit(kardex);
             }
         }
     }
-      
-    public void modal(){
-        this.bandera=true;
+
+    public void modal() {
+        this.bandera = true;
     }
-    
+
     public void agregarPedido() {
-        boolean existe=false;
+        boolean existe = false;
         this.pedido = ejbProductoFacadel.find(this.pedido.getId());
-        if(calcularInventario(this.pedido.getIdProducto())){
+        if (calcularInventario(this.pedido.getIdProducto())) {
             com.control.controlador.util.util.JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("noinventarioVal"));
             return;
         }
         this.detalle.setProducto(pedido);
-        this.detalle.setTotal(this.pedido.getIdProducto().getCostoVenta()*this.detalle.getCantidad());
-        for(int i=0;i<pedidoMaestro.getDetallesPedido().size();i++){
-            if(pedidoMaestro.getDetallesPedido().get(i).getProducto().getId()==detalle.getProducto().getId()){
-                pedidoMaestro.getDetallesPedido().get(i).setCantidad(pedidoMaestro.getDetallesPedido().get(i).getCantidad()+detalle.getCantidad());
-                pedidoMaestro.getDetallesPedido().get(i).setTotal(pedidoMaestro.getDetallesPedido().get(i).getCantidad()*
-                        pedidoMaestro.getDetallesPedido().get(i).getProducto().getIdProducto().getCostoVenta());
-                        existe=true;
-                        break;
+        this.detalle.setTotal(this.pedido.getIdProducto().getCostoVenta() * this.detalle.getCantidad());
+        for (int i = 0; i < pedidoMaestro.getDetallesPedido().size(); i++) {
+            if (pedidoMaestro.getDetallesPedido().get(i).getProducto().getId() == detalle.getProducto().getId()) {
+                pedidoMaestro.getDetallesPedido().get(i).setCantidad(pedidoMaestro.getDetallesPedido().get(i).getCantidad() + detalle.getCantidad());
+                pedidoMaestro.getDetallesPedido().get(i).setTotal(pedidoMaestro.getDetallesPedido().get(i).getCantidad()
+                        * pedidoMaestro.getDetallesPedido().get(i).getProducto().getIdProducto().getCostoVenta());
+                existe = true;
+                break;
             }
         }
-        if(!existe){
+        if (!existe) {
             this.pedidoMaestro.getDetallesPedido().add(detalle);
         }
-        
+
         this.detalle = new PedidoDetalleDto();
         this.selected = new Categoria();
         this.pedido = new TProductoCategoria();
     }
-    
-    public void cancelarPedido(PedidoDetalleDto detalle){
+
+    public void cancelarPedido(PedidoDetalleDto detalle) {
         this.pedidoMaestro.getDetallesPedido().remove(detalle);
-        if(this.editar){
-            actualizarInventario(detalle);
-        }
     }
 
     @PostConstruct
-    public void iniciar() {      
-        this.items = getFacade().findAll();
-        this.listaMesas=ejbMesaFacade.findAll();
-        this.listaProductos = new ArrayList<TProductoCategoria>();
-        this.selected = new Categoria();
-        this.pedidoMaestro = new PedidoMaestro();
-        this.pedidoMaestro.setDetallesPedido(new ArrayList<PedidoDetalleDto>());
-        this.pedidoMaestro.setMesa(new Mesa());
-        this.pedidoMaestro.setCliente(new Usuario());
-        this.pedido = new TProductoCategoria();
-        this.detalle = new PedidoDetalleDto();
-        usuarios=usuarioEjb.findAll();
-        this.bandera=true;
-        this.editar=false;
+    public void iniciar() {
+        if (!this.editar) {
+            this.items = getFacade().findAll();
+            this.listaMesas = ejbMesaFacade.findAll();
+            this.listaProductos = new ArrayList<TProductoCategoria>();
+            this.selected = new Categoria();
+            this.pedidoMaestro = new PedidoMaestro();
+            this.pedidoMaestro.setDetallesPedido(new ArrayList<PedidoDetalleDto>());
+            this.pedidoMaestro.setMesa(new Mesa());
+            this.pedidoMaestro.setCliente(new Usuario());
+            this.pedido = new TProductoCategoria();
+            this.detalle = new PedidoDetalleDto();
+            usuarios = usuarioEjb.findAll();
+            this.bandera = true;
+            this.editar = false;
+        }
+
     }
 
     public List<Categoria> getItems() {
@@ -266,16 +255,17 @@ public class PedidoControlador {
     }
 
     public void agregarPedidoMaestro() {
-        UsuarioLoginControlador usuarioLogin=(UsuarioLoginControlador)  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogin");
+        UsuarioLoginControlador usuarioLogin = (UsuarioLoginControlador) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogin");
         pedidoMaestro.setMesa(this.ejbMesaFacade.find(this.pedidoMaestro.getMesa().getIdMesa()));
         pedidoMaestro.setMesero(usuarioLogin.getUsuarioSession());
-        CajaPedidosControlador caja=(CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
+        CajaPedidosControlador caja = (CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
         caja.agregarPedido(pedidoMaestro);
-        for(PedidoDetalleDto detalleP:this.pedidoMaestro.getDetallesPedido()){
-            this.actualizarInventario(detalleP.getProducto().getIdProducto());
+        for (PedidoDetalleDto detalleP : this.pedidoMaestro.getDetallesPedido()) {
+
+            this.actualizarInventario(detalleP.getProducto().getIdProducto(), detalleP);
         }
         notificarPUSH();
-        iniciar(); 
+        iniciar();
     }
 
     public void notificarPUSH() {
@@ -293,21 +283,21 @@ public class PedidoControlador {
     public List<Categoria> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-    
-    public List<Usuario> completeClientes(String query){
-        
+
+    public List<Usuario> completeClientes(String query) {
+
         return usuarios;
     }
-    
-    public String editarPedido(PedidoMaestro p){
-        this.pedidoMaestro=p;
-        this.bandera=true;
-        this.editar=true;
+
+    public String editarPedido(PedidoMaestro p) {
+        this.pedidoMaestro = p;
+        this.bandera = true;
+        this.editar = true;
+        for (PedidoDetalleDto detalleP : this.pedidoMaestro.getDetallesPedido()) {
+            actualizarInventario(detalleP);
+        }
         return "pedidoMesero.xhtml";
     }
-    
-   
-    
 
     /**
      * Creates a new instance of PedidoControlador

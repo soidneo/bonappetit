@@ -65,7 +65,5 @@ public class PedidoDetalleDto {
 
     public void setTotal(double total) {
         this.total = total;
-    } //ve seguro es Tproductocategoria?
-    //no es producto ? puede ser pero Tproducto tiene el producto da lo mismo pero como alla tenemos /
-    //es mas facil tenerlo asi
+    }
 }

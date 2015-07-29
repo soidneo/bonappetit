@@ -127,6 +127,7 @@
 
 
                         <p:commandButton value="Aceptar"
+                                         process="@this"
                                          actionListener="#{pedidoControlador.agregarPedidoMaestro}"
                                          update="formI,form" 
                                          oncomplete="PF('modal').hide();">
