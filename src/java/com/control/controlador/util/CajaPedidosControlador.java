@@ -122,6 +122,7 @@ public class CajaPedidosControlador {
                 venta.getVentaDetalleList().add(detalle);
             }
             ventaEjb.create(venta);
+            this.listaPedidos.remove(this.pedidoMes);
         }catch(Exception e){}
     }
     

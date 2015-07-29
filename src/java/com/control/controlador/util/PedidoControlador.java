@@ -232,7 +232,7 @@ public class PedidoControlador {
 
     @PostConstruct
     public void iniciar() {
-        if (!this.editar) {
+
             this.items = getFacade().findAll();
             this.listaMesas = ejbMesaFacade.findAll();
             this.listaProductos = new ArrayList<TProductoCategoria>();
@@ -246,8 +246,7 @@ public class PedidoControlador {
             usuarios = usuarioEjb.findAll();
             this.bandera = true;
             this.editar = false;
-        }
-
+        
     }
 
     public List<Categoria> getItems() {
@@ -296,6 +295,9 @@ public class PedidoControlador {
         for (PedidoDetalleDto detalleP : this.pedidoMaestro.getDetallesPedido()) {
             actualizarInventario(detalleP);
         }
+        CajaPedidosControlador caja = (CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
+        caja.getListaPedidos().remove(p);
+        
         return "pedidoMesero.xhtml";
     }
 
