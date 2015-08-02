@@ -38,19 +38,17 @@
                             <h:outputText value="Productos" style="color: #ffffff"/>  
 
 
-                            <p:button outcome="pm:unidad?transition=flip" value="Unidades" styleClass="botoncillos"/>
-                            <p:button outcome="pm:producto?transition=flip" value="Productos" styleClass="botoncillos"/>
-                            <p:button outcome="pm:producto?transition=flip" value="Unidades" styleClass="botoncillos"/>
+                            <p:button outcome="usuario/index.xhtml" value="Parametros" styleClass="style_buttons"/>
                         </p:column>
                         <p:column>
                             <h:outputText value="Pedidos"  style="color: #ffffff"/>
-                            <p:button outcome="addPedido.xhtml" value="Pedidos"  styleClass="botoncillos"/>
-                            <p:button outcome="addUsers.xhtml" value="Clientes"  styleClass="botoncillos"/>
+                            <p:button outcome="addPedido.xhtml" value="Pedidos"  styleClass="style_buttons"/>
+                            <p:button outcome="addUsers.xhtml" value="Clientes"  styleClass="style_buttons"/>
                         </p:column>
                         <p:column>
                             <h:outputText value="Opciones" style="color: #ffffff"/>
-                            <p:button outcome="unidad/List?transition=flip" value="Datos"  styleClass="botoncillos"/>
-                            <p:commandButton action="#{usuarioLogin.cerrarSession()}" value="Cerrar Sesion"  styleClass="botoncillos"/>
+                            <p:button outcome="unidad/List?transition=flip" value="Datos"  styleClass="style_buttons"/>
+                            <p:commandButton action="#{usuarioLogin.cerrarSession()}" value="Cerrar Sesion"  styleClass="style_buttons"/>
 
                         </p:column>
                     </p:panelGrid>
@@ -125,9 +123,10 @@
                 </p:dialog> 
             </div>
         </pm:page>
-        <pm:page id="Usuarioss">
+            <pm:page id="Usuarioss">
             <div data-role="content" data-theme="b">
-                <div data-role="header" data-position="inline">
+                <div data-role="header" data-position="inline" id="header_p">
+                    <img src="./resources/img/logo_peque.png" id="logo2" />
                     <h1>Seccion Usuarios</h1>
                     <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
                 </div>  
@@ -166,7 +165,7 @@
             background-color: #7B1400;
             background: #7B1400;text-align: center !important;
         }
-        .botoncillos{
+        .style_buttons{
             background: none;
             background-image: url(./resources/img/buton.png);
             border-style: none;
@@ -202,7 +201,7 @@
                 background-image: url(./resources/images/madera_header.png);
            }
            #logo1{
-               width: 100%;
+               width: 40%;
            }
            #logo2{
                width: 50%;

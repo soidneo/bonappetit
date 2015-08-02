@@ -18,16 +18,19 @@
         </style>
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        
 
     </h:head>
     <h:body> 
-        <pm:page id="first">
-            <pm:header title="Menu Administración" swatch="b">
-                <p:button outcome="/menu" value="Salir" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
-            </pm:header>
+        <pm:page id="first" swatch="b">
+            <div data-role="header" swatch="b" data-position="inline" id="header_p">
+                    <img src="../resources/img/logo_peque.png" id="logo2" />
+                    <h1>Menu Administracion-Parametros</h1>
+                    <p:button outcome="../menuAdministrador.xhtml" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+                </div> 
             <p:accordionPanel id="aco">
                 <p:tab title="Usuarios">
-                    <pm:header title="Listado Usuarios" swatch="a">
+                    <pm:header title="Listado Usuarios" swatch="b">
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form" id="form" data-mini="true">
                         <p:growl id="growl" showDetail="true"/>
@@ -111,7 +114,7 @@
                 </p:tab>
                 <!-- _____________________________________________________ unidades _____________________________________ -->
                 <p:tab title="Unidades">
-                    <pm:header title="Listado Unidades" swatch="a">
+                    <pm:header title="Listado Unidades" swatch="b">
                         <p:button outcome="./index.xhtml" value="Volver" icon="ui-icon-arrow-u" styleClass="ui-btn-left ui-btn-inline"/>
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form2" id="form2" data-mini="true">
@@ -168,7 +171,7 @@
                 </p:tab>
                 <!-- _____________________________________________________ mesas _____________________________________ -->
                 <p:tab title="Mesas">
-                    <pm:header title="Listado Mesas" swatch="a">
+                    <pm:header title="Listado Mesas" swatch="b">
                         <p:button outcome="./index.xhtml" value="Volver" icon="ui-icon-arrow-u" styleClass="ui-btn-left ui-btn-inline"/>
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form" id="form3">
@@ -225,7 +228,7 @@
                 </p:tab>
                 <!-- _____________________________________________________ Categorias _____________________________________ -->
                 <p:tab title="Categorias">
-                    <pm:header title="Listado Categorias" swatch="a">
+                    <pm:header title="Listado Categorias" swatch="b">
                         <p:button outcome="./index.xhtml" value="Volver" icon="ui-icon-arrow-u" styleClass="ui-btn-left ui-btn-inline"/>
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form" id="form4">
@@ -282,7 +285,7 @@
                 </p:tab> 
                 <!-- _____________________________________________________ Productos _____________________________________ -->
                 <p:tab title="Producto">
-                    <pm:header title="Listado productos" swatch="a">
+                    <pm:header title="Listado productos" swatch="b">
                         <p:button outcome="./index.xhtml" value="Volver" icon="ui-icon-arrow-u" styleClass="ui-btn-left ui-btn-inline"/>
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form" id="form5">
@@ -340,7 +343,7 @@
                 <!-- _____________________________________________________ Recetas _____________________________________ -->
                 <!-- _____________________________________________________ Modos de pago _____________________________________ -->
                 <p:tab title="Modo de Pago">
-                    <pm:header title="Listado Modos de Pago" swatch="a">
+                    <pm:header title="Listado Modos de Pago" swatch="b">
                         <p:button outcome="./index.xhtml" value="Volver" icon="ui-icon-arrow-u" styleClass="ui-btn-left ui-btn-inline"/>
                     </pm:header>
                     <h:form styleClass="jsfcrud_list_form" id="form6">
@@ -397,10 +400,47 @@
                 </p:tab> 
                 <!-- _____________________________________________________ Roles _____________________________________ -->
             </p:accordionPanel>
-            <pm:footer  swatch="B">
-                <p:outputLabel value='All copyrights @ reserved for Mateo Guerrero, Pablo Gomez'></p:outputLabel>
+            <pm:footer  swatch="B" >
+                <p:outputLabel  value='All copyrights @ reserved for Mateo Guerrero, Pablo Gomez'></p:outputLabel>
             </pm:footer>
         </pm:page>
     </h:body>
+<style>
+        #first{      
 
+            background-image: url(../resources/images/wood_pattern.jpg);
+        }
+        @media (max-width: 800px) and (min-width: 300px) {
+            #header_p{
+                background-image: url(../resources/images/header_mobile.png);
+                background-size: 100% 100%;
+            }
+            #footer_p{
+                background-image: url(../resources/images/wood_pattern.png);
+                background-size: 100% 100%;
+            }
+            #logo2{
+               width: 80%;
+               margin-left: 50%;
+           }
+           #logo1{
+               width: 80%;
+           }
+        }
+        @media (min-width: 1200px) {
+           #header_p{
+                background-image: url(../resources/images/madera_header.png);
+           }
+           #logo1{
+               width: 40%;
+           }
+           #logo2{
+               width: 50%;
+           }
+            #footer_p{
+                background-image: url(../resources/images/wood_pattern.png);
+                background-size: 100% 100%;
+            }
+        }
+        </style>
 </html>
