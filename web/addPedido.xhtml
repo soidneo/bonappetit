@@ -8,13 +8,17 @@
     <f:view renderKitId="PRIMEFACES_MOBILE"/>
     <h:head>
         <title>Ingredientes</title>
+        <h:outputStylesheet name="css/imagen.css"/>
 
     </h:head>
     <h:body> 
-        <div data-role="content" data-theme="b">
+        <div id="cabecera" style="text-align: center">
+                <img src="./resources/img/logo.png" id="logo"/>
+            </div>
+        <div data-role="content" data-theme="a">
             <div data-role="header" data-position="inline">
                 <h1>Agregar Pedido</h1>
-                <p:button outcome="menuAgregar" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+                <p:button outcome="menuAdministrador" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
             </div> 
             <h:form id="form">   
 

@@ -307,7 +307,7 @@ public class PedidoControlador {
         CajaPedidosControlador caja = (CajaPedidosControlador) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("cajaPedidosControlador");
         caja.getListaPedidos().remove(p);
         
-        return "pedidoMesero.xhtml";
+        return "addPedido.xhtml";
     }
 
     /**

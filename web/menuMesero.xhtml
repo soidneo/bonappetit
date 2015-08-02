@@ -15,28 +15,26 @@
         </style>
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <h:outputStylesheet name="css/imagen.css"/>
     </h:head>
 
     <h:body>      
 
         <pm:page id="index">
-
-            <div data-role="header" data-position="inline">
-                <h1>Menu Administrador</h1>
+            <div id="cabecera" style="text-align: center">
+                <img src="./resources/img/logo.png" id="logo"/>
             </div>
 
-            <div data-role="content" data-theme="b">
+            <div data-role="header" data-position="inline">
+                <h1>Menu Mesero</h1>
+            </div>
+
+            <div data-role="content" data-theme="a">
                 <h:form>
 
-                    <p:panelGrid columns="3">
+                    <p:panelGrid columns="1">
                         <p:column>
-                            <h:outputText value="Recetas y Productos"/>    
-                            <p:button outcome="pm:unidad?transition=flip" value="Receteas" />
-                            <p:button outcome="pm:producto?transition=flip" value="Productos"/>
-                            <p:button outcome="pm:producto?transition=flip" value="Unidades"/>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="Pedidos y Domiclios"/>
+                            <h:outputText value="Pedidos"/>
                             <p:button outcome="addPedido.xhtml" value="Pedidos" />
                             <p:button outcome="addUsers.xhtml" value="Clientes" />
                         </p:column>
@@ -53,7 +51,7 @@
         </pm:page>
 
         <pm:page id="unidad">
-            <div data-role="content" data-theme="b">
+            <div data-role="content" data-theme="a">
                 <div data-role="header" data-position="inline">
                     <h1>Menu Administrador</h1>
                     <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
@@ -119,7 +117,7 @@
             </div>
         </pm:page>
         <pm:page id="Usuarioss">
-            <div data-role="content" data-theme="b">
+            <div data-role="content" data-theme="a">
                 <div data-role="header" data-position="inline">
                     <h1>Seccion Usuarios</h1>
                     <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>

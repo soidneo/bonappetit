@@ -159,13 +159,14 @@ public class InventarioProductoControlador {
         this.provedor = new Provedor();
 
         listaProvedor = provedorEjb.findAll();
-        listaProducto = productoEjb.consultarProductosIngrediente(false);
+        listaProducto = new ArrayList<Producto>();
         listaCategorias = categoriaEjb.findAll();
         listaUnidades = unidadEjb.findAll();
         listaReceta = recetaFacade.findAll();
     }
 
     public void nuevoP() {
+        this.categoria=this.categoriaEjb.find(this.categoria.getId());
         this.unidad = unidadEjb.find(this.unidad.getIdUnidad());
         this.producto.setUnidad(unidad);
         System.out.println("rece:"+this.producto.getRecetaFk().getIdReceta());
@@ -174,6 +175,11 @@ public class InventarioProductoControlador {
         }else{
             this.producto.setRecetaFk(null);
         }
+        producto.setTProductoCategoriaList(new ArrayList<TProductoCategoria>());
+        TProductoCategoria tprodCat=new TProductoCategoria();
+        tprodCat.setIdCategoria(categoria);
+        tprodCat.setIdProducto(producto);
+        producto.getTProductoCategoriaList().add(tprodCat);
         productoEjb.create(producto);
         listaProducto=this.productoEjb.findAll();
     }
@@ -192,6 +198,17 @@ public class InventarioProductoControlador {
     public void actualizarkardex(){
         
     }
+    
+    public void actualizarCategortia(){
+        System.out.println(categoria.getId());
+        categoria=categoriaEjb.find(categoria.getId());
+        this.listaProducto=new ArrayList<Producto>();
+        for(TProductoCategoria tCat:categoria.getTProductoCategoriaList()){
+            if(tCat.getIdProducto().getRecetaFk()==null){
+                 this.listaProducto.add(tCat.getIdProducto());
+            }
+        }
+    }
             
 
     public void guardarNuevo() {
@@ -199,19 +216,15 @@ public class InventarioProductoControlador {
             if (!nuevo) {
                 producto = productoEjb.find(this.producto.getId());
             }
-            TProductoCategoria pCat = new TProductoCategoria();
-            categoria = categoriaEjb.find(this.categoria.getId());
-
-            categoria.setTProductoCategoriaList(new ArrayList<TProductoCategoria>());
-            pCat.setIdCategoria(categoria);
-            pCat.setIdProducto(producto);
+          
+      
 
             this.provedor = provedorEjb.find(this.provedor.getIdProvedor());
 
             this.producto.setAdicional(false);
             this.producto.setKardexList(new ArrayList<Kardex>());
             this.producto.setTProductoCategoriaList(new ArrayList<TProductoCategoria>());
-            this.producto.getTProductoCategoriaList().add(pCat);
+           
 
             compra.setProvedor(provedor);
             compra.setProductoKardex(producto);

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+
+    <h:head>
+        <style type="text/css">
+            .ui-grid-a div {
+                padding: 0em 0.5em;
+            }
+        </style>
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <h:outputStylesheet name="css/imagen.css"/>
+    </h:head>
+
+    <h:body>      
+
+        <pm:page id="index">
+            <div id="cabecera" style="text-align: center">
+                <img src="./resources/img/logo.png" id="logo1"/>
+            </div>
+
+            <div data-role="header" data-position="inline" data-theme="b">
+                <h1 >Menu Administrador</h1>
+            </div>
+
+            <div data-role="content" data-theme="b" style="background: #000000;margin: 0%;padding: 4px">
+                <h:form>
+
+                    <p:panelGrid columns="3" styleClass="paneles">
+
+                        <p:column>
+                            <h:outputText value="Productos" style="color: #ffffff"/>  
+
+
+                            <p:button outcome="pm:unidad?transition=flip" value="Unidades" styleClass="botoncillos"/>
+                            <p:button outcome="pm:producto?transition=flip" value="Productos" styleClass="botoncillos"/>
+                            <p:button outcome="pm:producto?transition=flip" value="Unidades" styleClass="botoncillos"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Pedidos"  style="color: #ffffff"/>
+                            <p:button outcome="addPedido.xhtml" value="Pedidos"  styleClass="botoncillos"/>
+                            <p:button outcome="addUsers.xhtml" value="Clientes"  styleClass="botoncillos"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Opciones" style="color: #ffffff"/>
+                            <p:button outcome="unidad/List?transition=flip" value="Datos"  styleClass="botoncillos"/>
+                            <p:commandButton action="#{usuarioLogin.cerrarSession()}" value="Cerrar Sesion"  styleClass="botoncillos"/>
+
+                        </p:column>
+                    </p:panelGrid>
+                </h:form>
+            </div>
+        </pm:page>
+
+        <pm:page id="unidad">
+            <div data-role="content" data-theme="b">
+                <div data-role="header" data-position="inline" id="header_p">
+                    <img src="./resources/img/logo_peque.png" id="logo2" />
+                    <h1>Unidades</h1>
+                    <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+                </div>            
+                <h:form styleClass="jsfcrud_list_form" id="form" >
+                    <p:growl id="growl" sticky="true" showDetail="true" />
+                    <pm:field >                    
+                        <p:dataTable paginator="true" rows="5" id="tabla" value="#{unidadController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true" >
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListUnidadTitle_idUnidad}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.idUnidad}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListUnidadTitle_nombre}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nombre}"/>
+                            </p:column>                        
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Editar"/>
+                                </f:facet>
+
+                                <p:commandButton actionListener="#{unidadController.prepareEdit()}" icon="ui-icon-edit"                                             
+                                                 title="#{bundle.ListUnidadEditLink}"
+                                                 ajax="true" update="unidad:formI:modal"
+                                                 onsuccess="PF('rolModal').show();"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Eliminar"/>
+                                </f:facet>
+                                <p:commandButton actionListener="#{unidadController.destroy()}" title="Eliminar" icon="ui-icon-delete"
+                                                 ajax="true" update="tabla"/>
+                            </p:column>
+                        </p:dataTable>
+                        <br />
+                        <p:commandButton actionListener="#{unidadController.prepareCreate}" value="Crear Unidad"
+                                         onsuccess="PF('rolModal').show();" ajax="true" update="unidad:formI:modal"/>
+                    </pm:field>
+                </h:form>
+                <p:dialog header="Unidades" widgetVar="rolModal" appendTo="@(unidad)"
+                          modal="true"  >
+                    <p:ajax event="close" listener="#{dtEditView.handleClose()}"/>
+                    <h:form id="formI">
+
+                        <p:panelGrid  id="modal">
+                            <h:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
+                            <h:inputText id="nombre" value="#{unidadController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="#{bundle.CreateUnidadRequiredMessage_nombre}"/>
+
+                            <p:commandButton action="#{unidadController.create}" value="#{bundle.CreateUnidadSaveLink}" rendered="#{unidadController.insertar}"
+                                             ajax="true" process="@form,unidad" update="unidad" oncomplete="PF('rolModal').hide();" style="width: 100%;">
+
+                            </p:commandButton>
+                            <p:commandButton action="#{unidadController.update}" value="#{bundle.CreateUnidadSaveLink}" rendered="#{!unidadController.insertar}"
+                                             ajax="true" process="@form" update="unidad" oncomplete="PF('rolModal').hide();" style="width: 100%;"/>
+                            <p:commandButton value="Cancelar" onclick="PF('rolModal').close()" style="width: 100%;" action="pm:unidad"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog> 
+            </div>
+        </pm:page>
+        <pm:page id="Usuarioss">
+            <div data-role="content" data-theme="b">
+                <div data-role="header" data-position="inline">
+                    <h1>Seccion Usuarios</h1>
+                    <p:button outcome="pm:index?transition=flip" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+                </div>  
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_usuario}" for="usuario" />
+                        <h:inputText id="usuario" value="#{usuarioController.selected.usuario}" title="#{bundle.CreateUsuarioTitle_usuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuario}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_nombres}" for="nombres" />
+                        <h:inputText id="nombres" value="#{usuarioController.selected.nombres}" title="#{bundle.CreateUsuarioTitle_nombres}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nombres}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_apellidos}" for="apellidos" />
+                        <h:inputText id="apellidos" value="#{usuarioController.selected.apellidos}" title="#{bundle.CreateUsuarioTitle_apellidos}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_apellidos}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_correo}" for="correo" />
+                        <h:inputText id="correo" value="#{usuarioController.selected.correo}" title="#{bundle.CreateUsuarioTitle_correo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_correo}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_profesion}" for="profesion" />
+                        <h:inputText id="profesion" value="#{usuarioController.selected.profesion}" title="#{bundle.CreateUsuarioTitle_profesion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_profesion}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_fechaCreacion}" for="fechaCreacion" />
+                        <h:inputText id="fechaCreacion" value="#{usuarioController.selected.fechaCreacion}" title="#{bundle.CreateUsuarioTitle_fechaCreacion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_fechaCreacion}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:inputText>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_estado}" for="estado" />
+                        <h:inputText id="estado" value="#{usuarioController.selected.estado}" title="#{bundle.CreateUsuarioTitle_estado}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_estado}"/>
+                        <h:outputLabel value="#{bundle.CreateUsuarioLabel_clave}" for="clave" />
+                        <h:inputText id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton action="#{usuarioController.create}" value="#{bundle.CreateUsuarioSaveLink}" />
+                    <h:commandButton action="#{usuarioController.prepareList}" value="#{bundle.CreateUsuarioShowAllLink}" immediate="true"/>
+
+                </h:form>
+            </div>
+        </pm:page>
+
+    </h:body>
+    <style>
+        .paneles{
+            background-color: #7B1400;
+            background: #7B1400;text-align: center !important;
+        }
+        .botoncillos{
+            background: none;
+            background-image: url(./resources/img/buton.png);
+            border-style: none;
+            background-size: 100% 100%;background-position: center;
+            width: 95%;
+            height: 95%
+
+        }
+        #index{      
+
+            background-image: url(./resources/images/wood_pattern.jpg);
+        }
+        #unidad{      
+
+                background-image: url(./resources/images/wood_pattern.jpg);
+                background-size: 30% 30%;
+            }
+        @media (max-width: 800px) and (min-width: 300px) {
+            #header_p{
+                background-image: url(./resources/images/header_mobile.png);
+                background-size: 100% 100%;
+            }
+            #logo2{
+               width: 80%;
+               margin-left: 50%;
+           }
+           #logo1{
+               width: 80%;
+           }
+        }
+        @media (min-width: 1200px) {
+           #header_p{
+                background-image: url(./resources/images/madera_header.png);
+           }
+           #logo1{
+               width: 100%;
+           }
+           #logo2{
+               width: 50%;
+           }
+        }
+    </style>
+</html>

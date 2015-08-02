@@ -39,6 +39,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Usuario.findByEstado", query = "SELECT u FROM Usuario u WHERE u.estado = :estado"),
     @NamedQuery(name = "Usuario.findByClave", query = "SELECT u FROM Usuario u WHERE u.clave = :clave")})
 public class Usuario implements Serializable {
+    @Column(name = "rol")
+    private Integer rol;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -216,6 +218,14 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.control.entidad.Usuario[ usuario=" + usuario + " ]";
+    }
+
+    public Integer getRol() {
+        return rol;
+    }
+
+    public void setRol(Integer rol) {
+        this.rol = rol;
     }
     
 }

@@ -10,11 +10,13 @@ import com.control.entidad.Usuario;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
@@ -125,12 +127,17 @@ public class UsuarioLoginControlador {
         this.menuSeleccion = menu;
     }
 
-    public String cerrarSession() throws IOException {
+    public void cerrarSession() throws IOException {
+     
         this.login = false;
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
         FacesContext.getCurrentInstance().getExternalContext().getSession(login);
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/Inicial/Menu.xhtml";
+        FacesContext facesContext =FacesContext.getCurrentInstance();
+        ExternalContext ext = facesContext.getExternalContext();
+        String ctxPath = ((ServletContext) ext.getContext()).getContextPath();
+        ext.redirect(ctxPath + "/index.xhtml");
+  
     }
 
     public void loguear() throws Exception {
@@ -151,9 +158,10 @@ public class UsuarioLoginControlador {
     }
 
     public void confirmar() throws Exception {
+
         FacesContext context = FacesContext.getCurrentInstance();
         List<Usuario> usuarios = usuarioFacade.findUsuario(this.usuario);
-        if (usuarios.isEmpty()) { 
+        if (usuarios.isEmpty()) {
             context.addMessage(null, new FacesMessage("Error usuario:", this.usuario + " No existe"));
             return;
         }
@@ -162,11 +170,24 @@ public class UsuarioLoginControlador {
 
         if (user.getClave().equals(md5(this.clave))) {
             this.login = true;
-            context.getExternalContext().redirect("caja.xhtml");
-        } else {
-            context.addMessage(null, new FacesMessage("Error", "Clave Incorrecta para el usuario:" + this.usuario));
-        }
+            if (user.getRol().equals(1)) {
+                context.getExternalContext().redirect("menuAdministrador.xhtml");
+            } else {
+                if (user.getRol().equals(2)) {
+                    context.getExternalContext().redirect("menuCajero.xhtml");
+                } else {
+                    if (user.getRol().equals(3)) {
+                        context.getExternalContext().redirect("menuMesero.xhtml");
+                    } else {
+                        if (user.getRol().equals(4)) {
+                            context.getExternalContext().redirect("cliente.xhtml");
+                        }
+                    }
+                }
+            }
+        } else context.addMessage(null, new FacesMessage("Error", "Clave Incorrecta para el usuario:" + this.usuario));
     }
+    
 
     private static String md5(String clear) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -193,6 +214,28 @@ public class UsuarioLoginControlador {
         ServletContext servContx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         url = (String) servContx.getContextPath();
 
+    }
+
+    public boolean renderPermisoAdministrador() {
+        System.out.println("Paso:" + usuarioSession.getRol().intValue());
+        if (usuarioSession.getRol().intValue() == Integer.parseInt(ResourceBundle.getBundle("/Bundle").getString("roladminsitrador"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean renderPermisoMesero() {
+        if (usuarioSession.getRol().intValue() == Integer.parseInt(ResourceBundle.getBundle("/Bundle").getString("rolmesero"))) {
+            return true;
+        }
+        return renderPermisoAdministrador();
+    }
+
+    public boolean renderPermisoCajero() {
+        if (usuarioSession.getRol().intValue() == Integer.parseInt(ResourceBundle.getBundle("/Bundle").getString("rolcliente"))) {
+            return renderPermisoAdministrador();
+        }
+        return false;
     }
 
     public UsuarioLoginControlador() {
