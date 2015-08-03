@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <p:growl id="msj" widgetVar="wmsj" showDetail="true" />
+
+        <p:socket onMessage="handleMessage" channel="/notify" >
+            <p:ajax event="message" update=":frm:dtPersonas" />
+        </p:socket>
+
+        <script type="text/javascript">
+            function handleMessage(facesmessage) {
+                facesmessage.severity = 'info';
+                PF('wmsj').show([facesmessage]);
+            }
+        </script>    
+
+        <h:form id="frm">          
+            <p:dataTable id="dtPersonas" value="#{cajaPedidosControlador.listaPedidos}" var="p" 
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+
+                <p:column headerText="Mesa" filterBy="#{p.mesa.nombre}" filterMatchMode="contains">
+                    <p:outputLabel value="#{p.mesa.nombre}" />
+                </p:column>                
+                <p:column headerText="Cliente" filterBy="#{p.cliente.usuario}" filterMatchMode="contains">
+                    <p:outputLabel value="#{p.cliente.usuario}" />
+                </p:column>
+
+                <p:column headerText="Mesero" filterBy="#{p.mesero.usuario}" filterMatchMode="contains">
+                    <p:outputLabel value="#{p.mesero.usuario}" />
+                </p:column>
+
+                <p:column headerText="Opciones">
+                    <p:commandButton value="Confirmar" actionListener="#{cajaPedidosControlador.asignarPedido(p)}"
+                                     ajax="true" oncomplete="PF('modal').show();" update="modalP"/>
+                    <p:commandButton value="Editar" action="#{pedidoControlador.editarPedido(p)}"/>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+        <p:dialog id="modalP" header="Confirmar Pedido" widgetVar="modal" appendTo="@(body)"
+                  modal="true" >
+            <h:form id="frm1">
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="modoPago" value="Modo Pago"/>
+                    <p:selectOneMenu id="modoPago" value="#{cajaPedidosControlador.modoPago.idModoPago}">
+                        <f:selectItem itemLabel="Seleccione"/>
+                        <f:selectItems value="#{cajaPedidosControlador.modoPagos}" var="modo"
+                                       itemLabel="#{modo.nombre}" itemValue="#{modo.idModoPago}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="iva" value="iva"/>
+                    <p:inputText id="iva" value="#{cajaPedidosControlador.pedidoMes.ivaTotal}" readonly="true"/>
+                    <p:outputLabel for="descuento" value="Descuento"/>
+                    <p:inputText id="descuento" value="#{cajaPedidosControlador.pedidoMes.descuentoTotal}">
+                        <p:ajax event="blur" update="total" listener="#{cajaPedidosControlador.calcularDescuento}"/>
+                    </p:inputText>
+                    <p:outputLabel for="factura" value="Factura"/>
+                    <p:inputText id="factura" value="#{cajaPedidosControlador.pedidoMes.factura}"/>
+                    <p:outputLabel for="totalN" value="Total Neto"/>
+                    <p:inputText id="totalN" value="#{cajaPedidosControlador.pedidoMes.totalNeto}"/>
+                    <p:outputLabel for="total" value="Total"/>
+                    <p:inputText id="total" value="#{cajaPedidosControlador.pedidoMes.total}"/>
+                </h:panelGrid>
+                <p:commandButton value="Confirmar" actionListener="#{cajaPedidosControlador.confirmarPedido}"
+                                 ajax="true" update="frm" oncomplete="PF('modal').hide();"/>
+                <p:commandButton value="Cancelar" onclick="PF('modal').hide();"/>
+            </h:form>
+        </p:dialog>
+
+
+    </h:body>
+</html>

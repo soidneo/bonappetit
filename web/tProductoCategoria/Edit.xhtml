@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditTProductoCategoriaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditTProductoCategoriaLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{tProductoCategoriaController.selected.id}" title="#{bundle.EditTProductoCategoriaTitle_id}" required="true" requiredMessage="#{bundle.EditTProductoCategoriaRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditTProductoCategoriaLabel_idProducto}" for="idProducto" />
+                    <h:selectOneMenu id="idProducto" value="#{tProductoCategoriaController.selected.idProducto}" title="#{bundle.EditTProductoCategoriaTitle_idProducto}" required="true" requiredMessage="#{bundle.EditTProductoCategoriaRequiredMessage_idProducto}">
+                        <f:selectItems value="#{productoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditTProductoCategoriaLabel_idCategoria}" for="idCategoria" />
+                    <h:selectOneMenu id="idCategoria" value="#{tProductoCategoriaController.selected.idCategoria}" title="#{bundle.EditTProductoCategoriaTitle_idCategoria}" required="true" requiredMessage="#{bundle.EditTProductoCategoriaRequiredMessage_idCategoria}">
+                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{tProductoCategoriaController.update}" value="#{bundle.EditTProductoCategoriaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditTProductoCategoriaViewLink}"/>
+                <br />
+                <h:commandLink action="#{tProductoCategoriaController.prepareList}" value="#{bundle.EditTProductoCategoriaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditTProductoCategoriaIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

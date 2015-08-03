@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:view renderKitId="PRIMEFACES_MOBILE"/>
+    <h:head>
+        <title>Categorias</title>
+
+    </h:head>
+    <h:body>
+        <pm:page id="first">
+            <pm:header title="Categorias" swatch="b">
+                <p:button outcome="/menu" value="Volver" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline"/>
+            </pm:header>
+            <h:form styleClass="jsfcrud_list_form" id="form" >
+                <p:dataTable paginator="true" rows="5" id="tabla" value="#{categoriaController.items}" var="item" tableStyleClass="ui-table-columntoggle"  stickyHeader="true">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListCategoriaTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListCategoriaTitle_nombre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nombre}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+
+                        <p:commandButton actionListener="#{categoriaController.prepareEdit()}" icon="ui-icon-grid"                                             
+                                         title="#{bundle.ListCategoriaEditLink}"
+                                         ajax="true" update="first:formI:modal"
+                                         onsuccess="PF('rolModal').show();"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Eliminar"/>
+                        </f:facet>
+                        <p:commandButton actionListener="#{categoriaController.destroy()}" title="Eliminar" icon="ui-icon-delete"
+                                         ajax="true" update="tabla"/>
+                    </p:column>
+                </p:dataTable>
+                <br />
+                <p:commandButton actionListener="#{categoriaController.prepareCreate}" value="Crear Categoria"
+                                 onsuccess="PF('rolModal').show();" ajax="true" update="first:formI:modal"/>
+            </h:form>
+            <p:dialog header="Unidades" widgetVar="rolModal" appendTo="@(body)"
+                      modal="true" >
+                <h:form id="formI">
+
+                    <p:panelGrid  id="modal"> 
+                        <h:outputLabel value="#{bundle.CreateCategoriaLabel_nombre}" for="nombre" />
+                        <h:inputText id="nombre" value="#{categoriaController.selected.nombre}" title="#{bundle.CreateCategoriaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateCategoriaRequiredMessage_nombre}"/>
+                        <p:commandButton action="#{categoriaController.create}" value="#{bundle.CreateCategoriaSaveLink}" rendered="#{unidadController.insertar}"
+                                         ajax="true" process="@form" update="first:form" oncomplete="PF('rolModal').hide();" style="width: 100%;"/>
+                        <p:commandButton action="#{categoriaController.update}" value="#{bundle.CreateCategoriaSaveLink}" rendered="#{!unidadController.insertar}"
+                                         ajax="true" process="@form" update="first:form" oncomplete="PF('rolModal').hide();" style="width: 100%;"/>
+                        <p:commandButton value="Cancelar" onclick="PF('rolModal').hide();" style="width: 100%;"/>
+
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog> 
+        </pm:page>
+    </h:body>
+
+</html>

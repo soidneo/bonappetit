@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateRecetaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form id="form">
+                <p:growl/>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateRecetaLabel_nombre}" for="nombre" />
+                    <h:inputText id="nombre" value="#{recetaController.selected.nombre}" title="#{bundle.CreateRecetaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_nombre}"/>
+                    <h:outputLabel value="#{bundle.CreateRecetaLabel_descripcion}" for="descripcion" />
+                    <h:inputText id="descripcion" value="#{recetaController.selected.descripcion}" title="#{bundle.CreateRecetaTitle_descripcion}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_descripcion}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{recetaController.create}" value="#{bundle.CreateRecetaSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{recetaController.prepareList}" value="#{bundle.CreateRecetaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateRecetaIndexLink}"/>
+                
+                <p:commandButton value="Agregar Ingrediente" onsuccess="PF('rolModal').show();"
+                                 actionListener="#{recetaController.nuevoDetalle}"
+                                 ajax="true"
+                                 update="form:modal"
+                                 
+                   />
+                
+                <p:dataTable id="tabla" var="detalle" value="#{recetaController.selected.recetaDetList}">
+                    <p:column headerText="Ingrediente">
+                       #{detalle.ingrediente.nombre}
+                    </p:column>
+                    
+                    <p:column headerText="Cantidad">
+                       #{detalle.cantidad}
+                    </p:column>
+                    
+                </p:dataTable>
+                
+                 <p:dialog header="Unidades" widgetVar="rolModal" 
+                           modal="true" >
+                   
+                     <h:panelGrid columns="2" id="modal">
+                         <p:outputLabel for="selectOneMenu2" value="Ingrediente" />
+                         <p:selectOneMenu id="selectOneMenu2" value="#{recetaController.detalle.ingrediente.idIngrediente}">
+                              <f:selectItem itemLabel="Seleccione" itemValue="" />
+                              <f:selectItems var="ing" value="#{recetaController.listaIngredientes}"
+                                             itemLabel="#{ing.nombre}" itemValue="#{ing.idIngrediente}"/>
+                         </p:selectOneMenu>
+                         <p:outputLabel for="cantidad" value="cantidad" />
+                         <p:inputText id="cantidad" value="#{recetaController.detalle.cantidad}"/>
+                         
+                         <h:panelGroup/>
+                         <p:commandButton ajax="true" update=":form"  value="Agregar" 
+                                          process="@form"  oncomplete="PF('rolModal').hide();"
+                                          actionListener="#{recetaController.agregarDetalle}"/>
+                     </h:panelGrid>
+               </p:dialog>
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

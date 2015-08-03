@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+        <title>Buffet</title>
+        <h:outputStylesheet name="css/login.css"/>
+        <h:outputStylesheet name="css/demo.css"/>
+        <h:outputStylesheet name="css/font-awesome.css"/>
+
+
+    </h:head>
+    <h:body class="fondo" >
+        <center>
+            <pm:page id="index">
+                <div class="blanco" >      
+                    <h:form styleClass="form-1">
+                        <div id="cabecera" style="text-align: center">
+                            <img src="./resources/img/logo.png" style="width: 100%;height: 100%"/>
+                        </div>
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <h:panelGrid columns="1">
+                            <pm:field>
+                                <p:outputLabel for="Usuario"
+                                               value="Usuario"
+                                               style="width: 20%;color: #ffffff"
+                                               />
+                                
+                                <p:inputText id="Usuario"
+                                             label="Usuario"
+                                             value="#{usuarioLogin.usuario}"
+                                             style="width: 100%"
+                                             required="true"/>
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel value="Contraseña" for="clave"
+                                               style="width: 20%;color: #ffffff"/>  
+                                <p:password id="clave" 
+                                            style="width: 100%"
+                                            required="true"
+                                            value="#{usuarioLogin.clave}"/>
+                            </pm:field>
+                        </h:panelGrid>
+                        <p:commandButton styleClass="submit2"
+                                         value="Ingresar"
+                                         actionListener="#{usuarioLogin.confirmar}"
+                                         ajax="false"
+                                         update="growl"/>   
+                        <h:panelGroup/>
+
+                    </h:form>
+                </div>
+           </pm:page>
+        </center>
+    </h:body>
+ <style>
+        #index{      
+            
+            background-image: url(./resources/images/wood_pattern.jpg);
+        }
+    </style>
+</html>
+
