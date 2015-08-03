@@ -11,7 +11,9 @@ import com.control.entidad.Mesa;
 import com.control.entidad.TProductoCategoria;
 
 import java.io.Serializable;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,6 +27,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.dashboard.Dashboard;
 
 @ManagedBean(name = "usuarioController")
 @SessionScoped
@@ -46,8 +49,6 @@ public class UsuarioController implements Serializable {
     public void setMensajeCrub(String mensajeCrub) {
         this.mensajeCrub = mensajeCrub;
     }
-    
-    
 
     public boolean isInsertar() {
         return insertar;
@@ -109,11 +110,13 @@ public class UsuarioController implements Serializable {
 
     public String create() {
         try {
+            current.setClave(md5(this.current.getClave()));
+            current.setFechaCreacion(new Date());
             getFacade().create(current);
-            this.mensajeCrub="Creado Correctamente";
+            this.mensajeCrub = "Creado Correctamente";
             return prepareList();
         } catch (Exception e) {
-            this.mensajeCrub="Error"+e;
+            this.mensajeCrub = "Error" + e;
             return null;
         }
     }
@@ -129,10 +132,10 @@ public class UsuarioController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            this.mensajeCrub="Actualizado Correctamente";
+            this.mensajeCrub = "Actualizado Correctamente";
             return "view";
         } catch (Exception e) {
-            this.mensajeCrub="Error"+e;
+            this.mensajeCrub = "Error" + e;
             return null;
         }
     }
@@ -162,9 +165,9 @@ public class UsuarioController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            this.mensajeCrub="Eliminado Correctamente";            
+            this.mensajeCrub = "Eliminado Correctamente";
         } catch (Exception e) {
-            this.mensajeCrub="Error: "+e;
+            this.mensajeCrub = "Error: " + e;
         }
     }
 
@@ -253,6 +256,23 @@ public class UsuarioController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Usuario.class.getName());
             }
         }
+    }
+
+    private static String md5(String clear) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] b = md.digest(clear.getBytes());
+        int size = b.length;
+        StringBuffer h = new StringBuffer(size);
+        for (int i = 0; i < size; i++) {
+            int u = b[i] & 255;
+            if (u < 16) {
+                h.append("0" + Integer.toHexString(u));
+            } else {
+                h.append(Integer.toHexString(u));
+            }
+        }
+
+        return h.toString();
     }
 
     @PostConstruct

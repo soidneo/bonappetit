@@ -94,15 +94,21 @@
                                 <p:inputText  id="correo" value="#{usuarioController.selected.correo}" title="#{bundle.CreateUsuarioTitle_correo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_correo}"/>
                                 <p:outputLabel value="#{bundle.CreateUsuarioLabel_profesion}" for="profesion" />
                                 <p:inputText id="profesion" value="#{usuarioController.selected.profesion}" title="#{bundle.CreateUsuarioTitle_profesion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_profesion}"/>
-                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_fechaCreacion}" for="fecha" />
-                                <p:inputText  id="fecha" value="#{usuarioController.selected.fechaCreacion}"  >
-                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                </p:inputText>
+                                <p:outputLabel for="rol" value="#{bundle.rolUsuarioLabelFiel}"/>
+                                <p:selectOneMenu id="rol" value="#{usuarioController.selected.rol}" required="true"
+                                                 requiredMessage="#{bundle.rolRequired}">
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                    <f:selectItem itemLabel="#{bundle.roladminsitradorM}" itemValue="#{bundle.roladminsitrador}"/>
+                                    <f:selectItem itemLabel="#{bundle.rolcajeroM}" itemValue="#{bundle.rolcajero}"/>
+                                    <f:selectItem itemLabel="#{bundle.rolmeseroM}" itemValue="#{bundle.rolmesero}"/>
+                                    <f:selectItem itemLabel="#{bundle.rolclienteM}" itemValue="#{bundle.rolcliente}"/>
+                                    
+                                </p:selectOneMenu>
                                  
                                 <p:outputLabel value="#{bundle.CreateUsuarioLabel_estado}" for="estado" />
                                 <p:inputText id="estado" value="#{usuarioController.selected.estado}" title="#{bundle.CreateUsuarioTitle_estado}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_estado}"/>
                                 <p:outputLabel value="#{bundle.CreateUsuarioLabel_clave}" for="clave" />
-                                <p:inputText id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
+                                <p:password id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
 
                                 <p:commandButton actionListener="#{usuarioController.create}" value="Guardar" rendered="#{usuarioController.insertar}"
                                                  ajax="true" update="first:aco:form,first:aco:form" oncomplete="PF('rolModal').hide(),PF('menModal').show();" style="width: 100%;"/>
