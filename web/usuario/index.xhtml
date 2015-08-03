@@ -83,25 +83,26 @@
                               height: 50%;
                               padding: 16px;" >
                         <h:form id="formI">
-                            <p:panelGrid  id="modal" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_usuario}" for="usuario" />
-                                <h:inputText id="usuario" value="#{usuarioController.selected.usuario}" title="#{bundle.CreateUsuarioTitle_usuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuario}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_nombres}" for="nombres" />
-                                <h:inputText id="nombres" value="#{usuarioController.selected.nombres}" title="#{bundle.CreateUsuarioTitle_nombres}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nombres}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_apellidos}" for="apellidos" />
-                                <h:inputText id="apellidos" value="#{usuarioController.selected.apellidos}" title="#{bundle.CreateUsuarioTitle_apellidos}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_apellidos}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_correo}" for="correo" />
-                                <h:inputText id="correo" value="#{usuarioController.selected.correo}" title="#{bundle.CreateUsuarioTitle_correo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_correo}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_profesion}" for="profesion" />
-                                <h:inputText id="profesion" value="#{usuarioController.selected.profesion}" title="#{bundle.CreateUsuarioTitle_profesion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_profesion}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_fechaCreacion}" for="fechaCreacion" />
-                                <h:inputText id="fechaCreacion" value="#{usuarioController.selected.fechaCreacion}" title="#{bundle.CreateUsuarioTitle_fechaCreacion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_fechaCreacion}">
+                            <p:panelGrid  id="modal" columns="2" styleClass="ui-responsive">
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_usuario}" for="usuario" />
+                                <p:inputText id="usuario" value="#{usuarioController.selected.usuario}" title="#{bundle.CreateUsuarioTitle_usuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuario}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_nombres}" for="nombres" />
+                                <p:inputText id="nombres" value="#{usuarioController.selected.nombres}" title="#{bundle.CreateUsuarioTitle_nombres}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nombres}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_apellidos}" for="apellidos" />
+                                <p:inputText id="apellidos" value="#{usuarioController.selected.apellidos}" title="#{bundle.CreateUsuarioTitle_apellidos}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_apellidos}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_correo}" for="correo" />
+                                <p:inputText  id="correo" value="#{usuarioController.selected.correo}" title="#{bundle.CreateUsuarioTitle_correo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_correo}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_profesion}" for="profesion" />
+                                <p:inputText id="profesion" value="#{usuarioController.selected.profesion}" title="#{bundle.CreateUsuarioTitle_profesion}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_profesion}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_fechaCreacion}" for="fecha" />
+                                <p:inputText  id="fecha" value="#{usuarioController.selected.fechaCreacion}"  >
                                     <f:convertDateTime pattern="MM/dd/yyyy" />
-                                </h:inputText>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_estado}" for="estado" />
-                                <h:inputText id="estado" value="#{usuarioController.selected.estado}" title="#{bundle.CreateUsuarioTitle_estado}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_estado}"/>
-                                <h:outputLabel value="#{bundle.CreateUsuarioLabel_clave}" for="clave" />
-                                <h:inputText id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
+                                </p:inputText>
+                                 
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_estado}" for="estado" />
+                                <p:inputText id="estado" value="#{usuarioController.selected.estado}" title="#{bundle.CreateUsuarioTitle_estado}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_estado}"/>
+                                <p:outputLabel value="#{bundle.CreateUsuarioLabel_clave}" for="clave" />
+                                <p:inputText id="clave" value="#{usuarioController.selected.clave}" title="#{bundle.CreateUsuarioTitle_clave}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_clave}"/>
 
                                 <p:commandButton actionListener="#{usuarioController.create}" value="Guardar" rendered="#{usuarioController.insertar}"
                                                  ajax="true" update="first:aco:form,first:aco:form" oncomplete="PF('rolModal').hide(),PF('menModal').show();" style="width: 100%;"/>
@@ -146,20 +147,20 @@
                             <br />
                         </pm:field>
                     </h:form>
-                    <p:dialog header="Usuarios" widgetVar="rolModal2" appendTo="@(body)"
+                    <p:dialog header="Unidades" widgetVar="rolModal2" appendTo="@(body)"
                               modal="true" style="
 
                               position: absolute;
                               top: 25%;
                               left: 25%;
-                              width: 500px !important;
+                              width: 60% !important;
                               height: 50%;
                               padding: 16px;" >
                         <h:form id="formI2">
 
                             <p:panelGrid  id="modal2" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
-                                <h:inputText id="nombre" value="#{unidadController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="#{bundle.CreateUnidadRequiredMessage_nombre}"/>
+                                <p:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
+                                <p:inputText id="nombre" value="#{unidadController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="#{bundle.CreateUnidadRequiredMessage_nombre}"/>
                                 <p:commandButton actionListener="#{unidadController.create}" value="#{bundle.CreateUnidadSaveLink}" rendered="#{unidadController.insertar}"
                                                  ajax="true" process="@form" update="first:aco:form2" oncomplete="PF('rolModal2').hide();" style="width: 100%;"/>
                                 <p:commandButton actionListener="#{unidadController.update}" value="#{bundle.CreateUnidadSaveLink}" rendered="#{!unidadController.insertar}"
@@ -215,8 +216,8 @@
                         <h:form id="formI3">
 
                             <p:panelGrid  id="modal3" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
-                                <h:inputText id="nombre" value="#{mesaController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="Nombre requerido"/>
+                                <p:outputLabel value="#{bundle.CreateUnidadLabel_nombre}" for="nombre" />
+                                <p:inputText id="nombre" value="#{mesaController.selected.nombre}" title="#{bundle.CreateUnidadTitle_nombre}" required="true" requiredMessage="Nombre requerido"/>
                                 <p:commandButton actionListener="#{mesaController.create()}" value="Guardar" rendered="#{mesaController.insertar}"
                                                  ajax="true" process="@form" update="first:aco:form3" oncomplete="PF('rolModal3').hide();" style="width: 100%;"/>
                                 <p:commandButton actionListener="#{mesaController.update()}" value="Actualizar" rendered="#{!mesaController.insertar}"
@@ -272,8 +273,8 @@
                         <h:form id="formI4">
 
                             <p:panelGrid  id="modal4" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateCategoriaLabel_nombre}" for="nombre" />
-                                <h:inputText id="nombre" value="#{categoriaController.selected.nombre}" title="#{bundle.CreateCategoriaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateCategoriaRequiredMessage_nombre}"/>
+                                <p:outputLabel value="#{bundle.CreateCategoriaLabel_nombre}" for="nombre" />
+                                <p:inputText id="nombre" value="#{categoriaController.selected.nombre}" title="#{bundle.CreateCategoriaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateCategoriaRequiredMessage_nombre}"/>
                                 <p:commandButton actionListener="#{categoriaController.create()}" value="Guardar" rendered="#{categoriaController.insertar}"
                                                  ajax="true" process="@form" update="first:aco:form4" oncomplete="PF('rolModal4').hide();" style="width: 100%;"/>
                                 <p:commandButton actionListener="#{categoriaController.update()}" value="Actualizar" rendered="#{!categoriaController.insertar}"
@@ -329,8 +330,8 @@
                         <h:form id="formI5">
 
                             <p:panelGrid  id="modal5" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateproductoLabel_nombre}" for="nombre" />
-                                <h:inputText id="nombre" value="#{productoController.selected.nombre}" title="#{bundle.CreateproductoTitle_nombre}" required="true" requiredMessage="#{bundle.CreateproductoRequiredMessage_nombre}"/>
+                                <p:outputLabel value="#{bundle.CreateproductoLabel_nombre}" for="nombre" />
+                                <p:inputText id="nombre" value="#{productoController.selected.nombre}" title="#{bundle.CreateproductoTitle_nombre}" required="true" requiredMessage="#{bundle.CreateproductoRequiredMessage_nombre}"/>
                                 <p:commandButton actionListener="#{productoController.create()}" value="Guardar" rendered="#{productoController.insertar}"
                                                  ajax="true" process="@form" update="first:aco:form5" oncomplete="PF('rolModal5').hide();" style="width: 100%;"/>
                                 <p:commandButton actionListener="#{productoController.update()}" value="Actualizar" rendered="#{!productoController.insertar}"
@@ -387,8 +388,8 @@
                         <h:form id="formI6">
 
                             <p:panelGrid  id="modal6" columns="2" >
-                                <h:outputLabel value="#{bundle.CreateproductoLabel_nombre}" for="nombre" />
-                                <h:inputText id="nombre" value="#{modoPagoController.selected.nombre}" title="#{bundle.CreateproductoTitle_nombre}" required="true" requiredMessage="#{bundle.CreateproductoRequiredMessage_nombre}"/>
+                                <p:outputLabel value="#{bundle.CreateproductoLabel_nombre}" for="nombre" />
+                                <p:inputText id="nombre" value="#{modoPagoController.selected.nombre}" title="#{bundle.CreateproductoTitle_nombre}" required="true" requiredMessage="#{bundle.CreateproductoRequiredMessage_nombre}"/>
                                 <p:commandButton actionListener="#{modoPagoController.create()}" value="Guardar" rendered="#{modoPagoController.insertar}"
                                                  ajax="true" process="@form" update="first:aco:form6" oncomplete="PF('rolModal6').hide();" style="width: 100%;"/>
                                 <p:commandButton actionListener="#{modoPagoController.update()}" value="Actualizar" rendered="#{!modoPagoController.insertar}"
@@ -401,6 +402,11 @@
                 <!-- _____________________________________________________ Roles _____________________________________ -->
             </p:accordionPanel>
             <pm:footer  swatch="B" >
+                 <p:tabMenu activeIndex="0">
+                    <p:menuitem value="Home" icon="ui-icon-home" url="#" iconPos="top"/>
+                    <p:menuitem value="Settings" icon="ui-icon-gear" url="#" iconPos="top"/>
+                    <p:menuitem action="#{usuarioLogin.cerrarSession()}" value="Logout" icon="ui-icon-power" outcome="../index.xhtml" iconPos="top"/>
+                </p:tabMenu>
                 <p:outputLabel  value='All copyrights @ reserved for Mateo Guerrero, Pablo Gomez'></p:outputLabel>
             </pm:footer>
         </pm:page>

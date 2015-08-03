@@ -5,8 +5,11 @@
 package com.control.entidad;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +29,7 @@ import javax.validation.constraints.Size;
  *
  * @author Asus
  */
+@ManagedBean
 @Entity
 @Table(name = "usuario", catalog = "control", schema = "public")
 @NamedQueries({
@@ -153,6 +157,7 @@ public class Usuario implements Serializable {
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+        
     }
 
     public short getEstado() {

@@ -32,7 +32,7 @@
             <div data-role="content" data-theme="b" style="background: #000000;margin: 0%;padding: 4px">
                 <h:form>
 
-                    <p:panelGrid columns="3" styleClass="paneles">
+                    <p:panelGrid columns="3" styleClass="ui-responsive" rendered="#{usuarioLogin.renderPermisoAdministrador()}">
 
                         <p:column>
                             <h:outputText value="Productos" style="color: #ffffff"/>  
@@ -43,7 +43,6 @@
                         <p:column>
                             <h:outputText value="Pedidos"  style="color: #ffffff"/>
                             <p:button outcome="addPedido.xhtml" value="Pedidos"  styleClass="style_buttons"/>
-                            <p:button outcome="addUsers.xhtml" value="Clientes"  styleClass="style_buttons"/>
                         </p:column>
                         <p:column>
                             <h:outputText value="Opciones" style="color: #ffffff"/>
@@ -160,9 +159,10 @@
 
     </h:body>
     <style>
-        .paneles{
+        .ui-responsive{
             background-color: #7B1400;
-            background: #7B1400;text-align: center !important;
+            background: #7B1400;
+            text-align: center !important;
         }
         .style_buttons{
             background: none;
@@ -195,7 +195,7 @@
                width: 80%;
            }
         }
-        @media (min-width: 1200px) {
+        @media (min-width: 800px) {
            #header_p{
                 background-image: url(./resources/images/madera_header.png);
            }
