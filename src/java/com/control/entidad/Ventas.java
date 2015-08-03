@@ -41,6 +41,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Ventas.findBySubtotal", query = "SELECT v FROM Ventas v WHERE v.subtotal = :subtotal"),
     @NamedQuery(name = "Ventas.findByIva", query = "SELECT v FROM Ventas v WHERE v.iva = :iva"),
     @NamedQuery(name = "Ventas.findByDescuento", query = "SELECT v FROM Ventas v WHERE v.descuento = :descuento"),
+    @NamedQuery(name = "Ventas.finByRango",query="SELECT v FROM Ventas v WHERE v.fecha BETWEEN :fechaIng AND :fechaSal"),
     @NamedQuery(name = "Ventas.findByTotal", query = "SELECT v FROM Ventas v WHERE v.total = :total")})
 public class Ventas implements Serializable {
     private static final long serialVersionUID = 1L;

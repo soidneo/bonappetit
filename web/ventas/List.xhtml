@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Ventas</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:panel header="Ventas">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Desde:" for="desde"/>
+                    <p:calendar id="desde" value="#{consultaVentasController.fechaIng}"/>
+                    <h:outputLabel value="Hasta:" for="hasta"/>
+                    <p:calendar  id="hasta" value="#{consultaVentasController.fechaSal}"/>
+                    <p:commandButton actionListener="#{consultaVentasController.consultar}"
+                                     ajax="true"
+                                     update="form"
+                                     value="Consultar"/>
+                    <h:panelGroup/>
+                </h:panelGrid>
+                <h:panelGroup rendered="#{consultaVentasController.detalle}">
+                    <p:dataTable value="#{consultaVentasController.venta.ventaDetalleList}" var="detalle">
+                        <p:column headerText="producto">
+                            #{detalle.producto.nombre}
+                        </p:column>
+                        <p:column headerText="precio">
+                            #{detalle.producto.costoVenta}
+                        </p:column>
+                        <p:column headerText="cantidad">
+                            #{detalle.cantidad}
+                        </p:column>
+                        <p:column headerText="Descuento">
+                            #{detalle.descuento}
+                        </p:column>
+                        <p:column headerText="Iva">
+                            #{detalle.iva}
+                        </p:column>
+                    </p:dataTable>
+                    <h:outputText value="Total:#{venta.total}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{!consultaVentasController.detalle}">
+
+                    <p:dataTable value="#{consultaVentasController.listaVentas}" var="venta">
+                        <p:column headerText="Cliente">
+                            #{venta.cliente.nombres} #{venta.cliente.apellidos}
+                        </p:column>
+                        <p:column headerText="Mesero">
+                            #{venta.mesero.nombres} #{venta.mesero.apellidos}
+                        </p:column>
+                        <p:column headerText="Mesa">
+                            #{venta.mesa}
+                        </p:column>
+                        <p:column headerText="Modo Pago">
+                            #{venta.modoPago.nombre}
+                        </p:column>
+                        <p:column headerText="Descuento">
+                            #{venta.descuento}
+                        </p:column>
+                        <p:column headerText="Iva">
+                            #{venta.iva}
+                        </p:column>
+                        <p:column headerText="Total">
+                            #{venta.total}
+                        </p:column>
+                        <p:column headerText="Factura">
+                            #{venta.factura}
+                        </p:column>
+                        <p:column headerText="Fecha">
+                            #{venta.fecha}
+                        </p:column>
+                        <p:column headerText="Detalles">
+                            <p:commandButton actionListener="#{consultaVentasController.asignarDetalle(venta)}"
+                                             ajax="true"
+                                             update="form"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

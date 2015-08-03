@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import com.control.dto.ReporteFactura;
 import com.control.dto.ReporteFacturaPar;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -85,5 +86,16 @@ public class VentasFacade extends AbstractFacade<Ventas> {
             System.out.println("error:" + e.toString());
         }
         return null;
+    }
+    
+    public List<Ventas> findByRango(Date fechaIng,Date fechaSal){
+        try{
+            Query query = getEntityManager().createNamedQuery("Ventas.finByRango");
+            query.setParameter("fechaIng",fechaIng);
+            query.setParameter("fechaSal", fechaSal);
+            return query.getResultList();
+        }catch(Exception e){}
+        return null;
+        
     }
 }
