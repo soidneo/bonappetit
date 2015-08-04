@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -92,7 +93,8 @@ public class Usuario implements Serializable {
     private List<Ventas> ventasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mesero", fetch = FetchType.LAZY)
     private List<Ventas> ventasList1;
-
+    @Transient
+    private boolean activo;
     public Usuario() {
     }
 
@@ -110,6 +112,16 @@ public class Usuario implements Serializable {
         this.estado = estado;
         this.clave = clave;
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
+    
 
     public String getUsuario() {
         return usuario;

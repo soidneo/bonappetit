@@ -7,6 +7,7 @@ package com.control.entidad;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ import javax.validation.constraints.Size;
  *
  * @author Asus
  */
+@Cacheable(false)
 @Entity
 @Table(name = "producto", catalog = "control", schema = "public")
 @NamedQueries({

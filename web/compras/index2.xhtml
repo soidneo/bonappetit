@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+
+        <ui:composition template="./../PlantillaMovil.xhtml">
+
+            <ui:define name="content">
+                <h:panelGroup rendered="#{!usuarioLogin.renderPermisoAdministrador()}">
+                    no tiene permisos
+                </h:panelGroup>
+                <h:panelGroup rendered="#{usuarioLogin.renderPermisoAdministrador()}">
+                    <p:accordionPanel id="tab">
+
+
+                        <p:tab title="Recetas">
+                            <h:panelGroup id="messa" layout="block">
+                                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                            </h:panelGroup>
+                            <h:form id="formRecet">
+                                <p:growl/>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="#{bundle.CreateRecetaLabel_nombre}" for="nombre" />
+                                    <h:inputText id="nombre" value="#{recetaController.selected.nombre}" title="#{bundle.CreateRecetaTitle_nombre}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_nombre}"/>
+                                    <h:outputLabel value="#{bundle.CreateRecetaLabel_descripcion}" for="descripcion" />
+                                    <h:inputText id="descripcion" value="#{recetaController.selected.descripcion}" title="#{bundle.CreateRecetaTitle_descripcion}" required="true" requiredMessage="#{bundle.CreateRecetaRequiredMessage_descripcion}"/>
+                                </h:panelGrid>
+
+
+                                <p:commandButton value="Agregar Ingrediente" onsuccess="PF('rolModal').show();"
+                                                 actionListener="#{recetaController.prepararReceta}"
+                                                 ajax="true"
+                                                 />
+
+                                <p:dataTable id="tabla" var="detalle" value="#{recetaController.selected.recetaDetList}">
+                                    <p:column headerText="Ingrediente">
+                                        #{detalle.productoReceta.nombre}
+                                    </p:column>
+                                    <p:column headerText="Cantidad">
+                                        #{detalle.cantidad}
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:commandButton value="Crear Receta"
+                                                 actionListener="#{recetaController.guardarReceta}"/>
+
+
+                                <p:dialog header="Unidades" widgetVar="rolModal" 
+                                          modal="true" >
+                                    <h:panelGrid columns="2" id="modal">
+                                        <p:outputLabel for="selectOneMenu2" value="Ingrediente" />
+                                        <p:selectOneMenu id="selectOneMenu2" value="#{recetaController.detalle.productoReceta.id}">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItems var="ing" value="#{recetaController.listaIngredientes}"
+                                                           itemLabel="#{ing.nombre}" itemValue="#{ing.id}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="cantidad" value="cantidad" />
+                                        <p:inputText id="cantidad" value="#{recetaController.detalle.cantidad}"/>
+
+                                        <h:panelGroup/>
+                                        <p:commandButton ajax="true" update="formRecet"  value="Agregar" 
+                                                         process="@form"  oncomplete="PF('rolModal').hide();"
+                                                         actionListener="#{recetaController.agragarIngrediente}"/>
+                                    </h:panelGrid>
+                                </p:dialog>
+
+                            </h:form>
+                        </p:tab>
+
+                        <p:tab title="Productos" id="productosTab">
+                            <h:form id="form">
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Categoria" for="categorias_prodcuto"/>
+                                    <p:selectOneMenu value="#{inventarioProductoControlador.categoria.id}" id="categorias_prodcuto" 
+                                                     required="true"
+                                                     requiredMessage="Categoria requerida">
+                                        <f:selectItem itemLabel="Seleccione..."/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaCategorias}" var="cat"
+                                                       itemLabel="#{cat.nombre}" itemValue="#{cat.id}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Nombre:" for="nombre"/>
+                                    <p:inputText id="nombre"
+                                                 value="#{inventarioProductoControlador.producto.nombre}"/>
+
+                                    <p:outputLabel value="Sabor:" for="sabor"/>
+                                    <p:inputText id="sabor" value="#{inventarioProductoControlador.producto.sabor}"/>
+
+                                    <p:outputLabel value="Calorias:" for="calorias"/>
+                                    <p:inputText id="calorias" value="#{inventarioProductoControlador.producto.calorias}"/>
+
+                                    <p:outputLabel for="tamanio"
+                                                   value="Tamanio"/>
+                                    <p:inputText id="tamanio"
+                                                 value="#{inventarioProductoControlador.producto.tamanio}"/>
+
+                                    <p:outputLabel value="Precio:" for="precio"/>
+                                    <p:inputText id="precio" value="#{inventarioProductoControlador.producto.costoVenta}"/>
+
+                                    <p:outputLabel value="Unidad" for="unidad"/>
+                                    <p:selectOneMenu id="unidad" value="#{inventarioProductoControlador.unidad.idUnidad}">
+                                        <f:selectItem itemLabel="Seleccione..."/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaUnidades}" var="un"
+                                                       itemLabel="#{un.nombre}" itemValue="#{un.idUnidad}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Iva" for="iva"/>
+                                    <p:inputText id="iva" value="#{inventarioProductoControlador.producto.iva}"/>
+                                    <p:outputLabel value="receta" for="receta"/>
+                                    <p:selectOneMenu required="false" id="receta" value="#{inventarioProductoControlador.producto.recetaFk.idReceta}">
+                                        <f:selectItem itemLabel="Seleccione"/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaReceta}" var="receta"
+                                                       itemLabel="#{receta.nombre}" itemValue="#{receta.idReceta}"/>
+                                    </p:selectOneMenu>
+                                    <h:panelGroup/>
+                                    <p:commandButton value="Registrar" actionListener="#{inventarioProductoControlador.nuevoP}"
+                                                     ajax="true" update="tab:form1"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab  title="Compras">
+                            <h:form id="form1">
+                                <p:growl/>
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Provedor:" for="provedor"/>
+                                    <p:selectOneMenu value="#{inventarioProductoControlador.provedor.idProvedor}" id="provedor" 
+                                                     required="true"
+                                                     requiredMessage="Provedor requerido">
+                                        <f:selectItem itemLabel="Seleccione..."/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaProvedor}" var="prov"
+                                                       itemLabel="#{prov.nombre}" itemValue="#{prov.idProvedor}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Categoria:" for="categoria"/>
+                                    <p:selectOneMenu value="#{inventarioProductoControlador.categoria.id}" id="categoria"
+                                                     required="true">
+                                        <f:selectItem itemLabel="Seleccione"/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaCategorias}" var="cat"
+                                                       itemLabel="#{cat.nombre}" itemValue="#{cat.id}"/>
+                                        <p:ajax event="change" update="form1:producto" listener="#{inventarioProductoControlador.actualizarCategortia}"/>
+                                    </p:selectOneMenu>
+
+
+
+                                    <p:outputLabel value="Producto:" for="producto"/>
+                                    <p:selectOneMenu  
+                                        id="producto"
+                                        required="true"
+                                        requiredMessage="producto requerido"
+                                        value="#{inventarioProductoControlador.producto.id}">
+                                        <f:selectItem itemLabel="Seleccione..."/>
+                                        <f:selectItems value="#{inventarioProductoControlador.listaProducto}" var="prod"
+                                                       itemLabel="#{prod.nombre}" itemValue="#{prod.id}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="stock:" for="stock"/>
+                                    <p:inputText  id="stock"
+                                                  required="true"
+                                                  requiredMessage="stock requerido"
+                                                  value="#{inventarioProductoControlador.compra.stock}"/>
+
+
+
+                                    <p:outputLabel value="cantidad entrada" for="cantidad_in"/>
+                                    <p:inputText  id="cantidad_in"
+                                                  required="true"
+                                                  requiredMessage="cantidad requerido"
+                                                  value="#{inventarioProductoControlador.compra.cantidadEntrada}"/>
+
+                                    <p:outputLabel value="cantidad disponible" for="cantidad_dis"/>
+                                    <p:inputText  id="cantidad_dis" disabled="true"
+                                                  value="#{inventarioProductoControlador.compra.cantidadDisponible}"/>
+
+                                    <p:outputLabel value="fecha vencimiento" for="fecha"/>
+                                    <p:calendar  id="fecha" required="true" requiredMessage="fecha requerida"
+                                                 value="#{inventarioProductoControlador.compra.fechaVencimiento}"/>
+
+                                    <p:outputLabel value="precio" for="precio"/>
+                                    <p:inputText  id="precio"
+                                                  required="true"
+                                                  requiredMessage="precio requerido"
+                                                  value="#{inventarioProductoControlador.compra.precioEntrada}"/>
+
+                                    <p:outputLabel value="iva" for="iva"/>
+                                    <p:inputText  id="iva" required="true" requiredMessage="iva requerida"
+                                                  value="#{inventarioProductoControlador.compra.iva}"/>
+
+                                    <h:panelGroup/>
+                                    <p:commandButton actionListener="#{inventarioProductoControlador.guardarNuevo}"
+                                                     value="guardar" update="form1" ajax="true"/>
+
+                                </h:panelGrid>
+                            </h:form>
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

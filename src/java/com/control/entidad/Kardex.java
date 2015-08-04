@@ -7,6 +7,7 @@ package com.control.entidad;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,6 +28,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Asus
  */
+@Cacheable(false)
 @Entity
 @Table(name = "kardex", catalog = "control", schema = "public")
 @NamedQueries({

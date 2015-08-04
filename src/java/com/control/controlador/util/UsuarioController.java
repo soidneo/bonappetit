@@ -107,9 +107,18 @@ public class UsuarioController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+    
+    public  void estadoVer(){
+        if(this.current.isActivo()){
+            this.current.setEstado(Short.parseShort("1"));
+        }else{
+            this.current.setEstado(Short.parseShort("0"));
+        }
+    }
 
     public String create() {
         try {
+            estadoVer();
             current.setClave(md5(this.current.getClave()));
             current.setFechaCreacion(new Date());
             getFacade().create(current);
@@ -125,12 +134,18 @@ public class UsuarioController implements Serializable {
         insertar = false;
         current = (Usuario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        if(current.getEstado()==1){
+            current.setActivo(true);
+        }else{
+            current.setActivo(false);
+        }
         update();
         return "List";
     }
 
     public String update() {
         try {
+            estadoVer();
             getFacade().edit(current);
             this.mensajeCrub = "Actualizado Correctamente";
             return "view";
